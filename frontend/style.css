@@ -1,1 +1,338 @@
+/* ==========================================================================
+   Tokens
+   ========================================================================== */
 
+:root {
+  /* Color */
+  --bg: #0e1013;
+  --surface: #15181d;
+  --surface-raised: #1a1e25;
+  --border: #262b34;
+  --border-strong: #343b47;
+
+  --text: #e7e9ee;
+  --text-dim: #8b92a3;
+  --text-faint: #565d6b;
+
+  --accent-amber: #e3a53d;
+  --accent-blue: #5b9df0;
+  --accent-red: #e5645a;
+
+  --accent-amber-soft: rgba(227, 165, 61, 0.1);
+  --accent-red-soft: rgba(229, 100, 90, 0.08);
+
+  /* Type */
+  --font-ui: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-code: "JetBrains Mono", "SF Mono", Consolas, monospace;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.875rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+
+  /* Shape & motion */
+  --radius: 10px;
+  --radius-sm: 6px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.18s var(--ease);
+}
+
+/* ==========================================================================
+   Reset & base
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  font: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* Faint horizontal scan line — the one deliberate ambient touch */
+.scanline {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(227, 165, 61, 0.025) 50%,
+    transparent 100%
+  );
+  background-size: 100% 6px;
+  z-index: 1;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.site-header {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  text-align: left;
+}
+
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.wordmark-glyph {
+  font-family: var(--font-code);
+  font-size: 1.1rem;
+  color: var(--accent-amber);
+}
+
+.wordmark-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  margin: var(--space-xs) 0 0;
+  color: var(--text-dim);
+  font-size: 1.0625rem;
+  max-width: 34ch;
+}
+
+/* ==========================================================================
+   Workspace / form
+   ========================================================================== */
+
+.workspace {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--space-md) var(--space-xl);
+}
+
+.debug-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--space-md);
+  transition: border-color var(--transition);
+}
+
+.panel:focus-within {
+  border-color: var(--border-strong);
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-sm);
+}
+
+.panel-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dot-color, var(--text-faint));
+  flex-shrink: 0;
+}
+
+.panel-label {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: var(--text);
+}
+
+.panel-hint {
+  margin-left: auto;
+  font-size: 0.8125rem;
+  color: var(--text-faint);
+  font-family: var(--font-code);
+}
+
+/* Shared field styling */
+
+.field {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text);
+  padding: var(--space-sm);
+  line-height: 1.6;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.field::placeholder {
+  color: var(--text-faint);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--accent-amber);
+  box-shadow: 0 0 0 3px var(--accent-amber-soft);
+}
+
+.field--prose {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  min-height: 6rem;
+}
+
+.field--code {
+  font-family: var(--font-code);
+  font-size: 0.875rem;
+  min-height: 10rem;
+  tab-size: 2;
+}
+
+.field--error {
+  min-height: 5rem;
+  color: #f0b3ad;
+  background: var(--accent-red-soft);
+}
+
+.field--error:focus {
+  border-color: var(--accent-red);
+  box-shadow: 0 0 0 3px rgba(229, 100, 90, 0.12);
+}
+
+.field--error::placeholder {
+  color: rgba(240, 179, 173, 0.45);
+}
+
+/* Give the code panel visual priority — it's the largest, central artifact */
+.panel--code .field--code {
+  min-height: 16rem;
+}
+
+/* ==========================================================================
+   Submit
+   ========================================================================== */
+
+.submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-top: var(--space-xs);
+}
+
+.submit-note {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 0.8125rem;
+  max-width: 32ch;
+}
+
+.submit-button {
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--accent-amber);
+  color: #1a1305;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: transform var(--transition), background var(--transition);
+}
+
+.submit-button:hover {
+  background: #edb254;
+}
+
+.submit-button:active {
+  transform: scale(0.98);
+}
+
+.submit-button:focus-visible {
+  outline: 2px solid var(--accent-amber);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--space-md) var(--space-xl);
+}
+
+.site-footer p {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 0.8125rem;
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-md);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 480px) {
+  .site-header {
+    padding: var(--space-lg) var(--space-sm) var(--space-md);
+  }
+
+  .workspace {
+    padding: 0 var(--space-sm) var(--space-lg);
+  }
+
+  .submit-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .submit-button {
+    width: 100%;
+  }
+}
