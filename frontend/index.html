@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -78,6 +78,53 @@
       </div>
 
     </form>
+
+    <section class="results" id="results" hidden aria-labelledby="results-heading">
+      <h2 id="results-heading" class="visually-hidden">Diagnosis</h2>
+
+      <article class="result-card result-card--bug">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🔴</span>
+          <h3 class="result-title">Bug found</h3>
+        </div>
+        <dl class="bug-meta">
+          <div class="bug-meta-item">
+            <dt>Type</dt>
+            <dd>ReferenceError</dd>
+          </div>
+          <div class="bug-meta-item">
+            <dt>Line</dt>
+            <dd>2</dd>
+          </div>
+        </dl>
+        <p class="bug-message">saveData is not defined</p>
+      </article>
+
+      <article class="result-card result-card--why">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🧠</span>
+          <h3 class="result-title">Why</h3>
+        </div>
+        <p class="result-prose">
+          The click handler calls <code>saveData()</code>, but the function isn't defined
+          in the provided code.
+        </p>
+      </article>
+
+      <article class="result-card result-card--fix">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🔧</span>
+          <h3 class="result-title">The fix</h3>
+        </div>
+        <p class="result-prose">Define <code>saveData()</code> before calling it.</p>
+        <pre class="code-fix"><code
+          ><span class="code-line"><span class="line-num">1</span>function saveData() {</span
+          ><span class="code-line"><span class="line-num">2</span>    ...</span
+          ><span class="code-line"><span class="line-num">3</span>}</span
+        ></code></pre>
+        <button type="button" class="apply-fix-button">Apply fix</button>
+      </article>
+    </section>
   </main>
 
   <footer class="site-footer">
