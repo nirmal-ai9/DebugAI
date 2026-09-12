@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DebugAI — Find the fix, not just the bug</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
 
+  <div class="scanline" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wordmark">
+      <span class="wordmark-glyph">&gt;_</span>
+      <span class="wordmark-text">DebugAI</span>
+    </div>
+    <p class="tagline">Paste what broke. Get the fix, not a lecture.</p>
+  </header>
+
+  <main class="workspace">
+    <form class="debug-form" action="#" method="post">
+
+      <div class="panel panel--requirements">
+        <div class="panel-head">
+          <span class="panel-dot" style="--dot-color: var(--accent-amber);"></span>
+          <label for="requirements" class="panel-label">What was this supposed to do?</label>
+        </div>
+        <textarea
+          id="requirements"
+          name="requirements"
+          class="field field--prose"
+          placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds."
+          rows="4"
+        ></textarea>
+      </div>
+
+      <div class="panel panel--code">
+        <div class="panel-head">
+          <span class="panel-dot" style="--dot-color: var(--accent-blue);"></span>
+          <label for="code" class="panel-label">The code in question</label>
+          <span class="panel-hint">any language</span>
+        </div>
+        <textarea
+          id="code"
+          name="code"
+          class="field field--code"
+          placeholder="Paste the function, component, or file that isn't behaving."
+          rows="14"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+      <div class="panel panel--error">
+        <div class="panel-head">
+          <span class="panel-dot" style="--dot-color: var(--accent-red);"></span>
+          <label for="console-error" class="panel-label">What the console shows</label>
+          <span class="panel-hint">optional</span>
+        </div>
+        <textarea
+          id="console-error"
+          name="console-error"
+          class="field field--code field--error"
+          placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')"
+          rows="6"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+      <div class="submit-row">
+        <p class="submit-note">DebugAI reads all three together — the mismatch between them is usually the bug.</p>
+        <button type="submit" class="submit-button">
+          Find the fix
+        </button>
+      </div>
+
+    </form>
+  </main>
+
+  <footer class="site-footer">
+    <p>DebugAI doesn't run your code. It reads it.</p>
+  </footer>
+
+</body>
+</html>
