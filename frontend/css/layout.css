@@ -1,140 +1,87 @@
-/* Form & Panels */
+/* Header */
 
-.debug-form {
+.site-header {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md) var(--space-lg);
+  text-align: left;
+}
+.wordmark {
   display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+  align-items: baseline;
+  gap: 0.5rem;
 }
-.panel {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: var(--space-md);
-  transition: border-color var(--transition);
-}
-.panel:focus-within {
-  border-color: var(--border-strong);
-}
-.panel-head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-sm);
-}
-.panel-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--dot-color, var(--text-faint));
-  flex-shrink: 0;
-}
-.panel-label {
-  font-weight: 600;
-  font-size: 0.9375rem;
-  color: var(--text);
-}
-.panel-hint {
-  margin-left: auto;
-  font-size: 0.8125rem;
-  color: var(--text-faint);
+.wordmark-glyph {
   font-family: var(--font-code);
+  font-size: 1.1rem;
+  color: var(--accent-amber);
+}
+.wordmark-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.tagline {
+  margin: var(--space-xs) 0 0;
+  color: var(--text-dim);
+  font-size: 1.0625rem;
+  max-width: 34ch;
 }
 
-/* Fields */
+/* Containers */
 
-.field {
-  display: block;
-  width: 100%;
-  resize: vertical;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface-raised);
-  color: var(--text);
-  padding: var(--space-sm);
-  line-height: 1.6;
-  transition: border-color var(--transition), box-shadow var(--transition);
-}
-.field::placeholder {
-  color: var(--text-faint);
-}
-.field:focus {
-  outline: none;
-  border-color: var(--accent-amber);
-  box-shadow: 0 0 0 3px var(--accent-amber-soft);
-}
-.field--prose {
-  font-family: var(--font-ui);
-  font-size: 0.9375rem;
-  min-height: 6rem;
-}
-.field--code {
-  font-family: var(--font-code);
-  font-size: 0.875rem;
-  min-height: 10rem;
-  tab-size: 2;
-}
-.field--error {
-  min-height: 5rem;
-  color: #f0b3ad;
-  background: var(--accent-red-soft);
-}
-.field--error:focus {
-  border-color: var(--accent-red);
-  box-shadow: 0 0 0 3px rgba(229, 100, 90, 0.12);
-}
-.field--error::placeholder {
-  color: rgba(240, 179, 173, 0.45);
-}
-.panel--code .field--code {
-  min-height: 16rem;
+.workspace {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--space-md) var(--space-xl);
 }
 
-/* Submit */
+/* Footer */
 
-.submit-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
-  padding-top: var(--space-xs);
+.site-footer {
+  position: relative;
+  z-index: 2;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 var(--space-md) var(--space-xl);
 }
-.submit-note {
+.site-footer p {
   margin: 0;
   color: var(--text-faint);
   font-size: 0.8125rem;
-  max-width: 32ch;
-}
-.submit-button {
-  flex-shrink: 0;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: var(--accent-amber);
-  color: #1a1305;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  padding: 0.75rem 1.5rem;
-  cursor: pointer;
-  transition: transform var(--transition), background var(--transition);
-}
-.submit-button:hover {
-  background: #edb254;
-}
-.submit-button:active {
-  transform: scale(0.98);
-}
-.submit-button:focus-visible {
-  outline: 2px solid var(--accent-amber);
-  outline-offset: 3px;
+  border-top: 1px solid var(--border);
+  padding-top: var(--space-md);
 }
 
-/* Form responsive */
+/* Layout responsive */
 
 @media (max-width: 480px) {
-  .submit-row {
-    flex-direction: column;
-    align-items: stretch;
+  .site-header {
+    padding: var(--space-lg) var(--space-sm) var(--space-md);
   }
-  .submit-button {
-    width: 100%;
+  .workspace {
+    padding: 0 var(--space-sm) var(--space-lg);
   }
+}
+
+.dot{
+  font-size: 1.2rem;
+  transition: 0.5s;
+}
+.dot:after{
+  content: "";
+  display: inline-block;
+  width: 1.2rem;
+  animation: dots 1.5s steps(5, end) infinite;
+}
+@keyframes dots {
+  0%{content: ""}
+  25%{content: "."}
+  50%{content: ".."}
+  75%{content: "..."}
+  100%{content: "...."}
 }
