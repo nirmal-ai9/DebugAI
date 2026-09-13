@@ -1,5 +1,8 @@
 {
   "name": "debugai-backend",
   "main": "src/index.js",
-  "compatibility_date": "2026-09-13"
+  "compatibility_date": "2026-09-13",
+  "ai": {
+    "binding": "AI"
+  }
 }
