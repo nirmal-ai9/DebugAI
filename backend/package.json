@@ -13,5 +13,8 @@
   "dependencies": {
     "hono": "^4.13.7",
     "zod": "^4.6.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.131.1"
   }
 }
