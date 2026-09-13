@@ -2,7 +2,7 @@ const form = document.querySelector(".debug-form");
 const msg = document.querySelector(".submit-note");
 const btn = document.querySelector(".submit-button");
 
-form.addEventListener("submit", function(event) {
+form.addEventListener("submit", async function(event) {
   event.preventDefault();
   btn.disabled = true;
   
@@ -27,12 +27,23 @@ form.addEventListener("submit", function(event) {
     msg.classList.add("dot");
   }
   
-  fetch("https://debugai-backend.nirmal-ai9.workers.dev", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(debugData)
-  });
+  try{
+    const response = await fetch("https://debugai-backend.nirmal-ai9.workers.dev", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(debugData)
+      }
+    );
+    
+    const data = JSON.parse(await response.text());
+    
+  }catch(error){
+    console.error("Request failed:", error);
+    msg.textContent = "Something went wrong";
+  } finally {
+    btn.disabled = false;
+  }
   
 });
