@@ -51,6 +51,7 @@ form.addEventListener("submit", async function(event) {
   }catch(error){
     console.error("Request failed:", error);
     msg.textContent = "Something went wrong";
+    msg.classList.remove("dot");
   } finally {
     btn.disabled = false;
   }
