@@ -25,7 +25,7 @@
   </header>
 
   <main class="workspace">
-    <form class="debug-form" action="#" method="post">
+    <form class="debug-form">
 
       <div class="panel panel--requirements">
         <div class="panel-head">
@@ -60,12 +60,12 @@
       <div class="panel panel--error">
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-red);"></span>
-          <label for="console-error" class="panel-label">What the console shows</label>
+          <label for="err" class="panel-label">What the console shows</label>
           <span class="panel-hint">optional</span>
         </div>
         <textarea
-          id="console-error"
-          name="console-error"
+          id="err"
+          name="err"
           class="field field--code field--error"
           placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')"
           rows="6"
@@ -82,7 +82,7 @@
 
     </form>
 
-    <section class="results" id="results" hidden aria-labelledby="results-heading">
+    <section class="results" id="results" aria-labelledby="results-heading">
       <h2 id="results-heading" class="visually-hidden">Diagnosis</h2>
 
       <article class="result-card result-card--bug">
@@ -133,7 +133,7 @@
   <footer class="site-footer">
     <p>DebugAI doesn't run your code. It reads it.</p>
   </footer>
-
+  
   <script src="script.js"></script>
 </body>
 </html>
