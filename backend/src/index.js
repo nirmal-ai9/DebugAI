@@ -45,7 +45,7 @@ export default {
     }
 
     try {
-      const data = await request.json();
+      const data = JSON.parse(await request.text());
       const { requirements, code, error } = data;
 
       if (
