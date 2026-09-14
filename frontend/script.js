@@ -43,9 +43,13 @@ form.addEventListener("submit", async function(event) {
     
     const data = JSON.parse(await response.text());
     
-    showResult(data);
+    if(data.success === false){
+      msg.textContent = "Invalid code or request"; 
+    }else{
+      showResult(data);
+      msg.textContent = "Done";
+    }
     
-    msg.textContent = "Done";
     msg.classList.remove("dot");
     
   }catch(error){
@@ -73,10 +77,8 @@ function showResult(data) {
   // Fix
   const fixExplanation =
     document.querySelector(".result-card--fix .result-prose");
-
   const fixCode =
     document.querySelector(".code-fix code");
-
 
   // Fill bug information
   if (result.bug) {
@@ -89,10 +91,8 @@ function showResult(data) {
     bugMessage.textContent = "No obvious bug was detected.";
   }
 
-
   // Fill why
   why.textContent = result.why;
-
 
   // Fill fix
   if (result.fix) {
@@ -113,3 +113,25 @@ function showResult(data) {
   });
 }
  
+const copyBtn = document.querySelector(".apply-fix-button");
+const fixCode = document.querySelector(".code-fix code");
+
+copyBtn.addEventListener("click", async function() {
+  try {
+    await navigator.clipboard.writeText(fixCode.innerText);
+    
+    copyBtn.textContent = "Copied!";
+    
+    setTimeout(() => {
+      copyBtn.textContent = "Copy fix";
+    }, 2000);
+    
+  } catch (error) {
+    console.error("Copy failed:", error);
+    copyBtn.textContent = "Copy failed";
+    
+    setTimeout(() => {
+      copyBtn.textContent = "Copy fix";
+    }, 2000);
+  }
+});
