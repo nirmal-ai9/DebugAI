@@ -23,24 +23,25 @@ const resultSchema = {
   required: ["bug", "why", "fix"]
 };
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type"
+};
+
+// Every response goes through here so CORS headers are never forgotten.
+function jsonResponse(body, status = 200) {
+  return Response.json(body, { status, headers: corsHeaders });
+}
+
 export default {
   async fetch(request, env) {
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type"
-    };
-
-    // handle preflight
     if (request.method === "OPTIONS") {
       return new Response(null, { headers: corsHeaders });
     }
-    
+
     if (request.method !== "POST") {
-      return Response.json(
-        { success: false, message: "Method not allowed" },
-        { status: 405 }
-      );
+      return jsonResponse({ success: false, message: "Method not allowed" }, 405);
     }
 
     try {
@@ -53,17 +54,11 @@ export default {
         typeof code !== "string" ||
         code.trim() === ""
       ) {
-        return Response.json(
-          { success: false, message: "Requirements and code are required" },
-          { status: 400 }
-        );
+        return jsonResponse({ success: false, message: "Requirements and code are required" }, 400);
       }
 
       if (error !== undefined && typeof error !== "string") {
-        return Response.json(
-          { success: false, message: "Error must be a string" },
-          { status: 400 }
-        );
+        return jsonResponse({ success: false, message: "Error must be a string" }, 400);
       }
 
       const prompt = `You are a senior engineer. Diagnose the bug.
@@ -86,19 +81,13 @@ Console error: ${error || "none"}`;
           ? JSON.parse(aiResponse.response)
           : aiResponse.response;
       } catch {
-        return Response.json(
-          { success: false, message: "AI returned unparseable output" },
-          { status: 502 }
-        );
+        return jsonResponse({ success: false, message: "AI returned unparseable output" }, 502);
       }
 
-      return Response.json({ success: true, result });
+      return jsonResponse({ success: true, result });
 
     } catch (err) {
-      return Response.json(
-        { success: false, message: "Invalid JSON!" },
-        { status: 400 }
-      );
+      return jsonResponse({ success: false, message: "Invalid JSON!" }, 400);
     }
   }
 };
