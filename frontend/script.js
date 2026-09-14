@@ -28,7 +28,7 @@ form.addEventListener("submit", async function(event) {
   }
   
   try{
-    const response = await fetch("https://debugai-backend.nirmal-ai9.workers.dev", {
+    const response = await fetch("https://debugai-backend.nirmal-ai9.workers.dev/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
