@@ -85,7 +85,7 @@ Console error: ${error || "none"}`;
 
     } catch (err) {
       return Response.json(
-        { success: false, message: "Invalid JSON" },
+        { success: false, message: "Invalid JSON!" },
         { status: 400 }
       );
     }
