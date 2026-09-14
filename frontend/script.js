@@ -37,10 +37,6 @@ form.addEventListener("submit", async function(event) {
       }
     );
     
-    if (!response.ok) {
-      throw new Error(`Server returned ${response.status}`);
-    }
-    
     const data = JSON.parse(await response.text());
     
     if(data.success === false){
