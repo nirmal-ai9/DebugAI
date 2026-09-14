@@ -28,7 +28,7 @@ form.addEventListener("submit", async function(event) {
   }
   
   try{
-    const response = await fetch("https://debugai-backend.nirmal-ai9.workers.dev/", {
+    const response = await fetch("https://debugai-backend.nirmal-ai9.workers.dev", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -36,11 +36,13 @@ form.addEventListener("submit", async function(event) {
         body: JSON.stringify(debugData)
       }
     );
-    
-    const data = JSON.parse(await response.text());
-    
+
+    // Read the body first — the backend always sends a `message`,
+    // even on 400/502, and status alone hides it.
+    const data = await response.json();
+
     if(data.success === false){
-      msg.textContent = "Invalid code or request"; 
+      msg.textContent = data.message || "Invalid code or request";
     }else{
       showResult(data);
       msg.textContent = "Done";
@@ -50,7 +52,7 @@ form.addEventListener("submit", async function(event) {
     
   }catch(error){
     console.error("Request failed:", error);
-    msg.textContent = "Something went wrong";
+    msg.textContent = `Failed: ${error.name} - ${error.message}`;
     msg.classList.remove("dot");
   } finally {
     btn.disabled = false;
