@@ -29,7 +29,6 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "Content-Type"
 };
 
-// Every response goes through here so CORS headers are never forgotten.
 function jsonResponse(body, status = 200) {
   return Response.json(body, { status, headers: corsHeaders });
 }
@@ -44,9 +43,23 @@ export default {
       return jsonResponse({ success: false, message: "Method not allowed" }, 405);
     }
 
+    // 1. Safely parse request body independently
+    let data;
     try {
-      const data = JSON.parse(await request.text());
-      const { requirements, code, error } = data;
+      const rawText = await request.text();
+      data = JSON.parse(rawText);
+
+      // Handle double-serialized JSON string sent from frontend
+      if (typeof data === "string") {
+        data = JSON.parse(data);
+      }
+    } catch (err) {
+      return jsonResponse({ success: false, message: "Invalid request payload JSON format" }, 400);
+    }
+
+    // 2. Execute main logic inside try/catch for real server errors
+    try {
+      const { requirements, code, error } = data || {};
 
       if (
         typeof requirements !== "string" ||
@@ -87,7 +100,8 @@ Console error: ${error || "none"}`;
       return jsonResponse({ success: true, result });
 
     } catch (err) {
-      return jsonResponse({ success: false, message: "Invalid JSON!" }, 400);
+      // 3. Catch true worker or Cloudflare AI errors without mislabeling them
+      return jsonResponse({ success: false, message: err.message || "Internal Server Error" }, 500);
     }
   }
 };
