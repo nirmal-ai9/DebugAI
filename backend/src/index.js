@@ -76,12 +76,16 @@ export default {
 
       const prompt = `You are a senior engineer. Diagnose the bug.
 
-Requirements: ${requirements}
-Code:
-\`\`\`
-${code}
-\`\`\`
-Console error: ${error || "none"}`;
+        Requirements: ${requirements}
+        Code:
+        \`\`\`
+        ${code}
+        \`\`\`
+        Console error: ${error || "none"}
+        
+        CRITICAL INSTRUCTION FOR OUTPUT:
+        Provide raw code ONLY inside the "fix.code" JSON field. Do NOT wrap the code in markdown backticks or code blocks (such as \`\`\`javascript or \`\`\`).`;
+
 
       const aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", {
         messages: [{ role: "user", content: prompt }],
