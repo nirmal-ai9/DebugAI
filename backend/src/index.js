@@ -90,11 +90,29 @@ Console error: ${error || "none"}`;
 
       let result;
       try {
-        result = typeof aiResponse.response === "string"
-          ? JSON.parse(aiResponse.response)
-          : aiResponse.response;
-      } catch {
-        return jsonResponse({ success: false, message: "AI returned unparseable output" }, 502);
+        const rawOutput = aiResponse.response ?? aiResponse;
+
+        if (typeof rawOutput === "object" && rawOutput !== null) {
+          result = rawOutput;
+        } else {
+          // Remove ```json and ``` markdown code fences
+          const cleanedText = String(rawOutput)
+            .replace(/```json/gi, "")
+            .replace(/```/g, "")
+            .trim();
+
+          result = JSON.parse(cleanedText);
+        }
+      } catch (parseErr) {
+        console.error("AI Parse Error. Raw Output was:", JSON.stringify(aiResponse));
+        return jsonResponse(
+          { 
+            success: false, 
+            message: "AI returned unparseable output",
+            debug: typeof aiResponse.response === "string" ? aiResponse.response : aiResponse 
+          }, 
+          502
+        );
       }
 
       return jsonResponse({ success: true, result });
