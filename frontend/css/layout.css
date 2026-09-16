@@ -1,4 +1,4 @@
-/* Header */
+/* Site Header */
 
 .site-header {
   position: relative;
@@ -8,21 +8,25 @@
   padding: var(--space-xl) var(--space-md) var(--space-lg);
   text-align: left;
 }
+
 .wordmark {
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
 }
+
 .wordmark-glyph {
   font-family: var(--font-code);
   font-size: 1.1rem;
   color: var(--accent-amber);
 }
+
 .wordmark-text {
   font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
+
 .tagline {
   margin: var(--space-xs) 0 0;
   color: var(--text-dim);
@@ -30,17 +34,25 @@
   max-width: 34ch;
 }
 
-/* Containers */
+/* Workspace Container */
 
 .workspace {
   position: relative;
   z-index: 2;
   max-width: 760px;
   margin: 0 auto;
-  padding: 0 var(--space-md) var(--space-xl);
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  border-top: 1px solid var(--border);
 }
 
-/* Footer */
+.tool-title {
+  font-size: 1rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin: 0 0 var(--space-md);
+}
+
+/* Site Footer */
 
 .site-footer {
   position: relative;
@@ -49,6 +61,7 @@
   margin: 0 auto;
   padding: 0 var(--space-md) var(--space-xl);
 }
+
 .site-footer p {
   margin: 0;
   color: var(--text-faint);
@@ -57,7 +70,7 @@
   padding-top: var(--space-md);
 }
 
-/* Layout responsive */
+/* Responsive Layout */
 
 @media (max-width: 480px) {
   .site-header {
@@ -66,22 +79,4 @@
   .workspace {
     padding: 0 var(--space-sm) var(--space-lg);
   }
-}
-
-.dot{
-  font-size: 1.2rem;
-  transition: 0.5s;
-}
-.dot:after{
-  content: "";
-  display: inline-block;
-  width: 1.2rem;
-  animation: dots 1.5s steps(5, end) infinite;
-}
-@keyframes dots {
-  0%{content: ""}
-  25%{content: "."}
-  50%{content: ".."}
-  75%{content: "..."}
-  100%{content: "...."}
 }
