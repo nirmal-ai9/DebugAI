@@ -1,14 +1,14 @@
-/* Results & cards */
-
 .results {
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
   margin-top: var(--space-md);
 }
+
 .results[hidden] {
   display: none;
 }
+
 .result-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -16,37 +16,45 @@
   border-radius: var(--radius);
   padding: var(--space-md);
 }
+
 .result-card--bug {
   --card-accent: var(--accent-red);
 }
+
 .result-card--why {
   --card-accent: var(--accent-blue);
 }
+
 .result-card--fix {
   --card-accent: var(--accent-green);
 }
+
 .result-head {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
   margin-bottom: var(--space-sm);
 }
+
 .result-icon {
   font-size: 1rem;
   line-height: 1;
 }
+
 .result-title {
   margin: 0;
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--text);
 }
+
 .result-prose {
   margin: 0;
   color: var(--text-dim);
   font-size: 0.9375rem;
   line-height: 1.6;
 }
+
 .result-prose code {
   font-family: var(--font-code);
   font-size: 0.875em;
@@ -56,28 +64,32 @@
   border-radius: 4px;
 }
 
-/* Bug details */
+/* Bug Details Section */
 
 .bug-meta {
   display: flex;
   gap: var(--space-lg);
   margin: 0 0 var(--space-sm);
 }
+
 .bug-meta-item {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
 }
+
 .bug-meta-item dt {
   font-size: 0.75rem;
   color: var(--text-faint);
 }
+
 .bug-meta-item dd {
   margin: 0;
   font-family: var(--font-code);
   font-size: 0.875rem;
   color: var(--text);
 }
+
 .bug-message {
   margin: 0;
   font-family: var(--font-code);
@@ -88,7 +100,7 @@
   padding: var(--space-sm);
 }
 
-/* Code fix block */
+/* Code Fix Block */
 
 .code-fix {
   margin: var(--space-sm) 0;
@@ -98,23 +110,27 @@
   padding: var(--space-sm) 0;
   overflow-x: auto;
 }
+
 .code-fix code {
   display: block;
   font-family: var(--font-code);
   font-size: 0.875rem;
   line-height: 1.7;
 }
+
 .code-line {
   display: block;
   padding: 0 var(--space-sm);
   white-space: pre;
 }
+
 .line-num {
   display: inline-block;
   width: 1.5rem;
   color: var(--text-faint);
   user-select: none;
 }
+
 .apply-fix-button {
   border: none;
   border-radius: var(--radius-sm);
@@ -126,12 +142,15 @@
   cursor: pointer;
   transition: transform var(--transition), background var(--transition);
 }
+
 .apply-fix-button:hover {
   background: #82cc9c;
 }
+
 .apply-fix-button:active {
   transform: scale(0.98);
 }
+
 .apply-fix-button:focus-visible {
   outline: 2px solid var(--accent-green);
   outline-offset: 3px;
