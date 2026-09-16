@@ -65,18 +65,18 @@ function showResult(data) {
   const results = document.getElementById("results");
   
   // Bug
-  const bugType = document.querySelector(".bug-meta-item:nth-child(1) dd");
-  const bugLine = document.querySelector(".bug-meta-item:nth-child(2) dd");
-  const bugMessage = document.querySelector(".bug-message");
+  const bugType = results.querySelector(".bug-meta-item:nth-child(1) dd");
+  const bugLine = results.querySelector(".bug-meta-item:nth-child(2) dd");
+  const bugMessage = results.querySelector(".bug-message");
 
   // Why
-  const why = document.querySelector(".result-card--why .result-prose");
+  const why = results.querySelector(".result-card--why .result-prose");
 
   // Fix
   const fixExplanation =
-    document.querySelector(".result-card--fix .result-prose");
+    results.querySelector(".result-card--fix .result-prose");
   const fixCode =
-    document.querySelector(".code-fix code");
+    results.querySelector(".code-fix code");
 
   // Fill bug information
   if (result.bug) {
@@ -112,7 +112,7 @@ function showResult(data) {
 }
  
 const copyBtn = document.querySelector(".apply-fix-button");
-const fixCode = document.querySelector(".code-fix code");
+const fixCode = document.querySelector("#results .code-fix code");
 
 copyBtn.addEventListener("click", async function() {
   try {
