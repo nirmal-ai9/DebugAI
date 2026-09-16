@@ -4,10 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DebugAI — Find the fix, not just the bug</title>
+  <meta name="description" content="Paste what your code was supposed to do, the code itself, and the console error. DebugAI reads the mismatch between them and hands back the fix." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/welcome.css" />
   <link rel="stylesheet" href="css/forms.css" />
   <link rel="stylesheet" href="css/layout.css" />
   <link rel="stylesheet" href="css/result.css" />
@@ -16,15 +18,135 @@
 
   <div class="scanline" aria-hidden="true"></div>
 
-  <header class="site-header">
+  <nav class="nav">
     <div class="wordmark">
       <span class="wordmark-glyph">&gt;_</span>
       <span class="wordmark-text">DebugAI</span>
     </div>
-    <p class="tagline">Paste what broke. Get the fix, not a lecture.</p>
-  </header>
+    <a class="nav-cta" href="#debug-tool">Try it</a>
+  </nav>
 
-  <main class="workspace">
+  <section class="hero">
+    <div>
+      <h1 class="hero-heading">Paste what broke. Get the fix, not a lecture.</h1>
+      <p class="hero-sub">
+        DebugAI doesn't run your code — it reads it. Give it what the code was supposed to do,
+        the code itself, and what the console shows. It finds the mismatch between the three.
+      </p>
+      <div class="hero-actions">
+        <a class="hero-primary" href="#debug-tool">Debug something</a>
+        <a class="hero-secondary" href="#how-it-works">See how it works</a>
+      </div>
+    </div>
+
+    <div class="terminal" aria-hidden="true">
+      <div class="terminal-bar">
+        <span class="terminal-dot"></span>
+        <span class="terminal-dot"></span>
+        <span class="terminal-dot"></span>
+      </div>
+      <div class="terminal-body" id="demo"></div>
+    </div>
+  </section>
+
+  <section class="steps" id="how-it-works">
+    <h2 class="steps-title">How it works</h2>
+    <ol class="step-list">
+      <li class="step" style="--dot-color: var(--accent-amber);">
+        <p class="step-prompt">$ describe</p>
+        <p class="step-desc">Say what the code was supposed to do, in plain language.</p>
+      </li>
+      <li class="step" style="--dot-color: var(--accent-blue);">
+        <p class="step-prompt">$ paste</p>
+        <p class="step-desc">Drop in the function, component, or file that isn't behaving — any language.</p>
+      </li>
+      <li class="step" style="--dot-color: var(--accent-red);">
+        <p class="step-prompt">$ console</p>
+        <p class="step-desc">Add the error if there is one. No error at all works too.</p>
+      </li>
+      <li class="step" style="--dot-color: var(--accent-green);">
+        <p class="step-prompt">$ diagnose</p>
+        <p class="step-desc">Get the bug, why it happens, and a fix you can copy straight into your file.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="log">
+    <h2 class="log-title">What it's built for</h2>
+
+    <div class="log-entry">
+      <span class="log-dot" style="--dot-color: var(--accent-amber);"></span>
+      <div class="log-text">
+        <strong>Reads intent, not just syntax</strong>
+        <span>Most linters catch typos. DebugAI catches the gap between what you meant and what you wrote.</span>
+      </div>
+    </div>
+
+    <div class="log-entry">
+      <span class="log-dot" style="--dot-color: var(--accent-blue);"></span>
+      <div class="log-text">
+        <strong>Works without a stack trace</strong>
+        <span>Silent logic bugs — wrong scope, off-by-one, stale closures — get diagnosed from code and intent alone.</span>
+      </div>
+    </div>
+
+    <div class="log-entry">
+      <span class="log-dot" style="--dot-color: var(--accent-red);"></span>
+      <div class="log-text">
+        <strong>Any language, no setup</strong>
+        <span>Paste and go. No install, no linking a repo, no sandboxed execution of your code.</span>
+      </div>
+    </div>
+
+    <div class="log-entry">
+      <span class="log-dot" style="--dot-color: var(--accent-green);"></span>
+      <div class="log-text">
+        <strong>A fix you can copy, not a paragraph to decode</strong>
+        <span>Every diagnosis ends in working code, ready to paste back in.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="examples">
+    <h2 class="examples-title">Real diagnoses</h2>
+    <div class="example-grid">
+
+      <article class="result-card result-card--fix">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🔴</span>
+          <h3 class="result-title">variable scope issue — line 3</h3>
+        </div>
+        <p class="result-prose">
+          <code>var i</code> is function-scoped, so every click handler shares the same
+          <code>i</code> — by the time <code>setTimeout</code> fires, the loop has already finished.
+        </p>
+        <pre class="code-fix"><code
+          ><span class="code-line"><span class="line-num">1</span>for (let i = 0; i &lt; items.length; i++) {</span
+          ><span class="code-line"><span class="line-num">2</span>  items[i].addEventListener("click", ...);</span
+          ><span class="code-line"><span class="line-num">3</span>}</span
+        ></code></pre>
+      </article>
+
+      <article class="result-card result-card--fix">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🔴</span>
+          <h3 class="result-title">TypeError — line 3</h3>
+        </div>
+        <p class="result-prose">
+          <code>res.json()</code> returns a Promise. Without <code>await</code>, <code>user</code>
+          is the Promise itself, so <code>user.name</code> is undefined.
+        </p>
+        <pre class="code-fix"><code
+          ><span class="code-line"><span class="line-num">1</span>const res = await fetch(url);</span
+          ><span class="code-line"><span class="line-num">2</span>const user = await res.json();</span
+          ><span class="code-line"><span class="line-num">3</span>nameEl.textContent = user.name;</span
+        ></code></pre>
+      </article>
+
+    </div>
+  </section>
+
+  <main class="workspace" id="debug-tool">
     <form class="debug-form">
 
       <div class="panel panel--requirements">
@@ -133,7 +255,48 @@
   <footer class="site-footer">
     <p>DebugAI doesn't run your code. It reads it.</p>
   </footer>
-  
+
+  <script>
+    // One orchestrated moment: type out a realistic debug session on load.
+    const demo = document.getElementById("demo");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const demoLines = [
+      { cls: "prompt", text: "$ requirements: \"Log the clicked item's index.\"" },
+      { cls: "code", text: "for (var i = 0; i < items.length; i++) { ... }" },
+      { cls: "err", text: "> always logs the last index, never the clicked one" },
+      { cls: "out", text: "✓ bug: closure captures shared \"var i\" — use \"let\"" }
+    ];
+
+    function renderStaticDemo() {
+      demo.innerHTML = demoLines
+        .map(l => `<p class="terminal-line"><span class="${l.cls}">${l.text}</span></p>`)
+        .join("");
+    }
+
+    async function typeLine(el, text, speed) {
+      for (let i = 0; i <= text.length; i++) {
+        el.textContent = text.slice(0, i);
+        await new Promise(r => setTimeout(r, speed));
+      }
+    }
+
+    async function playDemo() {
+      for (const line of demoLines) {
+        const p = document.createElement("p");
+        p.className = "terminal-line";
+        const span = document.createElement("span");
+        span.className = line.cls;
+        p.appendChild(span);
+        demo.appendChild(p);
+        await typeLine(span, line.text, 18);
+        await new Promise(r => setTimeout(r, 250));
+      }
+    }
+
+    reduceMotion ? renderStaticDemo() : playDemo();
+  </script>
+
   <script src="script.js"></script>
 </body>
 </html>
