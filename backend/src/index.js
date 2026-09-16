@@ -89,7 +89,8 @@ export default {
 
       const aiResponse = await env.AI.run("@cf/meta/llama-3.3-70b-instruct-fp8-fast", {
         messages: [{ role: "user", content: prompt }],
-        response_format: { type: "json_schema", json_schema: resultSchema }
+        response_format: { type: "json_schema", json_schema: resultSchema },
+        max_tokens: 1024
       });
 
       let result;
