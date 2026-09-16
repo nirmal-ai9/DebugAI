@@ -37,7 +37,14 @@
   z-index: 2;
   max-width: 760px;
   margin: 0 auto;
-  padding: 0 var(--space-md) var(--space-xl);
+  padding: var(--space-lg) var(--space-md) var(--space-xl);
+  border-top: 1px solid var(--border);
+}
+.tool-title {
+  font-size: 1rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin: 0 0 var(--space-md);
 }
 
 /* Footer */
