@@ -12,9 +12,10 @@
 .result-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--card-accent, var(--border-strong));
+  border-left: 2px solid var(--card-accent, var(--border-strong));
   border-radius: var(--radius);
   padding: var(--space-md);
+  box-shadow: inset 6px 0 16px -12px var(--card-accent, transparent);
 }
 
 .result-card--bug {
@@ -22,7 +23,7 @@
 }
 
 .result-card--why {
-  --card-accent: var(--accent-blue);
+  --card-accent: var(--accent-cyan);
 }
 
 .result-card--fix {
@@ -37,31 +38,32 @@
 }
 
 .result-icon {
-  font-size: 1rem;
+  font-size: 0.95rem;
   line-height: 1;
 }
 
 .result-title {
   margin: 0;
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: var(--text);
+  letter-spacing: 0.01em;
 }
 
 .result-prose {
   margin: 0;
   color: var(--text-dim);
-  font-size: 0.9375rem;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  line-height: 1.7;
 }
 
 .result-prose code {
   font-family: var(--font-code);
   font-size: 0.875em;
-  color: var(--text);
+  color: var(--accent-cyan);
   background: var(--surface-raised);
   padding: 0.1em 0.35em;
-  border-radius: 4px;
+  border-radius: 2px;
 }
 
 /* Bug Details Section */
@@ -79,22 +81,23 @@
 }
 
 .bug-meta-item dt {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: var(--text-faint);
+  letter-spacing: 0.03em;
 }
 
 .bug-meta-item dd {
   margin: 0;
   font-family: var(--font-code);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   color: var(--text);
 }
 
 .bug-message {
   margin: 0;
   font-family: var(--font-code);
-  font-size: 0.9375rem;
-  color: #f0b3ad;
+  font-size: 0.9rem;
+  color: #ffb3ac;
   background: var(--accent-red-soft);
   border-radius: var(--radius-sm);
   padding: var(--space-sm);
@@ -114,7 +117,7 @@
 .code-fix code {
   display: block;
   font-family: var(--font-code);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   line-height: 1.7;
 }
 
@@ -132,19 +135,20 @@
 }
 
 .apply-fix-button {
-  border: none;
+  border: 1px solid var(--accent-green);
   border-radius: var(--radius-sm);
-  background: var(--accent-green);
-  color: #0e1f14;
+  background: var(--accent-green-soft);
+  color: var(--accent-green);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
-  transition: transform var(--transition), background var(--transition);
+  transition: box-shadow var(--transition), background var(--transition), transform var(--transition);
 }
 
 .apply-fix-button:hover {
-  background: #82cc9c;
+  background: rgba(57, 255, 138, 0.18);
+  box-shadow: var(--glow-green);
 }
 
 .apply-fix-button:active {
