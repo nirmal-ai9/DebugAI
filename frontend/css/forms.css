@@ -9,11 +9,17 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: var(--space-md);
-  transition: border-color var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.panel::before,
+.panel::after {
+  border-color: var(--dot-color, var(--border-strong));
 }
 
 .panel:focus-within {
   border-color: var(--border-strong);
+  box-shadow: 0 0 0 1px var(--border-strong);
 }
 
 .panel-head {
@@ -26,20 +32,21 @@
 .panel-dot {
   width: 7px;
   height: 7px;
-  border-radius: 50%;
   background: var(--dot-color, var(--text-faint));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--dot-color, var(--text-faint)) 55%, transparent);
   flex-shrink: 0;
 }
 
 .panel-label {
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   color: var(--text);
+  letter-spacing: 0.01em;
 }
 
 .panel-hint {
   margin-left: auto;
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--text-faint);
   font-family: var(--font-code);
 }
@@ -65,36 +72,36 @@
 
 .field:focus {
   outline: none;
-  border-color: var(--accent-amber);
-  box-shadow: 0 0 0 3px var(--accent-amber-soft);
+  border-color: var(--accent-green);
+  box-shadow: var(--glow-green-sm);
 }
 
 .field--prose {
   font-family: var(--font-ui);
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
   min-height: 6rem;
 }
 
 .field--code {
   font-family: var(--font-code);
-  font-size: 0.875rem;
+  font-size: 0.85rem;
   min-height: 10rem;
   tab-size: 2;
 }
 
 .field--error {
   min-height: 5rem;
-  color: #f0b3ad;
+  color: #ffb3ac;
   background: var(--accent-red-soft);
 }
 
 .field--error:focus {
   border-color: var(--accent-red);
-  box-shadow: 0 0 0 3px rgba(229, 100, 90, 0.12);
+  box-shadow: var(--glow-red);
 }
 
 .field--error::placeholder {
-  color: rgba(240, 179, 173, 0.45);
+  color: rgba(255, 179, 172, 0.45);
 }
 
 .panel--code .field--code {
@@ -114,25 +121,26 @@
 .submit-note {
   margin: 0;
   color: var(--text-faint);
-  font-size: 0.8125rem;
-  max-width: 32ch;
+  font-size: 0.8rem;
+  max-width: 34ch;
 }
 
 .submit-button {
   flex-shrink: 0;
-  border: none;
+  border: 1px solid var(--accent-green);
   border-radius: var(--radius-sm);
-  background: var(--accent-amber);
-  color: #1a1305;
+  background: var(--accent-green-soft);
+  color: var(--accent-green);
   font-weight: 600;
-  font-size: 0.9375rem;
+  font-size: 0.9rem;
   padding: 0.75rem 1.5rem;
   cursor: pointer;
-  transition: transform var(--transition), background var(--transition);
+  transition: box-shadow var(--transition), background var(--transition), transform var(--transition);
 }
 
 .submit-button:hover {
-  background: #edb254;
+  background: rgba(57, 255, 138, 0.18);
+  box-shadow: var(--glow-green);
 }
 
 .submit-button:active {
@@ -140,7 +148,7 @@
 }
 
 .submit-button:focus-visible {
-  outline: 2px solid var(--accent-amber);
+  outline: 2px solid var(--accent-green);
   outline-offset: 3px;
 }
 
