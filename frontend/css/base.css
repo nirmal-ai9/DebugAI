@@ -9,14 +9,32 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
+  background:
+    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(57, 255, 138, 0.06), transparent 60%),
+    var(--bg);
   color: var(--text);
   font-family: var(--font-ui);
-  font-size: 16px;
-  line-height: 1.5;
+  font-size: 15.5px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Faint circuit grid — the lab's benchtop */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(58, 255, 138, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(58, 255, 138, 0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
 }
 
 textarea {
@@ -40,20 +58,69 @@ button {
   border: 0;
 }
 
-/* Ambient effects */
+/* Ambient CRT effects */
 
 .scanline {
   position: fixed;
   inset: 0;
   pointer-events: none;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0px,
+    rgba(0, 0, 0, 0.12) 1px,
+    rgba(0, 0, 0, 0) 2px
+  );
+  mix-blend-mode: overlay;
+}
+
+.scanline::after {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: linear-gradient(
     180deg,
     transparent 0%,
-    rgba(227, 165, 61, 0.025) 50%,
+    rgba(57, 255, 138, 0.035) 50%,
     transparent 100%
   );
-  background-size: 100% 6px;
-  z-index: 1;
+  background-size: 100% 220px;
+  animation: sweep 9s linear infinite;
+}
+
+@keyframes sweep {
+  0% { background-position: 0 -220px; }
+  100% { background-position: 0 100vh; }
+}
+
+/* Corner-bracket frame — reusable lab-instrument chrome */
+.bracket {
+  position: relative;
+}
+
+.bracket::before,
+.bracket::after,
+.bracket .bracket-tr,
+.bracket .bracket-bl {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--border-strong);
+  border-style: solid;
+  opacity: 0.85;
+}
+
+.bracket::before {
+  top: -1px;
+  left: -1px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.bracket::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 1.5px 1.5px 0;
 }
 
 /* Loading indicator */
@@ -82,5 +149,8 @@ button {
   * {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
+  }
+  .scanline::after {
+    animation: none;
   }
 }
