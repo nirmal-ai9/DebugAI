@@ -8,7 +8,7 @@
   <meta name="description" content="Paste what your code was supposed to do, the code itself, and the console error. DebugAI reads the mismatch between them and hands back the fix." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/base.css" />
   <link rel="stylesheet" href="css/landing.css" />
   <link rel="stylesheet" href="css/tokens.css" />
@@ -25,11 +25,13 @@
       <span class="wordmark-glyph">&gt;_</span>
       <span class="wordmark-text">DebugAI</span>
     </div>
+    <span class="nav-status"><span class="nav-status-dot" aria-hidden="true"></span>system online</span>
     <a class="nav-cta" href="#debug-tool">Try it</a>
   </nav>
 
   <section class="hero">
     <div>
+      <p class="hero-eyebrow">diagnostic terminal · v1.0</p>
       <h1 class="hero-heading">Paste what broke. Get the fix, not a lecture.</h1>
       <p class="hero-sub">
         DebugAI doesn't run your code — it reads it. Give it what the code was supposed to do,
@@ -41,11 +43,12 @@
       </div>
     </div>
 
-    <div class="terminal" aria-hidden="true">
+    <div class="terminal bracket" aria-hidden="true">
       <div class="terminal-bar">
         <span class="terminal-dot"></span>
         <span class="terminal-dot"></span>
         <span class="terminal-dot"></span>
+        <span class="terminal-bar-label">session.log</span>
       </div>
       <div class="terminal-body" id="demo"></div>
     </div>
@@ -58,7 +61,7 @@
         <p class="step-prompt">$ describe</p>
         <p class="step-desc">Say what the code was supposed to do, in plain language.</p>
       </li>
-      <li class="step" style="--dot-color: var(--accent-blue);">
+      <li class="step" style="--dot-color: var(--accent-cyan);">
         <p class="step-prompt">$ paste</p>
         <p class="step-desc">Drop in the function, component, or file that isn't behaving — any language.</p>
       </li>
@@ -85,7 +88,7 @@
     </div>
 
     <div class="log-entry">
-      <span class="log-dot" style="--dot-color: var(--accent-blue);"></span>
+      <span class="log-dot" style="--dot-color: var(--accent-cyan);"></span>
       <div class="log-text">
         <strong>Works without a stack trace</strong>
         <span>Silent logic bugs — wrong scope, off-by-one, stale closures — get diagnosed from code and intent alone.</span>
@@ -113,7 +116,7 @@
     <h2 class="examples-title">Real diagnoses</h2>
     <div class="example-grid">
 
-      <article class="result-card result-card--fix">
+      <article class="result-card result-card--fix bracket">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔴</span>
           <h3 class="result-title">variable scope issue — line 3</h3>
@@ -129,7 +132,7 @@
         ></code></pre>
       </article>
 
-      <article class="result-card result-card--fix">
+      <article class="result-card result-card--fix bracket">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔴</span>
           <h3 class="result-title">TypeError — line 3</h3>
@@ -150,8 +153,8 @@
 
   <main class="workspace" id="debug-tool">
     <form class="debug-form">
-      <h3>Try it yourself</h3>
-      <div class="panel panel--requirements">
+      <h3 class="tool-title">try it yourself</h3>
+      <div class="panel panel--requirements bracket" style="--dot-color: var(--accent-amber);">
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-amber);"></span>
           <label for="requirements" class="panel-label">What was this supposed to do?</label>
@@ -165,9 +168,9 @@
         ></textarea>
       </div>
 
-      <div class="panel panel--code">
+      <div class="panel panel--code bracket" style="--dot-color: var(--accent-cyan);">
         <div class="panel-head">
-          <span class="panel-dot" style="--dot-color: var(--accent-blue);"></span>
+          <span class="panel-dot" style="--dot-color: var(--accent-cyan);"></span>
           <label for="code" class="panel-label">The code in question</label>
           <span class="panel-hint">any language</span>
         </div>
@@ -181,7 +184,7 @@
         ></textarea>
       </div>
 
-      <div class="panel panel--error">
+      <div class="panel panel--error bracket" style="--dot-color: var(--accent-red);">
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-red);"></span>
           <label for="err" class="panel-label">What the console shows</label>
@@ -209,7 +212,7 @@
     <section class="results" id="results" hidden aria-labelledby="results-heading">
       <h2 id="results-heading" class="visually-hidden">Diagnosis</h2>
 
-      <article class="result-card result-card--bug">
+      <article class="result-card result-card--bug bracket">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔴</span>
           <h3 class="result-title">Bug found</h3>
@@ -227,7 +230,7 @@
         <p class="bug-message">saveData is not defined</p>
       </article>
 
-      <article class="result-card result-card--why">
+      <article class="result-card result-card--why bracket">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🧠</span>
           <h3 class="result-title">Why</h3>
@@ -238,7 +241,7 @@
         </p>
       </article>
 
-      <article class="result-card result-card--fix">
+      <article class="result-card result-card--fix bracket">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔧</span>
           <h3 class="result-title">The fix</h3>
