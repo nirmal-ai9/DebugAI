@@ -2,7 +2,7 @@
 
 **Paste what broke. Get the fix, not a lecture.**
 
-DebugAI takes three things — what your code was *supposed* to do, the code itself, and the console error — and finds the mismatch between them. It doesn't run your code; it reads it, the way a senior engineer would when you paste a bug into Slack.
+DebugAI takes three things — what your code was *supposed* to do, the code itself, and the console error — and finds the mismatch between them. It doesn't run your code; it reads it, the way a senior engineer would when you paste a bug into slack.
 
 ## How it works
 
