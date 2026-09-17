@@ -47,20 +47,14 @@ On failure, `success` is `false` and a human-readable `message` explains what we
 
 ```
 DebugAI/
-├── frontend/
-│   ├── index.html
-│   ├── script.js
-│   └── css/
-│       ├── base.css
-│       ├── forms.css
-│       ├── layout.css
-│       └── result.css
-├── backend/
-│   ├── src/
-│   │   └── index.js       # Worker: validates input, calls Workers AI, returns structured JSON
+├── .github/workflows/deploy.yml  # CI/CD deployment
+├── backend/                       # Cloudflare Workers API
+│   ├── src/index.js
+│   ├── package.json
 │   └── wrangler.jsonc
-└── .github/workflows/
-    └── deploy.yml          # Auto-deploys frontend to GitHub Pages on push
+└── frontend/                      # Modular UI
+    ├── css/                       # Component styles & tokens
+    └── index.html
 ```
 
 ## Running locally
