@@ -1,24 +1,32 @@
 :root {
-  /* Color */
-  --bg: #0e1013;
-  --surface: #15181d;
-  --surface-raised: #1a1e25;
-  --border: #262b34;
-  --border-strong: #343b47;
-  --text: #e7e9ee;
-  --text-dim: #8b92a3;
-  --text-faint: #565d6b;
-  --accent-amber: #e3a53d;
-  --accent-blue: #5b9df0;
-  --accent-red: #e5645a;
-  --accent-green: #6fbf8b;
-  --accent-amber-soft: rgba(227, 165, 61, 0.1);
-  --accent-red-soft: rgba(229, 100, 90, 0.08);
-  --accent-green-soft: rgba(111, 191, 139, 0.1);
+  /* Color — phosphor CRT palette */
+  --bg: #050a07;
+  --surface: #0a120e;
+  --surface-raised: #0f1b15;
+  --border: rgba(58, 255, 138, 0.14);
+  --border-strong: rgba(58, 255, 138, 0.34);
+  --text: #d6ffe4;
+  --text-dim: #7fa896;
+  --text-faint: #47635a;
 
-  /* Type */
-  --font-ui: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --accent-amber: #ffb020;
+  --accent-cyan: #4be0d1;
+  --accent-red: #ff5252;
+  --accent-green: #39ff8a;
+
+  --accent-amber-soft: rgba(255, 176, 32, 0.1);
+  --accent-cyan-soft: rgba(75, 224, 209, 0.1);
+  --accent-red-soft: rgba(255, 82, 82, 0.1);
+  --accent-green-soft: rgba(57, 255, 138, 0.1);
+
+  /* Glow */
+  --glow-green: 0 0 18px rgba(57, 255, 138, 0.25);
+  --glow-green-sm: 0 0 8px rgba(57, 255, 138, 0.35);
+  --glow-red: 0 0 14px rgba(255, 82, 82, 0.25);
+
+  /* Type — one monospace family throughout, hierarchy by weight/tracking */
   --font-code: "JetBrains Mono", "SF Mono", Consolas, monospace;
+  --font-ui: var(--font-code);
 
   /* Spacing */
   --space-xs: 0.5rem;
@@ -28,8 +36,8 @@
   --space-xl: 4rem;
 
   /* Shape & motion */
-  --radius: 10px;
-  --radius-sm: 6px;
+  --radius: 3px;
+  --radius-sm: 2px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --transition: 0.18s var(--ease);
 }
