@@ -49,7 +49,7 @@
 // 2. CONTROLLABLE MATRIX RAIN ANIMATION
 // ==========================================
 (function matrixRain() {
-  const canvas = document.getElementById("matrix-rain") || document.getElementById("rain-canvas");
+  const canvas = document.getElementById("matrix-rain");
   const toggleBtn = document.getElementById("stop-rain-btn") || document.querySelector(".hero #stop-rain-btn");
 
   if (!canvas) return;
