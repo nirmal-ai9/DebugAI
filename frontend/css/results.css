@@ -16,6 +16,18 @@
   border-radius: var(--radius);
   padding: var(--space-md);
   box-shadow: inset 6px 0 16px -12px var(--card-accent, transparent);
+  animation: card-accent-pulse 3.6s ease-in-out infinite;
+}
+
+@keyframes card-accent-pulse {
+  0%, 100% { box-shadow: inset 6px 0 16px -12px var(--card-accent, transparent); }
+  50% { box-shadow: inset 6px 0 22px -10px var(--card-accent, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-card {
+    animation: none;
+  }
 }
 
 .result-card--bug {
@@ -135,6 +147,7 @@
 }
 
 .apply-fix-button {
+  position: relative;
   border: 1px solid var(--accent-green);
   border-radius: var(--radius-sm);
   background: var(--accent-green-soft);
@@ -142,8 +155,25 @@
   font-weight: 600;
   font-size: 0.9rem;
   padding: 0.75rem 1.5rem;
+  overflow: hidden;
   cursor: pointer;
   transition: box-shadow var(--transition), background var(--transition), transform var(--transition);
+}
+
+.apply-fix-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease);
+}
+
+.apply-fix-button:hover::before {
+  left: 130%;
 }
 
 .apply-fix-button:hover {
