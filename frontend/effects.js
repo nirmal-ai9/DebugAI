@@ -1,102 +1,183 @@
+/**
+ * effects.js
+ * Seamlessly hooks into existing hero section buttons for Theme Toggle 
+ * and Rain Animation control.
+ */
 
-(function matrixRain() {
-  const canvas = document.getElementById("matrix-rain");
-  if (!canvas) return;
+(function () {
+  'use strict';
 
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduceMotion) {
-    canvas.remove();
-    return;
+  // =========================================================================
+  // 1. THEME SWITCHER
+  // =========================================================================
+
+  const THEME_KEY = 'theme';
+
+  function getPreferredTheme() {
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme) return savedTheme;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
-  const ctx = canvas.getContext("2d");
-  const glyphs = "01アイウエオカキクケコサシスセソDEBUG{}<>/;=+-*ABCDEF0123456789";
-  const fontSize = 15;
-  let columns = 0;
-  let drops = [];
+  function applyTheme(theme, themeBtn) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(THEME_KEY, theme);
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    columns = Math.floor(canvas.width / fontSize);
-    drops = new Array(columns).fill(0).map(() => Math.floor(Math.random() * -40));
-  }
-
-  function draw() {
-    // Trail fade — low alpha over the previous frame, not a full clear.
-    ctx.fillStyle = "rgba(5, 10, 7, 0.16)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.font = `${fontSize}px "JetBrains Mono", monospace`;
-
-    for (let i = 0; i < columns; i++) {
-      const glyph = glyphs[Math.floor(Math.random() * glyphs.length)];
-      const x = i * fontSize;
-      const y = drops[i] * fontSize;
-
-      // Leading character glows brighter than the trailing tail.
-      ctx.fillStyle = "rgba(57, 255, 138, 0.85)";
-      ctx.fillText(glyph, x, y);
-
-      if (y > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-      drops[i]++;
+    if (themeBtn) {
+      const isDark = theme === 'dark';
+      // Updates button text while preserving existing styling/classes
+      themeBtn.textContent = isDark ? '☀️ Light Mode' : '🌙 Dark Mode';
+      themeBtn.setAttribute('aria-label', `Switch to ${isDark ? 'light' : 'dark'} mode`);
     }
   }
 
-  let raf;
-  let lastFrame = 0;
-  const frameInterval = 1000 / 20; // 20fps is plenty for a background flourish
+  function initTheme() {
+    // Targets existing button in hero section (update selector if using classes)
+    const themeBtn = document.querySelector('.hero #theme-toggle, #theme-toggle');
+    applyTheme(getPreferredTheme(), themeBtn);
 
-  function loop(timestamp) {
-    raf = requestAnimationFrame(loop);
-    if (timestamp - lastFrame < frameInterval) return;
-    lastFrame = timestamp;
-    draw();
-  }
-
-  let resizeTimer;
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(resize, 150);
-  });
-
-  // Pause the animation loop when the tab is hidden to save cycles.
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      cancelAnimationFrame(raf);
-    } else {
-      raf = requestAnimationFrame(loop);
-    }
-  });
-
-  resize();
-  raf = requestAnimationFrame(loop);
-})();
-
-(function scrollReveal() {
-  const targets = document.querySelectorAll(".reveal");
-  if (!targets.length) return;
-
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduceMotion) {
-    targets.forEach(el => el.classList.add("is-visible"));
-    return;
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-          // Small stagger within whatever batch crosses the viewport together.
-          setTimeout(() => entry.target.classList.add("is-visible"), i * 70);
-          observer.unobserve(entry.target);
-        }
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        applyTheme(nextTheme, themeBtn);
       });
-    },
-    { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
-  );
+    }
 
-  targets.forEach(el => observer.observe(el));
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem(THEME_KEY)) {
+        applyTheme(e.matches ? 'dark' : 'light', themeBtn);
+      }
+    });
+  }
+
+  // =========================================================================
+  // 2. RAIN ANIMATION CONTROLLER
+  // =========================================================================
+
+  class RainController {
+    constructor(canvasSelector, buttonSelector) {
+      this.canvas = document.querySelector(canvasSelector);
+      this.toggleBtn = document.querySelector(buttonSelector);
+      this.ctx = this.canvas ? this.canvas.getContext('2d') : null;
+
+      this.drops = [];
+      this.maxDrops = 140;
+      this.animationFrameId = null;
+      this.isRunning = false;
+
+      if (this.canvas && this.ctx) {
+        this.init();
+      }
+    }
+
+    init() {
+      this.resizeCanvas();
+      window.addEventListener('resize', () => this.resizeCanvas());
+
+      if (this.toggleBtn) {
+        this.toggleBtn.addEventListener('click', () => this.toggle());
+      }
+
+      this.start();
+    }
+
+    resizeCanvas() {
+      if (!this.canvas) return;
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+      this.populateDrops();
+    }
+
+    populateDrops() {
+      this.drops = [];
+      for (let i = 0; i < this.maxDrops; i++) {
+        this.drops.push({
+          x: Math.random() * this.canvas.width,
+          y: Math.random() * this.canvas.height,
+          length: Math.random() * 20 + 10,
+          speed: Math.random() * 12 + 6,
+          opacity: Math.random() * 0.4 + 0.2
+        });
+      }
+    }
+
+    render() {
+      if (!this.ctx || !this.isRunning) return;
+
+      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+      const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+      const rgbColor = isDarkMode ? '140, 200, 255' : '0, 102, 204';
+
+      for (let i = 0; i < this.drops.length; i++) {
+        const drop = this.drops[i];
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(drop.x, drop.y);
+        this.ctx.lineTo(drop.x, drop.y + drop.length);
+        this.ctx.strokeStyle = `rgba(${rgbColor}, ${drop.opacity})`;
+        this.ctx.lineWidth = 1.5;
+        this.ctx.lineCap = 'round';
+        this.ctx.stroke();
+
+        drop.y += drop.speed;
+
+        if (drop.y > this.canvas.height) {
+          drop.y = -drop.length;
+          drop.x = Math.random() * this.canvas.width;
+        }
+      }
+
+      this.animationFrameId = requestAnimationFrame(() => this.render());
+    }
+
+    start() {
+      if (this.isRunning) return;
+      this.isRunning = true;
+
+      if (this.toggleBtn) {
+        this.toggleBtn.textContent = '⏹️ Stop Rain';
+        this.toggleBtn.setAttribute('aria-pressed', 'false');
+      }
+
+      this.render();
+    }
+
+    stop() {
+      this.isRunning = false;
+
+      if (this.animationFrameId) {
+        cancelAnimationFrame(this.animationFrameId);
+        this.animationFrameId = null;
+      }
+
+      if (this.ctx && this.canvas) {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+      }
+
+      if (this.toggleBtn) {
+        this.toggleBtn.textContent = '🌧️ Start Rain';
+        this.toggleBtn.setAttribute('aria-pressed', 'true');
+      }
+    }
+
+    toggle() {
+      if (this.isRunning) {
+        this.stop();
+      } else {
+        this.start();
+      }
+    }
+  }
+
+  // =========================================================================
+  // 3. INITIALIZATION
+  // =========================================================================
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
+    // Connects to your existing canvas and hero rain toggle button
+    new RainController('#rain-canvas', '.hero #stop-rain-btn, #stop-rain-btn');
+  });
 })();
