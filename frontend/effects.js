@@ -1,12 +1,5 @@
-/**
- * effects.js
- * Complete script containing Matrix Rain animation with stop/start control,
- * theme switching with localStorage persistence, and scroll reveal observation.
- */
-
-// ==========================================
 // 1. DARK / LIGHT THEME SWITCHER
-// ==========================================
+
 (function initTheme() {
   const THEME_KEY = "theme";
   const themeBtn = document.getElementById("theme-toggle-btn");
@@ -44,10 +37,8 @@
   });
 })();
 
-
-// ==========================================
 // 2. CONTROLLABLE MATRIX RAIN ANIMATION
-// ==========================================
+
 (function matrixRain() {
   const canvas = document.getElementById("matrix-rain");
   const toggleBtn = document.getElementById("rain-toggle-btn");
@@ -162,10 +153,8 @@
   raf = requestAnimationFrame(loop);
 })();
 
-
-// ==========================================
 // 3. SCROLL REVEAL OBSERVER
-// ==========================================
+
 (function scrollReveal() {
   const targets = document.querySelectorAll(".reveal");
   if (!targets.length) return;
