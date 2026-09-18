@@ -1,5 +1,23 @@
-:root {
-  /* Color — phosphor CRT palette */
+:root,
+[data-theme="dark"] {
+  /* Type — one monospace family throughout, hierarchy by weight/tracking */
+  --font-code: "JetBrains Mono", "SF Mono", Consolas, monospace;
+  --font-ui: var(--font-code);
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 0.875rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+
+  /* Shape & motion */
+  --radius: 3px;
+  --radius-sm: 2px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: 0.18s var(--ease);
+
+  /* Dark Mode — Phosphor CRT palette */
   --bg: #050a07;
   --surface: #0a120e;
   --surface-raised: #0f1b15;
@@ -19,25 +37,35 @@
   --accent-red-soft: rgba(255, 82, 82, 0.1);
   --accent-green-soft: rgba(57, 255, 138, 0.1);
 
-  /* Glow */
+  /* Glows */
   --glow-green: 0 0 18px rgba(57, 255, 138, 0.25);
   --glow-green-sm: 0 0 8px rgba(57, 255, 138, 0.35);
   --glow-red: 0 0 14px rgba(255, 82, 82, 0.25);
+}
 
-  /* Type — one monospace family throughout, hierarchy by weight/tracking */
-  --font-code: "JetBrains Mono", "SF Mono", Consolas, monospace;
-  --font-ui: var(--font-code);
+/* Light Mode Override — High-Contrast Matrix Paper Theme */
+[data-theme="light"] {
+  --bg: #f2f7f4;
+  --surface: #e1ebd3;
+  --surface-raised: #d4e3db;
+  --border: rgba(16, 124, 65, 0.22);
+  --border-strong: rgba(16, 124, 65, 0.45);
+  --text: #092615;
+  --text-dim: #274d36;
+  --text-faint: #517560;
 
-  /* Spacing */
-  --space-xs: 0.5rem;
-  --space-sm: 0.875rem;
-  --space-md: 1.5rem;
-  --space-lg: 2.5rem;
-  --space-xl: 4rem;
+  --accent-amber: #d97706;
+  --accent-cyan: #0891b2;
+  --accent-red: #dc2626;
+  --accent-green: #107c41;
 
-  /* Shape & motion */
-  --radius: 3px;
-  --radius-sm: 2px;
-  --ease: cubic-bezier(0.4, 0, 0.2, 1);
-  --transition: 0.18s var(--ease);
+  --accent-amber-soft: rgba(217, 119, 6, 0.12);
+  --accent-cyan-soft: rgba(8, 145, 178, 0.12);
+  --accent-red-soft: rgba(220, 38, 38, 0.12);
+  --accent-green-soft: rgba(16, 124, 65, 0.12);
+
+  /* Glows tuned for high contrast on light background */
+  --glow-green: 0 0 12px rgba(16, 124, 65, 0.2);
+  --glow-green-sm: 0 0 6px rgba(16, 124, 65, 0.25);
+  --glow-red: 0 0 10px rgba(220, 38, 38, 0.2);
 }
