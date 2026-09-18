@@ -50,7 +50,7 @@
 // ==========================================
 (function matrixRain() {
   const canvas = document.getElementById("matrix-rain");
-  const toggleBtn = document.getElementById("stop-rain-btn") || document.querySelector(".hero #stop-rain-btn");
+  const toggleBtn = document.getElementById("rain-toggle-btn");
 
   if (!canvas) return;
 
