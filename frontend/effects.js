@@ -9,7 +9,7 @@
 // ==========================================
 (function initTheme() {
   const THEME_KEY = "theme";
-  const themeBtn = document.getElementById("theme-toggle") || document.querySelector(".hero #theme-toggle");
+  const themeBtn = document.getElementById("theme-toggle-btn");
 
   function getInitialTheme() {
     const saved = localStorage.getItem(THEME_KEY);
