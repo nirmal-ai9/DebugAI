@@ -103,6 +103,7 @@ function showResult(data) {
 
   // Show results
   results.hidden = false;
+  results.querySelectorAll(".reveal").forEach(el => el.classList.add("is-visible"));
 
   // Scroll smoothly to results
   results.scrollIntoView({
