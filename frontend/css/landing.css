@@ -142,17 +142,30 @@
   flex-wrap: wrap;
 }
 
-.hero-primary {
-  position: relative;
+/* Base resets to match button and anchor tag rendering */
+.hero-primary,
+.hero-secondary {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 0.8rem 1.4rem;
   border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: box-shadow var(--transition), background var(--transition), border-color var(--transition);
+}
+
+/* Primary Action */
+.hero-primary {
+  position: relative;
   border: 1px solid var(--accent-green);
   background: var(--accent-green-soft);
   color: var(--accent-green);
-  font-weight: 600;
-  text-decoration: none;
   overflow: hidden;
-  transition: box-shadow var(--transition), background var(--transition);
 }
 
 .hero-primary::before {
@@ -176,18 +189,18 @@
   box-shadow: var(--glow-green);
 }
 
+/* Secondary Action */
 .hero-secondary {
-  color: var(--text-dim);
-  font-size: 0.875rem;
-  text-decoration: none;
-  border-bottom: 1px solid var(--border-strong);
-  padding-bottom: 1px;
+  border: 1px solid var(--border-color, #333);
+  background: var(--bg-secondary, transparent);
+  color: var(--text-main, inherit);
 }
 
 .hero-secondary:hover {
-  color: var(--text);
-  border-color: var(--accent-green);
+  background: var(--bg-hover, rgba(255, 255, 255, 0.05));
 }
+
+
 
 /* Terminal Demo — the lab's central instrument */
 
