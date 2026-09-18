@@ -18,6 +18,7 @@
 </head>
 <body>
 
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <div class="scanline" aria-hidden="true"></div>
 
   <nav class="nav">
@@ -32,7 +33,7 @@
   <section class="hero">
     <div>
       <p class="hero-eyebrow">diagnostic terminal · v1.0</p>
-      <h1 class="hero-heading">Paste what broke. Get the fix, not a lecture.</h1>
+      <h1 class="hero-heading glitch" data-text="Paste what broke. Get the fix, not a lecture.">Paste what broke. Get the fix, not a lecture.</h1>
       <p class="hero-sub">
         DebugAI doesn't run your code — it reads it. Give it what the code was supposed to do,
         the code itself, and what the console shows. It finds the mismatch between the three.
@@ -57,19 +58,19 @@
   <section class="steps" id="how-it-works">
     <h2 class="steps-title">How it works</h2>
     <ol class="step-list">
-      <li class="step" style="--dot-color: var(--accent-amber);">
+      <li class="step reveal" style="--dot-color: var(--accent-amber);">
         <p class="step-prompt">$ describe</p>
         <p class="step-desc">Say what the code was supposed to do, in plain language.</p>
       </li>
-      <li class="step" style="--dot-color: var(--accent-cyan);">
+      <li class="step reveal" style="--dot-color: var(--accent-cyan);">
         <p class="step-prompt">$ paste</p>
         <p class="step-desc">Drop in the function, component, or file that isn't behaving — any language.</p>
       </li>
-      <li class="step" style="--dot-color: var(--accent-red);">
+      <li class="step reveal" style="--dot-color: var(--accent-red);">
         <p class="step-prompt">$ console</p>
         <p class="step-desc">Add the error if there is one. No error at all works too.</p>
       </li>
-      <li class="step" style="--dot-color: var(--accent-green);">
+      <li class="step reveal" style="--dot-color: var(--accent-green);">
         <p class="step-prompt">$ diagnose</p>
         <p class="step-desc">Get the bug, why it happens, and a fix you can copy straight into your file.</p>
       </li>
@@ -79,7 +80,7 @@
   <section class="log">
     <h2 class="log-title">What it's built for</h2>
 
-    <div class="log-entry">
+    <div class="log-entry reveal">
       <span class="log-dot" style="--dot-color: var(--accent-amber);"></span>
       <div class="log-text">
         <strong>Reads intent, not just syntax</strong>
@@ -87,7 +88,7 @@
       </div>
     </div>
 
-    <div class="log-entry">
+    <div class="log-entry reveal">
       <span class="log-dot" style="--dot-color: var(--accent-cyan);"></span>
       <div class="log-text">
         <strong>Works without a stack trace</strong>
@@ -95,7 +96,7 @@
       </div>
     </div>
 
-    <div class="log-entry">
+    <div class="log-entry reveal">
       <span class="log-dot" style="--dot-color: var(--accent-red);"></span>
       <div class="log-text">
         <strong>Any language, no setup</strong>
@@ -103,7 +104,7 @@
       </div>
     </div>
 
-    <div class="log-entry">
+    <div class="log-entry reveal">
       <span class="log-dot" style="--dot-color: var(--accent-green);"></span>
       <div class="log-text">
         <strong>A fix you can copy, not a paragraph to decode</strong>
@@ -116,7 +117,7 @@
     <h2 class="examples-title">Real diagnoses</h2>
     <div class="example-grid">
 
-      <article class="result-card result-card--fix bracket">
+      <article class="result-card result-card--fix bracket reveal">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔴</span>
           <h3 class="result-title">variable scope issue — line 3</h3>
@@ -132,7 +133,7 @@
         ></code></pre>
       </article>
 
-      <article class="result-card result-card--fix bracket">
+      <article class="result-card result-card--fix bracket reveal">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔴</span>
           <h3 class="result-title">TypeError — line 3</h3>
@@ -154,7 +155,8 @@
   <main class="workspace" id="debug-tool">
     <form class="debug-form">
       <h3 class="tool-title">try it yourself</h3>
-      <div class="panel panel--requirements bracket" style="--dot-color: var(--accent-amber);">
+      <div class="panel panel--requirements bracket reveal" style="--dot-color: var(--accent-amber);">
+        <span class="panel-scan" aria-hidden="true"></span>
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-amber);"></span>
           <label for="requirements" class="panel-label">What was this supposed to do?</label>
@@ -168,7 +170,8 @@
         ></textarea>
       </div>
 
-      <div class="panel panel--code bracket" style="--dot-color: var(--accent-cyan);">
+      <div class="panel panel--code bracket reveal" style="--dot-color: var(--accent-cyan);">
+        <span class="panel-scan" aria-hidden="true"></span>
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-cyan);"></span>
           <label for="code" class="panel-label">The code in question</label>
@@ -184,7 +187,8 @@
         ></textarea>
       </div>
 
-      <div class="panel panel--error bracket" style="--dot-color: var(--accent-red);">
+      <div class="panel panel--error bracket reveal" style="--dot-color: var(--accent-red);">
+        <span class="panel-scan" aria-hidden="true"></span>
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-red);"></span>
           <label for="err" class="panel-label">What the console shows</label>
@@ -212,7 +216,7 @@
     <section class="results" id="results" hidden aria-labelledby="results-heading">
       <h2 id="results-heading" class="visually-hidden">Diagnosis</h2>
 
-      <article class="result-card result-card--bug bracket">
+      <article class="result-card result-card--bug bracket reveal">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔴</span>
           <h3 class="result-title">Bug found</h3>
@@ -230,7 +234,7 @@
         <p class="bug-message">saveData is not defined</p>
       </article>
 
-      <article class="result-card result-card--why bracket">
+      <article class="result-card result-card--why bracket reveal">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🧠</span>
           <h3 class="result-title">Why</h3>
@@ -241,7 +245,7 @@
         </p>
       </article>
 
-      <article class="result-card result-card--fix bracket">
+      <article class="result-card result-card--fix bracket reveal">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔧</span>
           <h3 class="result-title">The fix</h3>
@@ -260,6 +264,8 @@
   <footer class="site-footer">
     <p>DebugAI doesn't run your code. It reads it.</p>
   </footer>
+
+  <script src="effects.js"></script>
 
   <script>
     // One orchestrated moment: type out a realistic debug session on load.
