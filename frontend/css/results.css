@@ -10,18 +10,39 @@
 }
 
 .result-card {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
   border: 1px solid var(--border);
   border-left: 2px solid var(--accent-cyan, var(--border-strong));
   border-radius: var(--radius);
   padding: var(--space-md);
-  box-shadow: inset 6px 0 16px -12px var(--accent-cyan, transparent);
-  animation: result-card-pulse 3.6s ease-in-out infinite;
+  animation: result-card-pulse 2.8s ease-in-out infinite;
+}
+
+.result-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  top: -2px;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan), 0 0 20px var(--accent-cyan);
+  animation: result-scan 2.2s linear infinite;
+}
+
+@keyframes result-scan {
+  0% { top: -2px; opacity: 0;}
+  10% { opacity: 1;}
+  50% { opacity: 1;}
+  90% { opacity: 1;}
+  100% { top: 100%; opacity: 0;}
 }
 
 @keyframes result-card-pulse {
-  0%, 100% { box-shadow: inset 6px 0 16px -12px var(--accent-cyan, transparent); }
-  50% { box-shadow: inset 6px 0 22px -10px var(--accent-cyan, transparent); }
+  0%, 100% {box-shadow: inset 6px 0 18px -12px var(--accent-cyan), 0 0 0 transparent;}
+  50% { box-shadow: inset 10px 0 30px -8px var(--accent-cyan), 0 0 24px -12px var(--accent-cyan);}
 }
 
 @media (prefers-reduced-motion: reduce) {
