@@ -254,11 +254,22 @@
           <h3 class="result-title">The fix</h3>
         </div>
         <p class="result-prose">Define <code>saveData()</code> before calling it.</p>
-        <pre class="code-fix"><code
-          ><span class="code-line"><span class="line-num">1</span>function saveData() {</span
-          ><span class="code-line"><span class="line-num">2</span>    ...</span
-          ><span class="code-line"><span class="line-num">3</span>}</span
-        ></code></pre>
+        <div class="code-window">
+          <div class="code-window-bar">
+            <span class="window-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <div class="view-toggle" role="group" aria-label="Fix view">
+              <button type="button" class="view-toggle-option" data-view="code" aria-pressed="true">Code</button>
+              <button type="button" class="view-toggle-option" data-view="preview" aria-pressed="false" disabled
+                title="Preview is available for HTML fixes">Preview</button>
+            </div>
+          </div>
+          <pre class="code-fix"><code
+            ><span class="code-line"><span class="line-num">1</span>function saveData() {</span
+            ><span class="code-line"><span class="line-num">2</span>    ...</span
+            ><span class="code-line"><span class="line-num">3</span>}</span
+          ></code></pre>
+          <iframe class="code-preview" title="Preview of the fixed code" sandbox="allow-scripts" hidden></iframe>
+        </div>
         <button type="button" class="apply-fix-button">Copy fix</button>
       </article>
     </section>
