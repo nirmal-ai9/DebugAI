@@ -14,6 +14,7 @@
   /* Shape & motion */
   --radius: 3px;
   --radius-sm: 2px;
+  --radius-lg: 12px;
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --transition: 0.18s var(--ease);
 
