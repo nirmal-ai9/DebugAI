@@ -20,8 +20,8 @@
 }
 
 @keyframes card-accent-pulse {
-  0%, 100% { box-shadow: inset 6px 0 16px -12px var(--card-accent, transparent); }
-  50% { box-shadow: inset 6px 0 22px -10px var(--card-accent, transparent); }
+  0%, 100% { box-shadow: inset 6px 0 16px -12px var(--accent-cyan, transparent); }
+  50% { box-shadow: inset 6px 0 22px -10px var(--accent-cyan, transparent); }
 }
 
 @media (prefers-reduced-motion: reduce) {
