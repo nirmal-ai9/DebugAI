@@ -162,9 +162,9 @@
 /* Primary Action */
 .hero-primary {
   position: relative;
-  border: 1px solid var(--accent-green);
-  background: var(--accent-green-soft);
-  color: var(--accent-green);
+  border: 1px solid var(--accent-green-soft);
+  background: var(--accent-cyan);
+  color: var(--surface);
   overflow: hidden;
 }
 
@@ -185,7 +185,6 @@
 }
 
 .hero-primary:hover {
-  background: rgba(57, 255, 138, 0.18);
   box-shadow: var(--glow-green);
 }
 
