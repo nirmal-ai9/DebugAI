@@ -12,10 +12,10 @@
 .result-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 2px solid var(--card-accent, var(--border-strong));
+  border-left: 2px solid var(--accent-cyan, var(--border-strong));
   border-radius: var(--radius);
   padding: var(--space-md);
-  box-shadow: inset 6px 0 16px -12px var(--card-accent, transparent);
+  box-shadow: inset 6px 0 16px -12px var(--accent-cyan, transparent);
   animation: card-accent-pulse 3.6s ease-in-out infinite;
 }
 

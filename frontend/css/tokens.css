@@ -44,29 +44,30 @@
   --glow-red: 0 0 14px rgba(255, 82, 82, 0.25);
 }
 
-/* Light Mode Override — High-Contrast Matrix Paper Theme */
 [data-theme="light"] {
-  --bg: #f2f7f4;
-  --surface: #e1ebd3;
-  --surface-raised: #d4e3db;
-  --border: rgba(16, 124, 65, 0.22);
-  --border-strong: rgba(16, 124, 65, 0.45);
-  --text: #092615;
-  --text-dim: #274d36;
-  --text-faint: #517560;
-
-  --accent-amber: #d97706;
-  --accent-cyan: #0891b2;
+  --bg: #f3f7fb;
+  --surface: #ffffff;
+  --surface-raised: #e8f0f8;
+  
+  --border: rgba(15, 76, 129, 0.16);
+  --border-strong: rgba(15, 76, 129, 0.32);
+  
+  --text: #0b1f33;
+  --text-dim: #36536d;
+  --text-faint: #648096;
+  
+  --accent-amber: #c76b00;
+  --accent-cyan: #0284c7;
   --accent-red: #dc2626;
   --accent-green: #107c41;
-
-  --accent-amber-soft: rgba(217, 119, 6, 0.12);
-  --accent-cyan-soft: rgba(8, 145, 178, 0.12);
-  --accent-red-soft: rgba(220, 38, 38, 0.12);
-  --accent-green-soft: rgba(16, 124, 65, 0.12);
-
-  /* Glows tuned for high contrast on light background */
-  --glow-green: 0 0 12px rgba(16, 124, 65, 0.2);
-  --glow-green-sm: 0 0 6px rgba(16, 124, 65, 0.25);
-  --glow-red: 0 0 10px rgba(220, 38, 38, 0.2);
+  
+  --accent-amber-soft: rgba(199, 107, 0, 0.10);
+  --accent-cyan-soft: rgba(2, 132, 199, 0.10);
+  --accent-red-soft: rgba(220, 38, 38, 0.10);
+  --accent-green-soft: rgba(16, 124, 65, 0.10);
+  
+  /* Cool blue-green glows */
+  --glow-green: 0 0 12px rgba(16, 124, 65, 0.16);
+  --glow-green-sm: 0 0 6px rgba(16, 124, 65, 0.20);
+  --glow-red: 0 0 10px rgba(220, 38, 38, 0.16);
 }

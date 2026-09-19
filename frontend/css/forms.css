@@ -131,7 +131,7 @@
 .field--error {
   min-height: 5rem;
   color: #ffb3ac;
-  background: var(--accent-red-soft);
+  background: var(--surface-raised);
 }
 
 .field--error:focus {
@@ -169,8 +169,8 @@
   flex-shrink: 0;
   border: 1px solid var(--accent-green);
   border-radius: var(--radius-sm);
-  background: var(--accent-green-soft);
-  color: var(--accent-green);
+  background: var(--accent-cyan);
+  color: var(--surface);
   font-weight: 600;
   font-size: 0.9rem;
   padding: 0.75rem 1.5rem;
@@ -196,7 +196,6 @@
 }
 
 .submit-button:hover {
-  background: rgba(57, 255, 138, 0.18);
   box-shadow: var(--glow-green);
 }
 
