@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (themeBtn) {
         const isDark = theme === "dark";
-        themeBtn.textContent = isDark ? "☀️ Light Mode" : "🌙 Dark Mode";
+        themeBtn.textContent = isDark ? "Light Mode" : "Dark Mode";
         themeBtn.setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} mode`);
       }
     }
@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isRunning) return;
       isRunning = true;
       if (toggleBtn) {
-        toggleBtn.textContent = "⏹️ Stop Rain";
+        toggleBtn.textContent = "Stop Rain";
         toggleBtn.setAttribute("aria-pressed", "false");
       }
       raf = requestAnimationFrame(loop);
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (toggleBtn) {
-        toggleBtn.textContent = "🌧️ Start Rain";
+        toggleBtn.textContent = "Start Rain";
         toggleBtn.setAttribute("aria-pressed", "true");
       }
     }
