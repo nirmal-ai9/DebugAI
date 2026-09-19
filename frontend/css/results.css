@@ -231,7 +231,8 @@
 .code-preview {
   display: block;
   width: 100%;
-  min-height: 16rem;
+  height: 16rem;
+  max-height: 80vh;
   border: 0;
   background: #fff;
 }
