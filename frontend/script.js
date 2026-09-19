@@ -100,6 +100,7 @@ function showResult(data) {
     fixExplanation.textContent = "No fix is required.";
     fixCode.textContent = "";
   }
+  resetCodeWindow(fixCode.textContent);
 
   // Show results
   results.hidden = false;
@@ -133,4 +134,35 @@ copyBtn.addEventListener("click", async function() {
       copyBtn.textContent = "Copy fix";
     }, 2000);
   }
+});
+
+// Code window: Code / Preview toggle
+const codeWindow = document.querySelector(".code-window");
+const viewButtons = codeWindow.querySelectorAll(".view-toggle-option");
+const previewButton = codeWindow.querySelector('[data-view="preview"]');
+const codePanel = codeWindow.querySelector(".code-fix");
+const previewFrame = codeWindow.querySelector(".code-preview");
+
+// Requires a matching closing tag so plain JS comparisons (a < b) don't count as HTML.
+const HTML_PATTERN = /<!doctype html|<([a-z][\w-]*)\b[^>]*>[\s\S]*<\/\1>/i;
+
+function setView(view) {
+  const showPreview = view === "preview";
+
+  viewButtons.forEach(button => {
+    button.setAttribute("aria-pressed", String(button.dataset.view === view));
+  });
+
+  codePanel.hidden = showPreview;
+  previewFrame.hidden = !showPreview;
+  previewFrame.srcdoc = showPreview ? fixCode.textContent : "";
+}
+
+function resetCodeWindow(code) {
+  previewButton.disabled = !HTML_PATTERN.test(code);
+  setView("code");
+}
+
+viewButtons.forEach(button => {
+  button.addEventListener("click", () => setView(button.dataset.view));
 });
