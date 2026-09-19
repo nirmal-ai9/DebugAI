@@ -146,6 +146,21 @@ const previewFrame = codeWindow.querySelector(".code-preview");
 // Requires a matching closing tag so plain JS comparisons (a < b) don't count as HTML.
 const HTML_PATTERN = /<!doctype html|<([a-z][\w-]*)\b[^>]*>[\s\S]*<\/\1>/i;
 
+// Sandboxed frames can't be measured from outside, so the page reports its own height.
+const PREVIEW_HEIGHT_MESSAGE = "debugai-preview-height";
+const PREVIEW_REPORTER = `<script>
+  new ResizeObserver(() => parent.postMessage({
+    type: "${PREVIEW_HEIGHT_MESSAGE}",
+    height: document.documentElement.scrollHeight
+  }, "*")).observe(document.documentElement);
+<\/script>`;
+
+window.addEventListener("message", event => {
+  if (event.source !== previewFrame.contentWindow) return;
+  if (event.data?.type !== PREVIEW_HEIGHT_MESSAGE) return;
+  previewFrame.style.height = `${event.data.height}px`;
+});
+
 function setView(view) {
   const showPreview = view === "preview";
 
@@ -155,7 +170,8 @@ function setView(view) {
 
   codePanel.hidden = showPreview;
   previewFrame.hidden = !showPreview;
-  previewFrame.srcdoc = showPreview ? fixCode.textContent : "";
+  previewFrame.style.height = "";
+  previewFrame.srcdoc = showPreview ? fixCode.textContent + PREVIEW_REPORTER : "";
 }
 
 function resetCodeWindow(code) {
