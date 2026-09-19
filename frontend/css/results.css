@@ -9,7 +9,7 @@
   display: none;
 }
 
-.result-card {
+.result-card-fix {
   position: relative;
   overflow: hidden;
   background: var(--surface);
@@ -20,7 +20,7 @@
   animation: result-card-pulse 2.8s ease-in-out infinite;
 }
 
-.result-card::after {
+.result-card-fix::after {
   content: "";
   position: absolute;
   left: 0;
