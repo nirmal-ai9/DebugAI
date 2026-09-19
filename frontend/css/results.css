@@ -167,7 +167,9 @@
 
 .line-num {
   display: inline-block;
-  width: 1.5rem;
+  width: calc(var(--gutter-digits, 1) * 1ch);
+  margin-right: var(--space-sm);
+  text-align: right;
   color: var(--text-faint);
   user-select: none;
 }
