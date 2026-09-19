@@ -60,6 +60,29 @@ form.addEventListener("submit", async function(event) {
   
 });
 
+// Raw fix code, kept apart from the numbered markup so copy and preview stay clean.
+let currentFixCode = "";
+
+function renderCodeLines(codeElement, source) {
+  const lines = source ? source.replace(/\n$/, "").split(/\r?\n/) : [];
+  const fragment = document.createDocumentFragment();
+
+  lines.forEach((text, index) => {
+    const line = document.createElement("span");
+    line.className = "code-line";
+
+    const number = document.createElement("span");
+    number.className = "line-num";
+    number.textContent = index + 1;
+
+    line.append(number, text);
+    fragment.append(line);
+  });
+
+  codeElement.style.setProperty("--gutter-digits", String(lines.length).length);
+  codeElement.replaceChildren(fragment);
+}
+
 function showResult(data) {
   const result = data.result;
   const results = document.getElementById("results");
@@ -95,12 +118,13 @@ function showResult(data) {
   // Fill fix
   if (result.fix) {
     fixExplanation.textContent = result.fix.explanation;
-    fixCode.textContent = result.fix.code;
+    currentFixCode = result.fix.code ?? "";
   } else {
     fixExplanation.textContent = "No fix is required.";
-    fixCode.textContent = "";
+    currentFixCode = "";
   }
-  resetCodeWindow(fixCode.textContent);
+  renderCodeLines(fixCode, currentFixCode);
+  resetCodeWindow(currentFixCode);
 
   // Show results
   results.hidden = false;
@@ -118,7 +142,7 @@ const fixCode = document.querySelector("#results .code-fix code");
 
 copyBtn.addEventListener("click", async function() {
   try {
-    await navigator.clipboard.writeText(fixCode.innerText);
+    await navigator.clipboard.writeText(currentFixCode);
     
     copyBtn.textContent = "Copied!";
     
@@ -171,7 +195,7 @@ function setView(view) {
   codePanel.hidden = showPreview;
   previewFrame.hidden = !showPreview;
   previewFrame.style.height = "";
-  previewFrame.srcdoc = showPreview ? fixCode.textContent + PREVIEW_REPORTER : "";
+  previewFrame.srcdoc = showPreview ? currentFixCode + PREVIEW_REPORTER : "";
 }
 
 function resetCodeWindow(code) {
