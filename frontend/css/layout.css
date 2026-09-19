@@ -23,6 +23,7 @@
 }
 
 .wordmark-text {
+  color: var(--text-faint);
   font-size: 1.15rem;
   font-weight: 600;
   letter-spacing: 0.01em;
