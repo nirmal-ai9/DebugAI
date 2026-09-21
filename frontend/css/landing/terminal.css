@@ -1,1 +1,102 @@
+/* Terminal Demo — the lab's central instrument */
 
+.terminal {
+  position: relative;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--glow-green), inset 0 0 40px rgba(57, 255, 138, 0.03);
+  overflow: hidden;
+  animation: terminal-pulse 4s ease-in-out infinite;
+}
+
+@keyframes terminal-pulse {
+  0%, 100% { box-shadow: var(--glow-green), inset 0 0 40px rgba(57, 255, 138, 0.03); }
+  50% { box-shadow: 0 0 28px rgba(57, 255, 138, 0.38), inset 0 0 40px rgba(57, 255, 138, 0.05); }
+}
+
+.terminal::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(180deg, transparent, rgba(57, 255, 138, 0.08), transparent);
+  animation: terminal-scan 3.5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes terminal-scan {
+  0% { top: -60px; }
+  100% { top: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .terminal {
+    animation: none;
+  }
+  .terminal::after {
+    display: none;
+  }
+}
+
+.terminal-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem var(--space-sm);
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
+}
+
+.terminal-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-strong);
+}
+
+.terminal-bar-label {
+  margin-left: auto;
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  letter-spacing: 0.03em;
+}
+
+.terminal-body {
+  padding: var(--space-md);
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  min-height: 220px;
+}
+
+.terminal-line {
+  margin: 0 0 0.65rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.terminal-line .prompt { color: var(--accent-amber); }
+.terminal-line .code   { color: var(--accent-cyan); }
+.terminal-line .err    { color: var(--accent-red); }
+.terminal-line .out    { color: var(--accent-green); text-shadow: var(--glow-green-sm); }
+
+.cursor {
+  display: inline-block;
+  width: 0.55ch;
+  background: var(--accent-green);
+  box-shadow: var(--glow-green-sm);
+  animation: blink 1s step-end infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor {
+    animation: none;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
