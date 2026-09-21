@@ -1,1 +1,21 @@
+/* Section label — shared lab-log heading style */
 
+.steps-title,
+.log-title,
+.examples-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  margin: 0 0 var(--space-md);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.steps-title::before,
+.log-title::before,
+.examples-title::before {
+  content: "//";
+  color: var(--accent-green);
+}
