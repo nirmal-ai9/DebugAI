@@ -1,1 +1,43 @@
+.apply-fix-button {
+  position: relative;
+  border: 1px solid var(--accent-green);
+  border-radius: var(--radius-sm);
+  background: var(--accent-green-soft);
+  color: var(--accent-green);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow var(--transition), background var(--transition), transform var(--transition);
+}
 
+.apply-fix-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease);
+}
+
+.apply-fix-button:hover::before {
+  left: 130%;
+}
+
+.apply-fix-button:hover {
+  background: rgba(57, 255, 138, 0.18);
+  box-shadow: var(--glow-green);
+}
+
+.apply-fix-button:active {
+  transform: scale(0.98);
+}
+
+.apply-fix-button:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+}
