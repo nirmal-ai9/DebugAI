@@ -1,1 +1,61 @@
+/* Examples Grid */
 
+.examples {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 2;
+}
+
+.example-grid {
+  display: grid;
+  gap: var(--space-md);
+}
+
+@media (min-width: 720px) {
+  .example-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.example-grid .result-card {
+  position: relative;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.example-grid .result-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius);
+  padding: 1px;
+  background: conic-gradient(from 0deg, transparent 0%, var(--accent-green) 8%, transparent 20%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity var(--transition);
+  animation: spin-border 3s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin-border {
+  to { transform: rotate(360deg); }
+}
+
+.example-grid .result-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--glow-green);
+}
+
+.example-grid .result-card:hover::before {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .example-grid .result-card::before {
+    animation: none;
+  }
+}
