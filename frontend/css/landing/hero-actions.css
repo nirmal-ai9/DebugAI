@@ -1,1 +1,56 @@
+/* Base resets to match button and anchor tag rendering */
+.hero-primary,
+.hero-secondary {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1.4rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: box-shadow var(--transition), background var(--transition), border-color var(--transition);
+}
 
+/* Primary Action */
+.hero-primary {
+  position: relative;
+  border: 1px solid var(--accent-green-soft);
+  background: var(--accent-cyan);
+  color: var(--surface);
+  overflow: hidden;
+}
+
+.hero-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease);
+}
+
+.hero-primary:hover::before {
+  left: 130%;
+}
+
+.hero-primary:hover {
+  box-shadow: var(--glow-green);
+}
+
+/* Secondary Action */
+.hero-secondary {
+  border: 1px solid var(--border-color, #333);
+  background: var(--bg-secondary, transparent);
+  color: var(--text-main, inherit);
+}
+
+.hero-secondary:hover {
+  background: var(--bg-hover, rgba(255, 255, 255, 0.05));
+}
