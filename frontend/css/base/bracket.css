@@ -1,1 +1,29 @@
+/* Corner-bracket frame — reusable lab-instrument chrome */
+.bracket {
+  position: relative;
+}
 
+.bracket::before,
+.bracket::after,
+.bracket .bracket-tr,
+.bracket .bracket-bl {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-color: var(--border-strong);
+  border-style: solid;
+  opacity: 0.85;
+}
+
+.bracket::before {
+  top: -1px;
+  left: -1px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.bracket::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 1.5px 1.5px 0;
+}
