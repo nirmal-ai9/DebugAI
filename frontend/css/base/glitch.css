@@ -1,1 +1,56 @@
+/* Glitch heading — idle flicker, sharper burst on hover */
 
+.glitch {
+  position: relative;
+  animation: glitch-flicker 6s ease-in-out infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  overflow: hidden;
+  opacity: 0;
+}
+
+.glitch::before {
+  color: var(--accent-cyan);
+  transform: translate(2px, 0);
+}
+
+.glitch::after {
+  color: var(--accent-red);
+  transform: translate(-2px, 0);
+}
+
+.glitch:hover::before,
+.glitch:hover::after {
+  opacity: 0.8;
+  animation: glitch-slice 0.4s steps(2, jump-none) infinite;
+}
+
+@keyframes glitch-flicker {
+  0%, 92%, 100% { text-shadow: none; }
+  93% { text-shadow: -2px 0 var(--accent-red), 2px 0 var(--accent-cyan); }
+  94% { text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent-cyan); }
+  95% { text-shadow: none; }
+}
+
+@keyframes glitch-slice {
+  0%   { clip-path: inset(10% 0 70% 0); }
+  20%  { clip-path: inset(60% 0 5% 0); }
+  40%  { clip-path: inset(30% 0 45% 0); }
+  60%  { clip-path: inset(75% 0 10% 0); }
+  80%  { clip-path: inset(5% 0 80% 0); }
+  100% { clip-path: inset(45% 0 30% 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glitch,
+  .glitch::before,
+  .glitch::after {
+    animation: none !important;
+  }
+}
