@@ -1,1 +1,32 @@
+/* Code Fix Block */
 
+.code-fix {
+  margin: var(--space-sm) 0;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) 0;
+  overflow-x: auto;
+}
+
+.code-fix code {
+  display: block;
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.code-line {
+  display: block;
+  padding: 0 var(--space-sm);
+  white-space: pre;
+}
+
+.line-num {
+  display: inline-block;
+  width: calc(var(--gutter-digits, 1) * 1ch);
+  margin-right: var(--space-sm);
+  text-align: right;
+  color: var(--text-faint);
+  user-select: none;
+}
