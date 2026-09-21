@@ -1,1 +1,30 @@
+/* Closing CTA */
 
+.closing {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg);
+  border-top: 1px solid var(--border);
+  text-align: left;
+  position: relative;
+  z-index: 2;
+}
+
+.closing-heading {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 0 0 var(--space-sm);
+  text-shadow: 0 0 0 transparent;
+  animation: heading-glow 3.6s ease-in-out infinite;
+}
+
+@keyframes heading-glow {
+  0%, 100% { text-shadow: 0 0 0 transparent; }
+  50% { text-shadow: 0 0 16px rgba(57, 255, 138, 0.35); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .closing-heading {
+    animation: none;
+  }
+}
