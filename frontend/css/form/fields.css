@@ -1,1 +1,56 @@
+/* Fields */
 
+.field {
+  display: block;
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text);
+  padding: var(--space-sm);
+  line-height: 1.6;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.field::placeholder {
+  color: var(--text-faint);
+}
+
+.field:focus {
+  outline: none;
+  border-color: var(--accent-green);
+  box-shadow: var(--glow-green-sm);
+}
+
+.field--prose {
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  min-height: 6rem;
+}
+
+.field--code {
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  min-height: 10rem;
+  tab-size: 2;
+}
+
+.field--error {
+  min-height: 5rem;
+  color: #ffb3ac;
+  background: var(--surface-raised);
+}
+
+.field--error:focus {
+  border-color: var(--accent-red);
+  box-shadow: var(--glow-red);
+}
+
+.field--error::placeholder {
+  color: rgba(255, 179, 172, 0.45);
+}
+
+.panel--code .field--code {
+  min-height: 16rem;
+}
