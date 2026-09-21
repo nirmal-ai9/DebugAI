@@ -1,1 +1,78 @@
+/* Feature Log */
 
+.log {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.log::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent, rgba(75, 224, 209, 0.05), transparent);
+  background-size: 100% 200%;
+  animation: radar-sweep 5s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes radar-sweep {
+  0% { background-position: 0 -100%; }
+  100% { background-position: 0 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .log::before {
+    display: none;
+  }
+}
+
+.log-entry {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: baseline;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+  transition: transform var(--transition);
+}
+
+.log-entry:hover {
+  transform: translateX(4px);
+}
+
+.log-entry:last-child {
+  border-bottom: none;
+}
+
+.log-dot {
+  width: 7px;
+  height: 7px;
+  background: var(--dot-color);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--dot-color) 60%, transparent);
+  flex-shrink: 0;
+  transform: translateY(-0.15em);
+  animation: dot-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.log-text strong {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.log-text span {
+  color: var(--text-dim);
+  font-size: 0.875rem;
+}
