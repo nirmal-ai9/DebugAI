@@ -1,1 +1,85 @@
+/* Three-way diff — intent, code and console as a triangle */
 
+.triangle-layout {
+  display: grid;
+  gap: var(--space-md);
+  align-items: center;
+}
+
+@media (min-width: 720px) {
+  .triangle-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.triangle-figure {
+  margin: 0;
+}
+
+.triangle-svg {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.triangle-link line {
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke var(--transition), filter var(--transition);
+}
+
+.triangle-mark {
+  font-family: var(--font-code);
+  font-size: 16px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: central;
+  fill: var(--text-faint);
+  transition: fill var(--transition);
+}
+
+.triangle-link[data-state="ok"] line {
+  stroke: var(--accent-green);
+  filter: drop-shadow(0 0 3px var(--accent-green));
+}
+
+.triangle-link[data-state="ok"] .triangle-mark {
+  fill: var(--accent-green);
+}
+
+.triangle-link[data-state="broken"] line {
+  stroke: var(--accent-red);
+  stroke-dasharray: 6 6;
+  filter: drop-shadow(0 0 3px var(--accent-red));
+  animation: edge-flow 1s linear infinite;
+}
+
+.triangle-link[data-state="broken"] .triangle-mark {
+  fill: var(--accent-red);
+}
+
+@keyframes edge-flow {
+  to { stroke-dashoffset: -12; }
+}
+
+.triangle-node rect {
+  fill: var(--surface-raised);
+  stroke: var(--border-strong);
+}
+
+.triangle-node text {
+  fill: var(--text);
+  font-family: var(--font-code);
+  font-size: 13px;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .triangle-link[data-state="broken"] line {
+    animation: none;
+  }
+}
