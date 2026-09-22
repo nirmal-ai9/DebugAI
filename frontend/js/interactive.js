@@ -4,9 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   challengeDemo();
 });
 
-/* ------------------------------------------------------------------ *
- * 1. THREE-WAY DIFF — intent / code / console as a reactive triangle
- * ------------------------------------------------------------------ */
+/* 1. THREE-WAY DIFF — intent / code / console as a reactive triangle */
 function triangleDemo() {
   const select = document.getElementById("triangle-select");
   const readout = document.getElementById("triangle-readout");
@@ -47,9 +45,7 @@ function triangleDemo() {
   render(select.value);
 }
 
-/* ------------------------------------------------------------------ *
- * 2. CLOSURE SCRUBBER — var shares a binding, let makes one per loop
- * ------------------------------------------------------------------ */
+/* 2. CLOSURE SCRUBBER — var shares a binding, let makes one per loop */
 function closureDemo() {
   const slider = document.getElementById("closure-slider");
   const keyword = document.getElementById("closure-keyword");
@@ -71,7 +67,6 @@ function closureDemo() {
         cell.querySelector(".closure-value").textContent = i;
       });
     } else {
-      // var: one binding, already at its final value by the time any handler fires
       cells.forEach((cell, i) => {
         cell.hidden = i !== cells.length - 1;
         cell.querySelector(".closure-value").textContent = "3";
@@ -109,9 +104,7 @@ function closureDemo() {
   setMode(true);
 }
 
-/* ------------------------------------------------------------------ *
- * 3. BEAT THE DIAGNOSTIC — spot the buggy line before seeing the fix
- * ------------------------------------------------------------------ */
+/* 3. BEAT THE DIAGNOSTIC — spot the buggy line before seeing the fix */
 function challengeDemo() {
   const codeList = document.getElementById("challenge-code");
   const intentText = document.getElementById("challenge-intent-text");
@@ -124,43 +117,24 @@ function challengeDemo() {
   const rounds = [
     {
       intent: "Sum an array of numbers.",
-      lines: [
-        "function sum(nums) {",
-        "  let total;",
-        "  for (const n of nums) total += n;",
-        "  return total;",
-        "}",
-      ],
+      lines: ["function sum(nums) {", "  let total;", "  for (const n of nums) total += n;", "  return total;", "}"],
       buggyLine: 1,
       console: "> sum([1, 2, 3]) → NaN",
       explanation: "total starts as undefined, so undefined + 1 is NaN. Initialize it to 0.",
     },
     {
-      intent: "Return the user's first name, or \"Guest\" if there's no user.",
-      lines: [
-        "function greet(user) {",
-        "  const name = user.firstName || \"Guest\";",
-        "  return `Hi, ${name}`;",
-        "}",
-        "greet(null);",
-      ],
+      intent: 'Return the user\'s first name, or "Guest" if there\'s no user.',
+      lines: ["function greet(user) {", '  const name = user.firstName || "Guest";', "  return `Hi, ${name}`;", "}", "greet(null);"],
       buggyLine: 4,
       console: "> TypeError: Cannot read properties of null (reading 'firstName')",
       explanation: "The function assumes user is always an object. The call site passes null, which throws before the fallback ever runs.",
     },
     {
       intent: "Remove duplicate values from an array.",
-      lines: [
-        "function dedupe(arr) {",
-        "  return arr.filter((val, i) => {",
-        "    return arr.indexOf(val) === i;",
-        "  });",
-        "}",
-      ],
+      lines: ["function dedupe(arr) {", "  return arr.filter((val, i) => {", "    return arr.indexOf(val) === i;", "  });", "}"],
       buggyLine: 0,
       console: "> dedupe([1, 2, 2, 3]) → [1, 2, 3] (correct, but slow on large arrays)",
-      explanation:
-        "Not a crash — indexOf inside filter is O(n²). Not every bug throws; some just cost you at scale. A Set-based pass fixes it in O(n).",
+      explanation: "Not a crash — indexOf inside filter is O(n²). Not every bug throws; some just cost you at scale. A Set-based pass fixes it in O(n).",
     },
   ];
 
