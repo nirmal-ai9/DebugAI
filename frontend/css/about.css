@@ -1,1 +1,104 @@
+/* About page — hero, section shell, card grid */
 
+.about-hero {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg) var(--space-lg);
+  text-align: center;
+}
+
+.about-hero .hero-sub {
+  margin: var(--space-sm) auto 0;
+}
+
+.about-section {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+  border-top: 1px solid var(--border);
+}
+
+.about-section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 var(--space-md);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-faint);
+}
+
+.about-section-title::before {
+  content: "//";
+  color: var(--accent-green);
+}
+
+.about-prose {
+  max-width: 62ch;
+  margin: 0 0 var(--space-sm);
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  line-height: 1.75;
+}
+
+.about-prose:last-of-type {
+  margin-bottom: var(--space-md);
+}
+
+.about-link {
+  color: var(--accent-cyan);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  transition: color var(--transition);
+}
+
+.about-link:hover {
+  color: var(--text);
+}
+
+.about-grid {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+@media (min-width: 640px) {
+  .about-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.about-card {
+  position: relative;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.about-card-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-bottom: var(--space-xs);
+  background: var(--dot-color);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--dot-color) 60%, transparent);
+  border-radius: 50%;
+}
+
+.about-card h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.about-card p {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
