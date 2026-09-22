@@ -1,1 +1,105 @@
+/* Closure scrubber — one shared i versus one i per iteration */
 
+.closure-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.closure-slider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+
+.closure-slider input {
+  width: 9rem;
+  accent-color: var(--accent-green);
+}
+
+.closure-code {
+  margin: 0 0 var(--space-md);
+  padding: var(--space-sm);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+#closure-keyword {
+  color: var(--accent-amber);
+}
+
+.closure-memory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 3.5rem;
+  row-gap: var(--space-xs);
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+}
+
+.closure-handler,
+.closure-cell {
+  grid-row: var(--row);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: opacity var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.closure-handler {
+  position: relative;
+  grid-column: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-xs);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+}
+
+.closure-handler::after {
+  content: "──▶";
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 3.5rem;
+  transform: translateY(-50%);
+  text-align: center;
+  color: var(--accent-cyan);
+}
+
+.closure-cell {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--accent-green);
+  background: var(--accent-green-soft);
+}
+
+.closure-memory--shared .closure-cell {
+  border-color: var(--accent-red);
+  background: var(--accent-red-soft);
+}
+
+.closure-memory--shared .closure-cell:not([hidden]) {
+  grid-row: 1 / span 3;
+}
+
+.closure-handler.is-pending,
+.closure-cell.is-pending {
+  opacity: 0.35;
+}
+
+.closure-value {
+  color: var(--accent-amber);
+}
