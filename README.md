@@ -1,92 +1,52 @@
-# &gt;_ DebugAI
+>_ DebugAI
 
-**Paste what broke. Get the fix, not a lecture.**
+Paste what broke. Get the fix, not a lecture.
 
-DebugAI takes three things — what your code was *supposed* to do, the code itself, and the *console error* — and finds the mismatch between them. It doesn't run your code; it reads it, the way a senior engineer would when you paste a bug into slack.
+DebugAI is an AI-powered code debugging tool that analyzes your requirements, code, and errors to identify bugs and suggest fixes.
 
-## How it works
+How It Works
 
-1. Describe what the code should do
-2. Paste the code (any language)
-3. Paste the console error, if there is one
-4. DebugAI returns the bug, why it happens, and a fix you can copy
+1. Describe what your code should do
+2. Paste your code
+3. Add the error, if available
+4. Get the cause, explanation, and suggested fix
 
-## Tech stack 
+Tech Stack
 
-| Layer | Stack |
-|---|---|
-| Frontend | Static HTML/CSS/JS, deployed on GitHub Pages |
-| Backend | Cloudflare Workers |
-| AI | Workers AI (`@cf/meta/llama-3.1-8b-instruct`) with JSON Mode for structured output |
+- Frontend: HTML, CSS, JavaScript
+- Backend: Cloudflare Workers
+- AI: Workers AI
+- Hosting: GitHub Pages
 
-## Response shape
+Project Structure
 
-The backend always returns a consistent, structured response:
-
-```json
-{
-  "success": true,
-  "result": {
-    "bug": {
-      "type": "ReferenceError",
-      "line": 2,
-      "message": "saveData is not defined"
-    },
-    "why": "The function is called but isn't defined.",
-    "fix": {
-      "explanation": "Define saveData before calling it.",
-      "code": "function saveData() {}"
-    }
-  }
-}
-```
-
-On failure, `success` is `false` and a human-readable `message` explains what went wrong.
-
-## Project structure
-
-```
 DebugAI/
-├── .github/workflows/deploy.yml  # CI/CD deployment
-├── backend/                       # Cloudflare Workers API
-│   ├── src/index.js
+├── .github/workflows/
+├── backend/
+│   ├── src/
 │   ├── package.json
 │   └── wrangler.jsonc
-└── frontend/                      # Modular UI
-    ├── css/                       # Component styles & tokens
+└── frontend/
+    ├── css/
     └── index.html
-```
 
-## Running locally
+Run Locally
 
-**Backend**
+Backend
 
-```bash
 cd backend
 npx wrangler dev
-```
 
-**Frontend**
+Frontend
 
-Just open `frontend/index.html` in a browser, or serve it with any static server. Update the `fetch()` URL in `script.js` to point at your local or deployed Worker.
+Open "frontend/index.html" or serve the "frontend" directory with any static server.
 
-## Deploying
+Status
 
-**Backend** — deploys manually via Wrangler:
+🚧 Actively developed and working end-to-end.
 
-```bash
-cd backend
-npx wrangler deploy
-```
+Author
 
-**Frontend** — deploys automatically to GitHub Pages on every push to `main` (see `.github/workflows/deploy.yml`).
+Nirmal
 
-## Status
-
-Actively built, working end-to-end: form → Worker → Workers AI → structured diagnosis → rendered result.
-
-## Author : Nirmal
-
-<div align="center">
-  <a href="https://nirmal-ai9.github.io/portfolio/"><img src="https://img.shields.io/badge/Portfolio-View-1a1a2e?style=for-the-badge" alt="Portfolio" /></a>
-</div>
+"Portfolio" (https://nirmal-ai9.github.io/portfolio/)
