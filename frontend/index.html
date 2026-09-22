@@ -131,6 +131,95 @@
     </div>
   </section>
 
+
+  <section class="triangle" id="triangle-demo">
+    <h2 class="triangle-title">The three things that have to agree</h2>
+    <p class="section-lead">
+      A bug is just a disagreement between three things: what you meant, what you wrote,
+      and what the console says happened. DebugAI's whole job is finding which edge broke.
+      Toggle the code below and watch the triangle react.
+    </p>
+
+    <div class="triangle-layout">
+      <figure class="triangle-figure">
+        <svg class="triangle-svg" viewBox="0 0 320 280" role="img" aria-label="Diagram showing intent, code and console as three connected nodes">
+          <g class="triangle-link" id="edge-intent-code" data-state="ok">
+            <line x1="160" y1="40" x2="70" y2="220"></line>
+            <text class="triangle-mark" x="100" y="120">?</text>
+          </g>
+          <g class="triangle-link" id="edge-code-console" data-state="ok">
+            <line x1="70" y1="220" x2="250" y2="220"></line>
+            <text class="triangle-mark" x="160" y="240">?</text>
+          </g>
+          <g class="triangle-link" id="edge-intent-console" data-state="ok">
+            <line x1="160" y1="40" x2="250" y2="220"></line>
+            <text class="triangle-mark" x="220" y="120">?</text>
+          </g>
+
+          <g class="triangle-node">
+            <rect x="105" y="10" width="110" height="40" rx="6"></rect>
+            <text x="160" y="31">intent</text>
+          </g>
+          <g class="triangle-node">
+            <rect x="15" y="200" width="110" height="40" rx="6"></rect>
+            <text x="70" y="221">code</text>
+          </g>
+          <g class="triangle-node">
+            <rect x="195" y="200" width="110" height="40" rx="6"></rect>
+            <text x="250" y="221">console</text>
+          </g>
+        </svg>
+      </figure>
+
+      <div class="showcase-panel bracket reveal" style="--dot-color: var(--accent-cyan);">
+        <div class="closure-controls">
+          <span class="challenge-label">$ scenario</span>
+        </div>
+        <select id="triangle-select" class="closure-slider" aria-label="Choose a bug scenario">
+          <option value="working">Everything agrees</option>
+          <option value="logic">Code doesn't match intent</option>
+          <option value="runtime" selected>Console doesn't match either</option>
+        </select>
+        <p class="showcase-readout" id="triangle-readout" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="closure" id="closure-demo">
+    <h2 class="closure-title">Why <code>var i</code> breaks the loop</h2>
+    <p class="section-lead">
+      The example above appears in roughly a third of the bugs DebugAI diagnoses. Scrub the
+      slider to watch <code>var</code> share one binding across every iteration, while
+      <code>let</code> gives each one its own.
+    </p>
+
+    <div class="showcase-panel bracket reveal" style="--dot-color: var(--accent-amber);">
+      <pre class="closure-code"><code>for (<span id="closure-keyword">let</span> i = 0; i &lt; 3; i++) {
+  setTimeout(() =&gt; console.log(i), 100);
+}</code></pre>
+
+      <div class="closure-controls">
+        <div class="closure-slider">
+          <span>var</span>
+          <input type="range" id="closure-slider" min="0" max="1" step="1" value="1" aria-label="Toggle between var and let">
+          <span>let</span>
+        </div>
+        <button type="button" id="closure-run" class="hero-secondary">Run it</button>
+      </div>
+
+      <div class="closure-memory" id="closure-memory-let">
+        <div class="closure-handler" style="--row: 1;">handler[0]<span>→</span></div>
+        <div class="closure-handler" style="--row: 2;">handler[1]<span>→</span></div>
+        <div class="closure-handler" style="--row: 3;">handler[2]<span>→</span></div>
+        <div class="closure-cell" style="--row: 1;">i = <span class="closure-value">0</span></div>
+        <div class="closure-cell" style="--row: 2;">i = <span class="closure-value">1</span></div>
+        <div class="closure-cell" style="--row: 3;">i = <span class="closure-value">2</span></div>
+      </div>
+
+      <p class="showcase-readout" id="closure-readout" aria-live="polite"></p>
+    </div>
+  </section>
+
   <section class="examples">
     <h2 class="examples-title">Real diagnoses</h2>
     <div class="example-grid">
@@ -167,6 +256,26 @@
         ></code></pre>
       </article>
 
+    </div>
+  </section>
+
+
+  <section class="challenge" id="challenge-demo">
+    <h2 class="challenge-title">Beat the diagnostic</h2>
+    <p class="section-lead">
+      Three real bugs, no hints beyond the console. Click the line you think is wrong before
+      reading the fix — most people get one of these three wrong.
+    </p>
+
+    <div class="showcase-panel bracket reveal" style="--dot-color: var(--accent-red);">
+      <div class="challenge-head">
+        <span id="challenge-progress">Round 1 of 3</span>
+        <span id="challenge-score">Score: 0</span>
+      </div>
+      <p class="challenge-intent"><span class="challenge-label">$ intent</span><span id="challenge-intent-text"></span></p>
+      <ol class="challenge-code" id="challenge-code"></ol>
+      <pre class="challenge-console" id="challenge-console"></pre>
+      <button type="button" id="challenge-next" class="hero-secondary challenge-next" hidden>Next bug</button>
     </div>
   </section>
 
@@ -294,6 +403,7 @@
     <p>DebugAI doesn't run your code. It reads it.</p>
   </footer>
 
+  <script src="interactive.js"></script>
   <script src="effects.js"></script>
 
   <script>
