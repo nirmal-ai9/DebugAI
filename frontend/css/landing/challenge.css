@@ -1,1 +1,89 @@
+/* Beat the diagnostic — spot-the-bug game */
 
+.challenge-head {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--space-sm);
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
+
+.challenge-intent {
+  margin: 0 0 var(--space-sm);
+  font-size: 0.9rem;
+}
+
+.challenge-label {
+  margin-right: 0.5rem;
+  color: var(--accent-amber);
+  font-family: var(--font-code);
+}
+
+.challenge-code {
+  margin: 0 0 var(--space-sm);
+  padding: var(--space-sm) 0;
+  list-style: none;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+}
+
+.challenge-line {
+  display: block;
+  width: 100%;
+  padding: 0 var(--space-sm);
+  border: 0;
+  border-left: 2px solid transparent;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  line-height: 1.7;
+  text-align: left;
+  white-space: pre;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.challenge-line:hover:not(:disabled) {
+  background: var(--accent-cyan-soft);
+}
+
+.challenge-line:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: -2px;
+}
+
+.challenge-line.is-wrong {
+  border-left-color: var(--accent-red);
+  background: var(--accent-red-soft);
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+
+.challenge-line.is-correct {
+  border-left-color: var(--accent-green);
+  background: var(--accent-green-soft);
+}
+
+.challenge-console {
+  margin: 0;
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: var(--accent-red-soft);
+  color: var(--accent-red);
+  font-family: var(--font-code);
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.challenge-console::before {
+  content: "> ";
+}
+
+.challenge-next {
+  margin-top: var(--space-sm);
+}
