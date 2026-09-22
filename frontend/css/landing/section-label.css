@@ -2,7 +2,10 @@
 
 .steps-title,
 .log-title,
-.examples-title {
+.examples-title,
+.triangle-title,
+.closure-title,
+.challenge-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -15,7 +18,10 @@
 
 .steps-title::before,
 .log-title::before,
-.examples-title::before {
+.examples-title::before,
+.triangle-title::before,
+.closure-title::before,
+.challenge-title::before {
   content: "//";
   color: var(--accent-green);
 }
