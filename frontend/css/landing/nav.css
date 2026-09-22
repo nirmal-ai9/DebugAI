@@ -42,6 +42,23 @@
   50% { opacity: 0.35; }
 }
 
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.nav-link {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.nav-link:hover {
+  color: var(--text);
+}
+
 .nav-cta {
   padding: 0.55rem 1.1rem;
   border-radius: var(--radius-sm);
