@@ -1,16 +1,13 @@
-/* Scroll reveal — sections power on as they enter view.
-   Visible by default: JS adds .reveal-armed once it's actually
-   going to animate the element in, so a script failure never
-   leaves content invisible. */
+/* Scroll reveal — sections power on as they enter view */
 
-.reveal.reveal-armed {
+.reveal {
   opacity: 0;
   transform: translateY(18px);
   filter: blur(2px);
   transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), filter 0.6s var(--ease);
 }
 
-.reveal.reveal-armed.is-visible {
+.reveal.is-visible {
   opacity: 1;
   transform: none;
   filter: none;
