@@ -1,6 +1,8 @@
 const form = document.querySelector(".debug-form");
 const msg = document.querySelector(".submit-note");
 const btn = document.querySelector(".submit-button");
+const btnLabel = btn.querySelector(".submit-button-label");
+const btnDefaultLabel = btnLabel.textContent;
 
 form.addEventListener("submit", async function(event) {
   event.preventDefault();
@@ -25,6 +27,8 @@ form.addEventListener("submit", async function(event) {
     msg.style.color = "white";  
     msg.textContent = "Working on it";
     msg.classList.add("dot");
+    btn.classList.add("is-loading");
+    btnLabel.textContent = "Finding the fix";
   }
   
   try{
@@ -56,6 +60,8 @@ form.addEventListener("submit", async function(event) {
     msg.classList.remove("dot");
   } finally {
     btn.disabled = false;
+    btn.classList.remove("is-loading");
+    btnLabel.textContent = btnDefaultLabel;
   }
   
 });
