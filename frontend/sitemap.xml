@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
     <loc>https://nirmal-ai9.github.io/DebugAI/</loc>
   </url>
+
   <url>
     <loc>https://nirmal-ai9.github.io/DebugAI/about.html</loc>
   </url>
+
+  <url>
+    <loc>https://nirmal-ai9.github.io/DebugAI/license.html</loc>
+  </url>
+
+  <url>
+    <loc>https://nirmal-ai9.github.io/DebugAI/privacy.html</loc>
+  </url>
+
 </urlset>
