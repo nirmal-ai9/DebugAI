@@ -8,7 +8,7 @@
 @import url("base/reveal.css");
 @import url("base/glitch.css");
 @import url("base/loader.css");
-@import url("base/reduced-motion.css");
+@import url("base/reduce-motion.css");
 
 /* Landing */
 @import url("landing/nav.css");
