@@ -1,1 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="What DebugAI does and doesn't do with the code, requirements and console errors you submit." />
+  <meta name="robots" content="index, follow" />
+  <meta name="author" content="Nirmal">
 
+  <title>Privacy Policy — DebugAI</title>
+  <link rel="canonical" href="https://nirmal-ai9.github.io/DebugAI/privacy.html" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="DebugAI" />
+  <meta property="og:title" content="Privacy Policy — DebugAI" />
+  <meta property="og:description" content="What DebugAI does and doesn't do with what you submit." />
+  <meta property="og:url" content="https://nirmal-ai9.github.io/DebugAI/privacy.html" />
+  <meta property="og:image" content="https://nirmal-ai9.github.io/DebugAI/logos.png" />
+  <meta property="og:image:width" content="1024" />
+  <meta property="og:image:height" content="1024" />
+  <meta property="og:image:alt" content="DebugAI logo" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Privacy Policy — DebugAI" />
+  <meta name="twitter:description" content="What DebugAI does and doesn't do with what you submit." />
+  <meta name="twitter:image" content="https://nirmal-ai9.github.io/DebugAI/logos.png" />
+
+  <meta name="theme-color" content="#050a07" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" href="favicon-32x32.png" type="image/png" sizes="32x32" />
+  <link rel="icon" href="favicon-16x16.png" type="image/png" sizes="16x16" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/about.css" />
+  <link rel="stylesheet" href="css/legal.css" />
+</head>
+<body>
+
+  <canvas id="matrix-rain" aria-hidden="true"></canvas>
+  <div class="scanline" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a class="wordmark" href="index.html">
+      <span class="wordmark-glyph">&gt;_</span>
+      <span class="wordmark-text">DebugAI</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-cta" href="index.html#debug-tool">Try it</a>
+    </div>
+  </nav>
+
+  <header class="about-hero">
+    <p class="hero-eyebrow">legal · last updated Sep 2026</p>
+    <h1 class="hero-heading glitch" data-text="Privacy Policy">Privacy Policy</h1>
+    <p class="hero-sub">Short version: nothing you submit is stored. Here's the full version.</p>
+  </header>
+
+  <section class="about-section">
+    <h2 class="about-section-title">What DebugAI collects</h2>
+    <p class="about-prose">Nothing tied to you, personally. Specifically:</p>
+    <ul class="legal-list">
+      <li><strong>No accounts.</strong> There's nothing to sign up for, so there's no email, password or profile to store.</li>
+      <li><strong>No cookies.</strong> DebugAI doesn't set any.</li>
+      <li><strong>No analytics or trackers.</strong> Nothing watches which pages you visit or how you use the tool.</li>
+      <li><strong>One thing in local storage:</strong> your light/dark theme choice, saved in your own browser via <code>localStorage</code>. It never leaves your device and DebugAI's servers never see it.</li>
+    </ul>
+  </section>
+
+  <section class="about-section">
+    <h2 class="about-section-title">What happens to what you submit</h2>
+    <p class="about-prose">
+      When you use the debug tool, the requirements, code and console error you paste in are sent
+      to DebugAI's backend — a small <a class="about-link" href="https://developers.cloudflare.com/workers/" target="_blank" rel="noopener">Cloudflare Workers</a>
+      function — which forwards them to Cloudflare's AI inference service to generate a diagnosis. That's the entire round trip.
+    </p>
+    <p class="about-prose">
+      DebugAI itself doesn't write your submission to a database, a log file, or anywhere else. Once
+      the response reaches your browser, the backend keeps nothing. Cloudflare processes the request
+      to run the model; their handling of that processing is governed by
+      <a class="about-link" href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's own privacy policy</a>, not this one.
+    </p>
+    <p class="about-prose">
+      Avoid pasting real secrets — API keys, passwords, tokens — into the code or console fields.
+      Treat it the same way you'd treat pasting code into any third-party tool.
+    </p>
+  </section>
+
+  <section class="about-section">
+    <h2 class="about-section-title">Hosting</h2>
+    <p class="about-prose">
+      This site is hosted on <a class="about-link" href="https://pages.github.com/" target="_blank" rel="noopener">GitHub Pages</a>.
+      Like any web host, GitHub's servers see standard connection information (IP address, browser
+      type, request timing) as part of serving the page — DebugAI has no access to those logs. See
+      <a class="about-link" href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub's Privacy Statement</a>
+      for how they handle it.
+    </p>
+  </section>
+
+  <section class="about-section">
+    <h2 class="about-section-title">Questions</h2>
+    <p class="about-prose">
+      This policy may change as DebugAI grows — the date at the top reflects the last update.
+      Questions about it can go to
+      <a class="about-link" href="mailto:nirmal942894@gmail.com">nirmal942894@gmail.com</a>.
+    </p>
+  </section>
+
+  <footer class="site-footer">
+    <p>DebugAI doesn't run your code. It reads it.</p>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="license.html">License</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="https://github.com/nirmal-ai9/DebugAI" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+  </footer>
+
+  <script src="js/effects.js"></script>
+</body>
+</html>
