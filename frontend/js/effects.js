@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem(THEME_KEY, theme);
 
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) meta.setAttribute("content", theme === "dark" ? "#050a07" : "#f3f7fb");
+
       if (themeBtn) {
         const isDark = theme === "dark";
         themeBtn.textContent = isDark ? "Light Mode" : "Dark Mode";
