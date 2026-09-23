@@ -8,7 +8,7 @@
   },
   "keywords": [],
   "author": "Nirmal",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "type": "commonjs",
   "dependencies": {
     "hono": "^4.13.7",
