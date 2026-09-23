@@ -28,3 +28,7 @@ Getting DebugAI running on your local machine takes less than two minutes:
 ## Let's Build Together
  
 DebugAI is an evolving project, and I'm constantly tweaking things to make it better. Whether you want to add new visual effects, optimize the edge logic, or fix an edge-case bug, I'd love your help—feel free to jump into the code and open a pull request!
+
+## License
+
+DebugAI is open source under the [GNU v3.0 License](LICENSE) — a plain-English summary lives on the site's [License page](https://nirmal-ai9.github.io/DebugAI/license.html).
