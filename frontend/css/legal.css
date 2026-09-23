@@ -1,1 +1,69 @@
+/* License & Privacy pages — permission cards, license text, policy list */
 
+.legal-grid {
+  display: grid;
+  gap: var(--space-sm);
+  margin: var(--space-md) 0;
+}
+
+@media (min-width: 640px) {
+  .legal-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.legal-card {
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.legal-card--yes { border-left-color: var(--accent-green); }
+.legal-card--no { border-left-color: var(--accent-cyan); }
+.legal-card--warn { border-left-color: var(--accent-red); }
+
+.legal-card h3 {
+  margin: 0 0 var(--space-xs);
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.legal-card ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
+.legal-license-text {
+  margin: 0;
+  padding: var(--space-md);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  color: var(--text-dim);
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.legal-list {
+  margin: 0 0 var(--space-md);
+  padding-left: 1.2rem;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.legal-list li {
+  margin-bottom: var(--space-xs);
+}
+
+.legal-list strong {
+  color: var(--text);
+}
