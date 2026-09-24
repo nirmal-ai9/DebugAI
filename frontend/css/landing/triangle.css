@@ -83,3 +83,23 @@
     animation: none;
   }
 }
+
+.scenario-select {
+  display: block;
+  width: 100%;
+  padding: 0.6rem var(--space-sm);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.scenario-select:focus-visible {
+  outline: none;
+  border-color: var(--accent-green);
+  box-shadow: var(--glow-green-sm);
+}

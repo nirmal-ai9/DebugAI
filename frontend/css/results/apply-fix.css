@@ -29,11 +29,17 @@
 }
 
 .apply-fix-button:hover {
-  background: rgba(57, 255, 138, 0.18);
+  background: color-mix(in srgb, var(--accent-green) 18%, transparent);
   box-shadow: var(--glow-green);
 }
 
-.apply-fix-button:active {
+.apply-fix-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.apply-fix-button:active:not(:disabled) {
   transform: scale(0.98);
 }
 

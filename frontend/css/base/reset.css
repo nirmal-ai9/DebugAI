@@ -5,7 +5,19 @@
 }
 
 html {
-  color-scheme: dark;
+  /* Keeps anchor targets clear of the sticky nav */
+  scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Author display rules (flex, inline-flex...) otherwise beat the UA [hidden] rule */
+[hidden] {
+  display: none !important;
 }
 
 body {
