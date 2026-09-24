@@ -1,56 +1,111 @@
-/* Fields */
+/* Form Actions */
 
-.field {
-  display: block;
-  width: 100%;
-  resize: vertical;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  background: var(--surface-raised);
-  color: var(--text);
-  padding: var(--space-sm);
-  line-height: 1.6;
-  transition: border-color var(--transition), box-shadow var(--transition);
+.submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-top: var(--space-xs);
 }
 
-.field::placeholder {
+.submit-note {
+  margin: 0;
   color: var(--text-faint);
+  font-size: 0.8rem;
+  max-width: 34ch;
 }
 
-.field:focus {
-  outline: none;
-  border-color: var(--accent-green);
-  box-shadow: var(--glow-green-sm);
-}
-
-.field--prose {
-  font-family: var(--font-ui);
-  font-size: 0.9rem;
-  min-height: 6rem;
-}
-
-.field--code {
-  font-family: var(--font-code);
-  font-size: 0.85rem;
-  min-height: 10rem;
-  tab-size: 2;
-}
-
-.field--error {
-  min-height: 5rem;
+.submit-note--error {
   color: var(--accent-red);
-  background: var(--surface-raised);
 }
 
-.field--error:focus {
-  border-color: var(--accent-red);
-  box-shadow: var(--glow-red);
+.submit-note--busy {
+  color: var(--text-dim);
 }
 
-.field--error::placeholder {
-  color: color-mix(in srgb, var(--accent-red) 45%, transparent);
+.submit-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  border: 1px solid var(--accent-green);
+  border-radius: var(--radius-sm);
+  background: var(--accent-cyan);
+  color: var(--surface);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.75rem 1.5rem;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow var(--transition), background var(--transition), transform var(--transition);
 }
 
-.panel--code .field--code {
-  min-height: 16rem;
+.submit-button-spinner {
+  display: none;
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid color-mix(in srgb, var(--surface) 35%, transparent);
+  border-top-color: var(--surface);
+  border-radius: 50%;
+}
+
+.submit-button.is-loading .submit-button-spinner {
+  display: block;
+  animation: submit-spin 0.7s linear infinite;
+}
+
+.submit-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+@keyframes submit-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .submit-button.is-loading .submit-button-spinner {
+    animation: none;
+  }
+}
+
+.submit-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease);
+}
+
+.submit-button:hover::before {
+  left: 130%;
+}
+
+.submit-button:hover {
+  box-shadow: var(--glow-green);
+}
+
+.submit-button:active {
+  transform: scale(0.98);
+}
+
+.submit-button:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+}
+
+@media (max-width: 480px) {
+  .submit-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .submit-button {
+    width: 100%;
+  }
 }
