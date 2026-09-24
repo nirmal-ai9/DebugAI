@@ -1,1 +1,121 @@
+/* Links — where to read the code, find more work and check the fine print */
 
+.links {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+  border-top: 1px solid var(--border);
+}
+
+.link-grid {
+  display: grid;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 560px) {
+  .link-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .link-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.link-grid > li {
+  display: flex;
+}
+
+.link-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.link-card::before,
+.link-card::after {
+  border-color: var(--dot-color);
+}
+
+.link-card:hover,
+.link-card:focus-visible {
+  border-color: color-mix(in srgb, var(--dot-color) 55%, var(--border));
+  box-shadow: 0 0 18px -8px var(--dot-color);
+  transform: translateY(-2px);
+}
+
+.link-card:focus-visible {
+  outline: 2px solid var(--dot-color);
+  outline-offset: 3px;
+}
+
+.link-card-prompt {
+  color: var(--dot-color);
+  font-size: 0.8rem;
+}
+
+.link-card-title {
+  padding-right: var(--space-md);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.link-card-desc {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+
+.link-card-url {
+  margin-top: auto;
+  padding-top: var(--space-sm);
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.link-card-icon {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  color: var(--text-faint);
+  transition: color var(--transition), transform var(--transition);
+}
+
+.link-card:hover .link-card-icon,
+.link-card:focus-visible .link-card-icon {
+  color: var(--dot-color);
+  transform: translate(2px, -2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-card:hover,
+  .link-card:focus-visible,
+  .link-card:hover .link-card-icon,
+  .link-card:focus-visible .link-card-icon {
+    transform: none;
+  }
+}
