@@ -1,5 +1,7 @@
 :root,
 [data-theme="dark"] {
+  color-scheme: dark;
+
   /* Type — one monospace family throughout, hierarchy by weight/tracking */
   --font-code: "JetBrains Mono", "SF Mono", Consolas, monospace;
   --font-ui: var(--font-code);
@@ -45,6 +47,8 @@
 }
 
 [data-theme="light"] {
+  color-scheme: light;
+
   --bg: #f3f7fb;
   --surface: #ffffff;
   --surface-raised: #e8f0f8;
