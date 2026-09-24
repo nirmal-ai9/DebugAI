@@ -8,7 +8,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-sm) var(--space-lg);
-  background: rgba(5, 10, 7, 0.88);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
 }
@@ -25,6 +25,20 @@
 @media (max-width: 640px) {
   .nav-status {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav {
+    padding: var(--space-sm);
+  }
+
+  .nav-links {
+    gap: var(--space-sm);
+  }
+
+  .nav-cta {
+    padding: 0.5rem 0.8rem;
   }
 }
 
