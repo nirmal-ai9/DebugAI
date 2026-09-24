@@ -23,7 +23,7 @@
     }
   }
   </script>
-  <title>DebugAI</title>
+  <title>DebugAI — find the mismatch, not just the error</title>
   <link rel="canonical" href="https://nirmal-ai9.github.io/DebugAI/" />
 
   <meta property="og:type" content="website" />
@@ -31,12 +31,13 @@
   <meta property="og:title" content="DebugAI — find the mismatch, not just the error" />
   <meta property="og:description" content="Paste your intent, code and console error. DebugAI finds where the three disagree and hands back a fix." />
   <meta property="og:url" content="https://nirmal-ai9.github.io/DebugAI/" />
-  <meta property="og:image" content="logo/icon-512.png" />
-  <meta property="og:image:width" content="1024" />
-  <meta property="og:image:height" content="1024" />
+  <meta property="og:image" content="https://nirmal-ai9.github.io/DebugAI/logo/icon-512.png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
   <meta property="og:image:alt" content="DebugAI logo" />
 
-  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#050a07" />
+  <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="logo/icon-512.png" sizes="any" />
   <link rel="icon" href="logo/favicon-32x32.png" type="image/png" sizes="32x32" />
   <link rel="icon" href="logo/favicon-16x16.png" type="image/png" sizes="16x16" />
@@ -45,29 +46,32 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="DebugAI — find the mismatch, not just the error" />
   <meta name="twitter:description" content="Paste your intent, code and console error. DebugAI finds where the three disagree and hands back a fix." />
-  <meta name="twitter:image" content="logo/icon-512.png" />
+  <meta name="twitter:image" content="https://nirmal-ai9.github.io/DebugAI/logo/icon-512.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css" />
+  <script src="js/theme-init.js"></script>
 </head>
 <body>
 
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
   <div class="scanline" aria-hidden="true"></div>
 
-  <nav class="nav">
+  <nav class="nav" aria-label="Primary">
     <div class="wordmark">
       <span class="wordmark-glyph">&gt;_</span>
       <span class="wordmark-text">DebugAI</span>
     </div>
     <div class="nav-links">
       <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="#links">Links</a>
       <a class="nav-cta" href="#debug-tool">Try it</a>
     </div>
   </nav>
 
+  <main>
   <section class="hero">
     <div>
       <p class="hero-eyebrow">diagnostic terminal · v1.0</p>
@@ -80,8 +84,8 @@
   
       <div class="hero-actions">
         <a class="hero-primary" href="#debug-tool">Debug something</a>
-        <button id="theme-toggle-btn" class="hero-secondary">Light Mode</button>
-        <button id="rain-toggle-btn" class="hero-secondary">Stop Rain</button>
+        <button type="button" id="theme-toggle-btn" class="hero-secondary">Light Mode</button>
+        <button type="button" id="rain-toggle-btn" class="hero-secondary">Stop Rain</button>
         <a class="hero-secondary" href="#how-it-works">See how it works</a>
       </div>
     </div>
@@ -199,7 +203,7 @@
         <div class="closure-controls">
           <span class="challenge-label">$ scenario</span>
         </div>
-        <select id="triangle-select" class="closure-slider" aria-label="Choose a bug scenario">
+        <select id="triangle-select" class="scenario-select" aria-label="Choose a bug scenario">
           <option value="working">Everything agrees</option>
           <option value="logic">Code doesn't match intent</option>
           <option value="runtime" selected>Console doesn't match either</option>
@@ -212,7 +216,7 @@
   <section class="closure" id="closure-demo">
     <h2 class="closure-title">Why <code>var i</code> breaks the loop</h2>
     <p class="section-lead">
-      The example above appears in roughly a third of the bugs DebugAI diagnoses. Scrub the
+      It's one of the most common JavaScript bugs there is. Scrub the
       slider to watch <code>var</code> share one binding across every iteration, while
       <code>let</code> gives each one its own.
     </p>
@@ -251,11 +255,11 @@
       <article class="result-card result-card--fix fake bracket reveal">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔴</span>
-          <h3 class="result-title">variable scope issue — line 3</h3>
+          <h3 class="result-title">variable scope issue — line 1</h3>
         </div>
         <p class="result-prose">
           <code>var i</code> is function-scoped, so every click handler shares the same
-          <code>i</code> — by the time <code>setTimeout</code> fires, the loop has already finished.
+          <code>i</code> — by the time a click happens, the loop has already finished.
         </p>
         <pre class="code-fix"><code
           ><span class="code-line"><span class="line-num">1</span>for (let i = 0; i &lt; items.length; i++) {</span
@@ -267,7 +271,7 @@
       <article class="result-card fake result-card--fix bracket reveal">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔴</span>
-          <h3 class="result-title">TypeError — line 3</h3>
+          <h3 class="result-title">missing await — line 2</h3>
         </div>
         <p class="result-prose">
           <code>res.json()</code> returns a Promise. Without <code>await</code>, <code>user</code>
@@ -303,9 +307,9 @@
     </div>
   </section>
 
-  <main class="workspace" id="debug-tool">
+  <section class="workspace" id="debug-tool" aria-labelledby="tool-title">
     <form class="debug-form">
-      <h3 class="tool-title">try it yourself</h3>
+      <h2 class="tool-title" id="tool-title">try it yourself</h2>
       <div class="panel panel--requirements bracket reveal" style="--dot-color: var(--accent-amber);">
         <span class="panel-scan" aria-hidden="true"></span>
         <div class="panel-head">
@@ -318,6 +322,7 @@
           class="field field--prose"
           placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds."
           rows="4"
+          maxlength="2000"
         ></textarea>
       </div>
 
@@ -334,6 +339,7 @@
           class="field field--code"
           placeholder="Paste the function, component, or file that isn't behaving."
           rows="14"
+          maxlength="20000"
           spellcheck="false"
         ></textarea>
       </div>
@@ -351,12 +357,13 @@
           class="field field--code field--error"
           placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')"
           rows="6"
+          maxlength="5000"
           spellcheck="false"
         ></textarea>
       </div>
 
       <div class="submit-row">
-        <p class="submit-note">DebugAI reads all three together — the mismatch between them is usually the bug.</p>
+        <p class="submit-note" role="status" aria-live="polite">DebugAI reads all three together — the mismatch between them is usually the bug.</p>
         <button type="submit" class="submit-button">
           <span class="submit-button-spinner" aria-hidden="true"></span>
           <span class="submit-button-label">Find the fix</span>
@@ -422,10 +429,76 @@
         <button type="button" class="apply-fix-button">Copy fix</button>
       </article>
     </section>
+  </section>
+
+  <section class="links" id="links" aria-labelledby="links-title">
+    <h2 class="links-title" id="links-title">Around DebugAI</h2>
+    <p class="section-lead">Read the code, see what else Nirmal has built, or check how your code is handled.</p>
+    <ul class="link-grid">
+      <li class="reveal">
+        <a class="link-card bracket" href="https://github.com/nirmal-ai9/DebugAI" target="_blank" rel="noopener" style="--dot-color: var(--accent-green);">
+          <span class="link-card-prompt">$ git clone</span>
+          <span class="link-card-title">Source code<span class="visually-hidden"> (opens in a new tab)</span></span>
+          <span class="link-card-desc">Read how it works, open an issue or send a pull request.</span>
+          <span class="link-card-url">github.com/nirmal-ai9/DebugAI</span>
+          <svg class="link-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="https://github.com/nirmal-ai9/DebugAI/issues" target="_blank" rel="noopener" style="--dot-color: var(--accent-red);">
+          <span class="link-card-prompt">$ report</span>
+          <span class="link-card-title">Report a bug<span class="visually-hidden"> (opens in a new tab)</span></span>
+          <span class="link-card-desc">Did DebugAI get one wrong? File an issue with the code that fooled it.</span>
+          <span class="link-card-url">github.com/nirmal-ai9/DebugAI/issues</span>
+          <svg class="link-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="https://nirmal-ai9.github.io/" target="_blank" rel="noopener" style="--dot-color: var(--accent-cyan);">
+          <span class="link-card-prompt">$ cd ~</span>
+          <span class="link-card-title">Portfolio<span class="visually-hidden"> (opens in a new tab)</span></span>
+          <span class="link-card-desc">More self-contained web projects from the same developer.</span>
+          <span class="link-card-url">nirmal-ai9.github.io</span>
+          <svg class="link-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="https://github.com/nirmal-ai9/JavaScript-challenges" target="_blank" rel="noopener" style="--dot-color: var(--accent-amber);">
+          <span class="link-card-prompt">$ practice</span>
+          <span class="link-card-title">JavaScript challenges<span class="visually-hidden"> (opens in a new tab)</span></span>
+          <span class="link-card-desc">A repo of terminal-based JavaScript exercises to sharpen your debugging.</span>
+          <span class="link-card-url">github.com/nirmal-ai9/JavaScript-challenges</span>
+          <svg class="link-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="privacy.html" style="--dot-color: var(--accent-cyan);">
+          <span class="link-card-prompt">$ cat privacy</span>
+          <span class="link-card-title">Privacy</span>
+          <span class="link-card-desc">What happens to the code you paste in. Short version: nothing is stored.</span>
+          <span class="link-card-url">privacy.html</span>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="license.html" style="--dot-color: var(--accent-amber);">
+          <span class="link-card-prompt">$ cat license</span>
+          <span class="link-card-title">License</span>
+          <span class="link-card-desc">GPL v3.0, explained in plain terms.</span>
+          <span class="link-card-url">license.html</span>
+        </a>
+      </li>
+    </ul>
+  </section>
   </main>
 
   <footer class="site-footer">
     <p>DebugAI doesn't run your code. It reads it.</p>
+    <ul class="footer-links">
+      <li><a href="about.html">About</a></li>
+      <li><a href="license.html">License</a></li>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="https://github.com/nirmal-ai9/DebugAI" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
   </footer>
 
   <script src="js/interactive.js"></script>
@@ -433,43 +506,51 @@
 
   <script>
     // One orchestrated moment: type out a realistic debug session on load.
-    const demo = document.getElementById("demo");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    (() => {
+      const demo = document.getElementById("demo");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const typingSpeedMs = 18;
+      const linePauseMs = 250;
 
-    const demoLines = [
-      { cls: "prompt", text: "$ requirements: \"Log the clicked item's index.\"" },
-      { cls: "code", text: "for (var i = 0; i < items.length; i++) { ... }" },
-      { cls: "err", text: "> always logs the last index, never the clicked one" },
-      { cls: "out", text: "✓ bug: closure captures shared \"var i\" — use \"let\"" }
-    ];
+      const demoLines = [
+        { cls: "prompt", text: "$ requirements: \"Log the clicked item's index.\"" },
+        { cls: "code", text: "for (var i = 0; i < items.length; i++) { ... }" },
+        { cls: "err", text: "> always logs the last index, never the clicked one" },
+        { cls: "out", text: "✓ bug: closure captures shared \"var i\" — use \"let\"" }
+      ];
 
-    function renderStaticDemo() {
-      demo.innerHTML = demoLines
-        .map(l => `<p class="terminal-line"><span class="${l.cls}">${l.text}</span></p>`)
-        .join("");
-    }
+      const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-    async function typeLine(el, text, speed) {
-      for (let i = 0; i <= text.length; i++) {
-        el.textContent = text.slice(0, i);
-        await new Promise(r => setTimeout(r, speed));
-      }
-    }
-
-    async function playDemo() {
-      for (const line of demoLines) {
-        const p = document.createElement("p");
-        p.className = "terminal-line";
+      function appendLine({ cls }) {
+        const paragraph = document.createElement("p");
+        paragraph.className = "terminal-line";
         const span = document.createElement("span");
-        span.className = line.cls;
-        p.appendChild(span);
-        demo.appendChild(p);
-        await typeLine(span, line.text, 18);
-        await new Promise(r => setTimeout(r, 250));
+        span.className = cls;
+        paragraph.append(span);
+        demo.append(paragraph);
+        return span;
       }
-    }
 
-    reduceMotion ? renderStaticDemo() : playDemo();
+      async function typeInto(span, text) {
+        for (let i = 1; i <= text.length; i++) {
+          span.textContent = text.slice(0, i);
+          await wait(typingSpeedMs);
+        }
+      }
+
+      async function playDemo() {
+        for (const line of demoLines) {
+          await typeInto(appendLine(line), line.text);
+          await wait(linePauseMs);
+        }
+      }
+
+      if (reduceMotion) {
+        demoLines.forEach(line => { appendLine(line).textContent = line.text; });
+      } else {
+        playDemo();
+      }
+    })();
   </script>
 
   <script src="js/script.js"></script>
