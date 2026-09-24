@@ -1,22 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // 1. DARK / LIGHT THEME SWITCHER
+  // 1. DARK / LIGHT THEME SWITCHER (initial theme is set early by theme-init.js)
   (function initTheme() {
     const THEME_KEY = "theme";
-    const themeBtn =
-      document.getElementById("theme-toggle-btn") ||
-      document.getElementById("theme-toggle") ||
-      document.querySelector(".hero #theme-toggle");
+    const themeBtn = document.getElementById("theme-toggle-btn");
 
-    function getInitialTheme() {
-      const saved = localStorage.getItem(THEME_KEY);
-      if (saved) return saved;
-      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    function readSavedTheme() {
+      try {
+        return localStorage.getItem(THEME_KEY);
+      } catch {
+        return null;
+      }
+    }
+
+    function saveTheme(theme) {
+      try {
+        localStorage.setItem(THEME_KEY, theme);
+      } catch {
+        // Not persisting is fine; the theme still applies for this visit.
+      }
     }
 
     function applyTheme(theme) {
       document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem(THEME_KEY, theme);
 
       const meta = document.querySelector('meta[name="theme-color"]');
       if (meta) meta.setAttribute("content", theme === "dark" ? "#050a07" : "#f3f7fb");
@@ -28,17 +34,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    applyTheme(getInitialTheme());
+    applyTheme(document.documentElement.getAttribute("data-theme") || "dark");
 
     if (themeBtn) {
       themeBtn.addEventListener("click", () => {
-        const current = document.documentElement.getAttribute("data-theme");
-        applyTheme(current === "dark" ? "light" : "dark");
+        const next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+        applyTheme(next);
+        saveTheme(next);
       });
     }
 
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-      if (!localStorage.getItem(THEME_KEY)) {
+      if (!readSavedTheme()) {
         applyTheme(e.matches ? "dark" : "light");
       }
     });
@@ -46,13 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. CONTROLLABLE MATRIX RAIN ANIMATION
   (function matrixRain() {
-    const canvas =
-      document.getElementById("matrix-rain") ||
-      document.getElementById("rain-canvas");
-    const toggleBtn =
-      document.getElementById("rain-toggle-btn") ||
-      document.getElementById("stop-rain-btn") ||
-      document.querySelector(".hero #stop-rain-btn");
+    const canvas = document.getElementById("matrix-rain");
+    const toggleBtn = document.getElementById("rain-toggle-btn");
 
     if (!canvas) return;
 
@@ -119,7 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
       isRunning = true;
       if (toggleBtn) {
         toggleBtn.textContent = "Stop Rain";
-        toggleBtn.setAttribute("aria-pressed", "false");
       }
       raf = requestAnimationFrame(loop);
     }
@@ -133,7 +134,6 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       if (toggleBtn) {
         toggleBtn.textContent = "Start Rain";
-        toggleBtn.setAttribute("aria-pressed", "true");
       }
     }
 
