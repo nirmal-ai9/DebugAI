@@ -10,7 +10,7 @@ Underneath the aesthetics, I kept it super lightweight—just clean modular HTML
  
 ## Speed First: The Tech Stack
  
-To keep response times lightning fast, I put the backend on Cloudflare Workers using Node.js. Running on the edge means your code analysis happens ridiculously fast, no matter where you are.
+To keep response times lightning fast, I put the backend on Cloudflare Workers in plain JavaScript. Running on the edge means your code analysis happens ridiculously fast, no matter where you are.
  
 Every push to the repo triggers automated deployments via GitHub Actions (`deploy.yml`), keeping the infrastructure effortless and always up to date.
  
