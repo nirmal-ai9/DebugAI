@@ -1,69 +1,83 @@
+const LOCAL_HOSTS = ["localhost", "127.0.0.1"];
+const API_URL = LOCAL_HOSTS.includes(location.hostname)
+  ? "http://localhost:8787"
+  : "https://debugai-backend.nirmal-ai9.workers.dev";
+const REQUEST_TIMEOUT_MS = 45000;
+
 const form = document.querySelector(".debug-form");
 const msg = document.querySelector(".submit-note");
 const btn = document.querySelector(".submit-button");
 const btnLabel = btn.querySelector(".submit-button-label");
 const btnDefaultLabel = btnLabel.textContent;
 
-form.addEventListener("submit", async function(event) {
+function setStatus(text, state = "") {
+  msg.textContent = text;
+  msg.classList.toggle("submit-note--error", state === "error");
+  msg.classList.toggle("submit-note--busy", state === "busy");
+  msg.classList.toggle("dot", state === "busy");
+}
+
+function setLoading(isLoading) {
+  btn.disabled = isLoading;
+  btn.classList.toggle("is-loading", isLoading);
+  btnLabel.textContent = isLoading ? "Finding the fix" : btnDefaultLabel;
+}
+
+function describeFailure(error) {
+  if (error.name === "TimeoutError") return "The request timed out. Try again with less code.";
+  // fetch() rejects with a TypeError when the network is unreachable
+  if (error instanceof TypeError) return "Couldn't reach DebugAI. Check your connection and try again.";
+  return error.message;
+}
+
+form.addEventListener("submit", async event => {
   event.preventDefault();
-   btn.disabled = true;
-  
-  const requirements = document.getElementById("requirements").value;
-  const code = document.getElementById("code").value;
-  const error = document.getElementById("err").value;
-  
+
+  const requirementsField = form.elements.requirements;
+  const codeField = form.elements.code;
   const debugData = {
-    requirements: requirements,
-    code: code,
-    error: error
+    requirements: requirementsField.value,
+    code: codeField.value,
+    error: form.elements.err.value
   };
-  
-  if(requirements === "" || code === ""){
-    msg.style.color = "white";
-    msg.textContent = "Requirements and code are required";
-    btn.disabled = false;
-    return
-  }else{
-    msg.style.color = "white";  
-    msg.textContent = "Working on it";
-    msg.classList.add("dot");
-    btn.classList.add("is-loading");
-    btnLabel.textContent = "Finding the fix";
+
+  const emptyField = [requirementsField, codeField].find(field => !field.value.trim());
+  if (emptyField) {
+    setStatus("Requirements and code are required", "error");
+    emptyField.focus();
+    return;
   }
-  
-  try{
-    const response = await fetch("https://debugai-backend.nirmal-ai9.workers.dev", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(debugData)
-      }
-    );
 
-    // Read the body first — the backend always sends a `message`,
-    // even on 400/502, and status alone hides it.
-    const data = await response.json();
+  setLoading(true);
+  setStatus("Working on it", "busy");
 
-    if(data.success === false){
-      msg.textContent = data.message || "Invalid code or request";
-    }else{
-      showResult(data);
-      msg.textContent = "Done";
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(debugData),
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+    });
+
+    // The backend always sends a `message`, even on 400/502, so read the body before the status.
+    const data = await response.json().catch(() => null);
+    if (!data) {
+      throw new Error(`Unexpected response from the server (${response.status}).`);
     }
-    
-    msg.classList.remove("dot");
-    
-  }catch(error){
+
+    if (data.success === false || !data.result) {
+      setStatus(data.message || "Invalid code or request", "error");
+      return;
+    }
+
+    showResult(data);
+    setStatus("Done");
+  } catch (error) {
     console.error("Request failed:", error);
-    msg.textContent = `Failed: ${error.name} - ${error.message}`;
-    msg.classList.remove("dot");
+    setStatus(describeFailure(error), "error");
   } finally {
-    btn.disabled = false;
-    btn.classList.remove("is-loading");
-    btnLabel.textContent = btnDefaultLabel;
+    setLoading(false);
   }
-  
 });
 
 // Raw fix code, kept apart from the numbered markup so copy and preview stay clean.
@@ -119,7 +133,7 @@ function showResult(data) {
   }
 
   // Fill why
-  why.textContent = result.why;
+  why.textContent = result.why ?? "";
 
   // Fill fix
   if (result.fix) {
@@ -131,6 +145,7 @@ function showResult(data) {
   }
   renderCodeLines(fixCode, currentFixCode);
   resetCodeWindow(currentFixCode);
+  copyBtn.disabled = !currentFixCode;
 
   // Show results
   results.hidden = false;
@@ -144,25 +159,22 @@ function showResult(data) {
 }
  
 const copyBtn = document.querySelector(".apply-fix-button");
-const fixCode = document.querySelector("#results .code-fix code");
+const COPY_LABEL = copyBtn.textContent;
 
-copyBtn.addEventListener("click", async function() {
+function flashCopyLabel(text) {
+  copyBtn.textContent = text;
+  setTimeout(() => {
+    copyBtn.textContent = COPY_LABEL;
+  }, 2000);
+}
+
+copyBtn.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(currentFixCode);
-    
-    copyBtn.textContent = "Copied!";
-    
-    setTimeout(() => {
-      copyBtn.textContent = "Copy fix";
-    }, 2000);
-    
+    flashCopyLabel("Copied!");
   } catch (error) {
     console.error("Copy failed:", error);
-    copyBtn.textContent = "Copy failed";
-    
-    setTimeout(() => {
-      copyBtn.textContent = "Copy fix";
-    }, 2000);
+    flashCopyLabel("Copy failed");
   }
 });
 

@@ -75,21 +75,23 @@ function closureDemo() {
     readout.textContent = "";
   }
 
+  const cellFor = (isLet, i) => cells[isLet ? i : cells.length - 1];
+
   async function run() {
-    runBtn.disabled = true;
     const isLet = slider.value === "1";
+    runBtn.disabled = true;
+    slider.disabled = true;
     setMode(isLet);
 
-    for (let i = 0; i < handlers.length; i++) {
-      handlers[i].classList.add("is-pending");
-      cells[isLet ? i : cells.length - 1].classList.add("is-pending");
-    }
+    handlers.forEach((handler, i) => {
+      handler.classList.add("is-pending");
+      cellFor(isLet, i).classList.add("is-pending");
+    });
 
     for (let i = 0; i < handlers.length; i++) {
       await new Promise((r) => setTimeout(r, 450));
-      const logged = isLet ? i : cells.length;
       handlers[i].classList.remove("is-pending");
-      cells[isLet ? i : cells.length - 1].classList.remove("is-pending");
+      cellFor(isLet, i).classList.remove("is-pending");
       readout.textContent = `handler[${i}] logged: ${isLet ? i : 3}`;
     }
 
@@ -97,6 +99,7 @@ function closureDemo() {
       ? "Each handler closed over its own i — logs 0, 1, 2."
       : "Every handler closed over the same i — by the time any of them run, the loop has already finished, so all three log 3.";
     runBtn.disabled = false;
+    slider.disabled = false;
   }
 
   slider.addEventListener("input", () => setMode(slider.value === "1"));
@@ -125,14 +128,14 @@ function challengeDemo() {
     {
       intent: 'Return the user\'s first name, or "Guest" if there\'s no user.',
       lines: ["function greet(user) {", '  const name = user.firstName || "Guest";', "  return `Hi, ${name}`;", "}", "greet(null);"],
-      buggyLine: 4,
+      buggyLine: 1,
       console: "> TypeError: Cannot read properties of null (reading 'firstName')",
-      explanation: "The function assumes user is always an object. The call site passes null, which throws before the fallback ever runs.",
+      explanation: "user.firstName throws when user is null, so the || \"Guest\" fallback never gets a chance to run. Use user?.firstName.",
     },
     {
       intent: "Remove duplicate values from an array.",
       lines: ["function dedupe(arr) {", "  return arr.filter((val, i) => {", "    return arr.indexOf(val) === i;", "  });", "}"],
-      buggyLine: 0,
+      buggyLine: 2,
       console: "> dedupe([1, 2, 2, 3]) → [1, 2, 3] (correct, but slow on large arrays)",
       explanation: "Not a crash — indexOf inside filter is O(n²). Not every bug throws; some just cost you at scale. A Set-based pass fixes it in O(n).",
     },
@@ -149,7 +152,7 @@ function challengeDemo() {
     scoreEl.textContent = `Score: ${score}`;
     nextBtn.hidden = true;
 
-    codeList.innerHTML = "";
+    codeList.replaceChildren();
     r.lines.forEach((line, i) => {
       const li = document.createElement("li");
       const btn = document.createElement("button");
