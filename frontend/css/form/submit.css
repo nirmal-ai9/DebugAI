@@ -15,6 +15,14 @@
   max-width: 34ch;
 }
 
+.submit-note--error {
+  color: var(--accent-red);
+}
+
+.submit-note--busy {
+  color: var(--text-dim);
+}
+
 .submit-button {
   position: relative;
   display: inline-flex;
