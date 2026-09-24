@@ -38,7 +38,7 @@
 
 .field--error {
   min-height: 5rem;
-  color: #ffb3ac;
+  color: var(--accent-red);
   background: var(--surface-raised);
 }
 
@@ -48,7 +48,7 @@
 }
 
 .field--error::placeholder {
-  color: rgba(255, 179, 172, 0.45);
+  color: color-mix(in srgb, var(--accent-red) 45%, transparent);
 }
 
 .panel--code .field--code {
