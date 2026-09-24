@@ -5,7 +5,8 @@
 .examples-title,
 .triangle-title,
 .closure-title,
-.challenge-title {
+.challenge-title,
+.links-title {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -21,7 +22,8 @@
 .examples-title::before,
 .triangle-title::before,
 .closure-title::before,
-.challenge-title::before {
+.challenge-title::before,
+.links-title::before {
   content: "//";
   color: var(--accent-green);
 }
