@@ -25,13 +25,22 @@
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
+@property --ring-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 .example-grid .result-card::before {
   content: "";
   position: absolute;
   inset: -1px;
+  width: auto;
+  height: auto;
+  border: 0;
   border-radius: var(--radius);
   padding: 1px;
-  background: conic-gradient(from 0deg, transparent 0%, var(--accent-green) 8%, transparent 20%);
+  background: conic-gradient(from var(--ring-angle), transparent 0%, var(--accent-green) 8%, transparent 20%);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -42,7 +51,7 @@
 }
 
 @keyframes spin-border {
-  to { transform: rotate(360deg); }
+  to { --ring-angle: 360deg; }
 }
 
 .example-grid .result-card:hover {
