@@ -68,6 +68,9 @@
   font-family: var(--font-code);
   font-size: 0.85rem;
   min-height: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .terminal-line {
@@ -84,6 +87,8 @@
 .cursor {
   display: inline-block;
   width: 0.55ch;
+  height: 1.1em;
+  vertical-align: text-bottom;
   background: var(--accent-green);
   box-shadow: var(--glow-green-sm);
   animation: blink 1s step-end infinite;
@@ -99,4 +104,37 @@
   50% {
     opacity: 0;
   }
+}
+
+/* Live console prompt — appended once the scripted boot demo finishes */
+
+.terminal-prompt-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5ch;
+  margin: 0.65rem 0 0;
+}
+
+.terminal-prompt-label {
+  flex-shrink: 0;
+  color: var(--accent-amber);
+}
+
+.terminal-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  caret-color: var(--accent-green);
+}
+
+.terminal-input:focus {
+  outline: none;
+}
+
+/* The input's own caret takes over once it's focused */
+.terminal-prompt-line:focus-within .cursor {
+  display: none;
 }
