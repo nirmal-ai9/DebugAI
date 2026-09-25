@@ -71,6 +71,12 @@ function runCommand(value) {
       return { lines: [line(withName(pickRandom(ROAST_LINES), name), "out")] };
     case "fortune":
       return { lines: [line("Your future looks bright... unless your monitor is off. 😭", "out")] };
+    case "godmode":
+      return { lines: [
+        line("Activating GOD MODE...", "out"),
+        line("ERROR 403", "err"),
+        line("Even God said: \"Nah bro.\" 😭", "out")
+      ]};
     case "secret":
       return {
         lines: [
