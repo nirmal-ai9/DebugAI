@@ -138,7 +138,7 @@ export default {
         ],
         response_format: { type: "json_schema", json_schema: resultSchema },
         // Room for a full JSON diagnosis plus the fixed code; 1024 truncated long fixes mid-string.
-        max_tokens: 2048
+        max_tokens: 3500
       });
     } catch (err) {
       console.error("AI request failed:", err);
