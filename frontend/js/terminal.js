@@ -71,6 +71,24 @@ function runCommand(value) {
       return { lines: [line(withName(pickRandom(ROAST_LINES), name), "out")] };
     case "fortune":
       return { lines: [line("Your future looks bright... unless your monitor is off. 😭", "out")] };
+    case "fact":
+      return { lines: [line(pickRandom([
+        "Bananas are berries, but strawberries aren't. 🍌",
+        "Octopuses have three hearts. 🐙",
+        "Honey can remain edible for thousands of years. 🍿",
+        "A day on Venus is longer than a year on Venus. 🟠",
+        "Sharks existed before trees. 🐊",
+        "Wombat poop is cube-shaped. 💀",
+        "Your brain itself cannot feel pain.",
+        "Lightning can be hotter than the surface of the Sun. ⚡",
+        "Some turtles can breathe through their skin.",
+        "There are more possible chess games than atoms in the observable universe. ♟",
+        "Cows have best friends and can become stressed when separated. 🐄",
+        "A group of flamingos is called a flamboyance. 💚",
+        "The Eiffel Tower can become slightly taller in hot weather.",
+        "Butterflies taste using sensors on their feet. 💌",
+        "The shortest war in recorded history lasted less than an hour. ⚔️"
+      ]), "out")] };
     case "godmode":
       return { lines: [
         line("Activating GOD MODE...", "out"),
