@@ -1,6 +1,3 @@
-/* Hero terminal — a tiny live console under the scripted boot demo.
-   Commands: whoami, roast [name], help, clear */
-
 const WHOAMI_LINES = [
   "You’re the legend who just walked into the wrong chat. 💀",
   "You’re the main character… according to your own imagination.",
@@ -47,7 +44,7 @@ const ROAST_LINES = [
   "Your code runs perfectly… in your imagination. 😭"
 ];
 
-const HELP_TEXT = "Commands: whoami, roast [name], clear";
+const HELP_TEXT = "Commands: whoami, roast [name], fortune, secret, ping, clear, exit";
 
 function pickRandom(lines) {
   return lines[Math.floor(Math.random() * lines.length)];
@@ -59,21 +56,43 @@ function withName(line, name) {
   return `${name}, ${line.charAt(0).toLowerCase()}${line.slice(1)}`;
 }
 
+function line(text, cls) {
+  return { text, cls };
+}
+
 function runCommand(value) {
   const [command, ...rest] = value.split(/\s+/);
   const name = rest.join(" ").trim();
 
   switch (command.toLowerCase()) {
     case "whoami":
-      return { text: pickRandom(WHOAMI_LINES), cls: "out" };
+      return { lines: [line(pickRandom(WHOAMI_LINES), "out")] };
     case "roast":
-      return { text: withName(pickRandom(ROAST_LINES), name), cls: "out" };
+      return { lines: [line(withName(pickRandom(ROAST_LINES), name), "out")] };
+    case "fortune":
+      return { lines: [line("Your future looks bright... unless your monitor is off. 😭", "out")] };
+    case "secret":
+      return {
+        lines: [
+          line("You found the secret command.", "out"),
+          line("Unfortunately, the secret is that there is no secret. 😭", "out")
+        ]
+      };
+    case "ping":
+      return {
+        lines: [
+          line("Pinging reality...", "out"),
+          line("Response: Reality not found.", "err")
+        ]
+      };
+    case "exit":
+      return { lines: [line("Nice try. You can't escape the terminal. 😈", "err")] };
     case "help":
-      return { text: HELP_TEXT, cls: "out" };
+      return { lines: [line(HELP_TEXT, "out")] };
     case "clear":
-      return { clear: true };
+      return { clear: true, lines: [line("Terminal cleared. Your mistakes remain. 💀", "err")] };
     default:
-      return { text: `command not found: ${command} — try "help"`, cls: "err" };
+      return { lines: [line(`command not found: ${command} — try "help"`, "err")] };
   }
 }
 
@@ -92,7 +111,7 @@ function buildPromptRow() {
   input.autocomplete = "off";
   input.spellcheck = false;
   input.setAttribute("aria-label", "Debug console command");
-  input.placeholder = "help";
+  input.placeholder = "whoami";
 
   const cursor = document.createElement("span");
   cursor.className = "cursor";
@@ -127,10 +146,9 @@ function initTerminalConsole(container) {
     if (value) {
       const result = runCommand(value);
       if (result.clear) {
-        container.querySelectorAll(".terminal-line").forEach(line => line.remove());
-      } else {
-        printLine(result.text, result.cls);
+        container.querySelectorAll(".terminal-line").forEach(el => el.remove());
       }
+      result.lines.forEach(({ text, cls }) => printLine(text, cls));
     }
 
     container.scrollTop = container.scrollHeight;
