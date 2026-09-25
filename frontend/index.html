@@ -90,7 +90,7 @@
       </div>
     </div>
 
-    <div class="terminal bracket" aria-hidden="true">
+    <div class="terminal bracket" aria-label="Debug session terminal">
       <div class="terminal-bar">
         <span class="terminal-dot"></span>
         <span class="terminal-dot"></span>
@@ -503,6 +503,7 @@
 
   <script src="js/interactive.js"></script>
   <script src="js/effects.js"></script>
+  <script src="js/terminal.js"></script>
 
   <script>
     // One orchestrated moment: type out a realistic debug session on load.
@@ -545,42 +546,17 @@
         }
       }
 
-      if (reduceMotion) {
-        demoLines.forEach(line => { appendLine(line).textContent = line.text; });
-      } else {
-        playDemo();
+      async function boot() {
+        if (reduceMotion) {
+          demoLines.forEach(line => { appendLine(line).textContent = line.text; });
+        } else {
+          await playDemo();
+        }
+        if (window.initTerminalConsole) window.initTerminalConsole(demo);
       }
+
+      boot();
     })();
-  
-    const jokes = [
-      "Why do programmers prefer dark mode? Because light attracts bugs. 🐛",
-      "Why did the JavaScript developer wear glasses? Because they couldn't C#. 🤓",
-      "Why was the computer cold? It left its Windows open. 🪟",
-      "Why do programmers hate nature? It has too many bugs. 🌳🐛",
-      "Why did the developer go broke? Because they used up all their cache. 💸",
-      "Why was the JavaScript developer sad? They didn't know how to find closure. 😭",
-      "Why did the computer go to the doctor? It had a virus. 🦠",
-      "Why did the function break up? It didn't get the right arguments. 💔",
-      "Why do programmers love coffee? Because it helps them Java-script. ☕",
-      "Why did the loop get tired? It kept going around in circles. 🔄",
-      "Why did the developer quit their job? They didn't get arrays. 😭",
-      "Why was the CSS developer always calm? They knew how to keep things in style. 😎",
-      "Why did the HTML element go to therapy? It had too many issues with its parents. 😂",
-      "Why did the programmer bring a ladder? To reach the high-level language. 🪜",
-      "Why did the bug get promoted? It was outstanding in its field. 🐛🏆",
-      "Why did the computer sneeze? It had a bad case of the bytes. 🤧",
-      "Why was the keyboard so tired? It had too many shifts. ⌨️",
-      "Why did the developer stare at the screen? They were waiting for the code to compile. 👀",
-      "Why did the programmer hate the beach? Too many sand-boxes. 🏖️",
-      "Why did the code go to school? To improve its class. 📚"
-    ];
-    
-    // Pick a random joke
-    const randomJokeIndex = Math.floor(Math.random() * jokes.length);
-    const randomJoke = jokes[randomJokeIndex];
-    
-    // Show it in the console
-    console.log(randomJoke);
   </script>
 
   <script src="js/script.js"></script>
