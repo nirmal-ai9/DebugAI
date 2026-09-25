@@ -44,7 +44,7 @@ const ROAST_LINES = [
   "Your code runs perfectly… in your imagination. 😭"
 ];
 
-const HELP_TEXT = "Commands: whoami, roast [name], fortune, secret, ping, clear, exit, fact, fact, godmode";
+const HELP_TEXT = "Commands: whoami, roast [name], fortune, secret, ping, clear, exit, fact, godmode";
 
 function pickRandom(lines) {
   return lines[Math.floor(Math.random() * lines.length)];
