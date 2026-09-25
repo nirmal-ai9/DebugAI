@@ -92,7 +92,7 @@ function buildPromptRow() {
   input.autocomplete = "off";
   input.spellcheck = false;
   input.setAttribute("aria-label", "Debug console command");
-  input.placeholder = "whoami";
+  input.placeholder = "help";
 
   const cursor = document.createElement("span");
   cursor.className = "cursor";
