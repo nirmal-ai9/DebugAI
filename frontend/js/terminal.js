@@ -1,3 +1,6 @@
+/* Hero terminal — a tiny live console under the scripted boot demo.
+   Commands: whoami, roast [name], help, clear */
+
 const WHOAMI_LINES = [
   "You’re the legend who just walked into the wrong chat. 💀",
   "You’re the main character… according to your own imagination.",
@@ -44,7 +47,7 @@ const ROAST_LINES = [
   "Your code runs perfectly… in your imagination. 😭"
 ];
 
-const HELP_TEXT = "Commands: whoami, roast [name], fortune, secret, ping, clear, exit, fact, godmode";
+const HELP_TEXT = "Commands: whoami, roast [name], fortune, secret, ping, clear, exit";
 
 function pickRandom(lines) {
   return lines[Math.floor(Math.random() * lines.length)];
@@ -71,30 +74,6 @@ function runCommand(value) {
       return { lines: [line(withName(pickRandom(ROAST_LINES), name), "out")] };
     case "fortune":
       return { lines: [line("Your future looks bright... unless your monitor is off. 😭", "out")] };
-    case "fact":
-      return { lines: [line(pickRandom([
-        "Bananas are berries, but strawberries aren't. 🍌",
-        "Octopuses have three hearts. 🐙",
-        "Honey can remain edible for thousands of years. 🍿",
-        "A day on Venus is longer than a year on Venus. 🟠",
-        "Sharks existed before trees. 🐊",
-        "Wombat poop is cube-shaped. 💀",
-        "Your brain itself cannot feel pain.",
-        "Lightning can be hotter than the surface of the Sun. ⚡",
-        "Some turtles can breathe through their skin.",
-        "There are more possible chess games than atoms in the observable universe. ♟",
-        "Cows have best friends and can become stressed when separated. 🐄",
-        "A group of flamingos is called a flamboyance. 💚",
-        "The Eiffel Tower can become slightly taller in hot weather.",
-        "Butterflies taste using sensors on their feet. 💌",
-        "The shortest war in recorded history lasted less than an hour. ⚔️"
-      ]), "out")] };
-    case "godmode":
-      return { lines: [
-        line("Activating GOD MODE...", "out"),
-        line("ERROR 403", "err"),
-        line("Even God said: \"Nah bro.\" 😭", "out")
-      ]};
     case "secret":
       return {
         lines: [
@@ -135,7 +114,7 @@ function buildPromptRow() {
   input.autocomplete = "off";
   input.spellcheck = false;
   input.setAttribute("aria-label", "Debug console command");
-  input.placeholder = "help";
+  input.placeholder = "whoami";
 
   const cursor = document.createElement("span");
   cursor.className = "cursor";
@@ -179,6 +158,7 @@ function initTerminalConsole(container) {
   });
 
   container.append(promptRow);
+  printLine("Go ahead, try it — nothing here can break. Zero bug-tension allowed. 😌", "out");
   container.scrollTop = container.scrollHeight;
 }
 
