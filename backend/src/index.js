@@ -51,8 +51,14 @@ function corsHeadersFor(request) {
   };
 }
 
-function jsonResponse(request, body, status = 200) {
-  return Response.json(body, { status, headers: corsHeadersFor(request) });
+function jsonResponse(request, body, status = 200, extraHeaders = {}) {
+  return Response.json(body, { status, headers: { ...corsHeadersFor(request), ...extraHeaders } });
+}
+
+// CF-Connecting-IP is set by Cloudflare's edge and can't be spoofed by the client,
+// unlike X-Forwarded-For. Missing only in local dev without the CF emulation.
+function clientIp(request) {
+  return request.headers.get("CF-Connecting-IP") ?? "unknown";
 }
 
 function numberLines(code) {
@@ -89,6 +95,16 @@ export default {
 
     if (request.method !== "POST") {
       return jsonResponse(request, { success: false, message: "Method not allowed" }, 405);
+    }
+
+    const { success: withinLimit } = await env.RATE_LIMITER.limit({ key: clientIp(request) });
+    if (!withinLimit) {
+      return jsonResponse(
+        request,
+        { success: false, message: "Too many requests. Please wait a moment and try again." },
+        429,
+        { "Retry-After": "60" }
+      );
     }
 
     let data;
@@ -138,7 +154,7 @@ export default {
         ],
         response_format: { type: "json_schema", json_schema: resultSchema },
         // Room for a full JSON diagnosis plus the fixed code; 1024 truncated long fixes mid-string.
-        max_tokens: 3500
+        max_tokens: 2048
       });
     } catch (err) {
       console.error("AI request failed:", err);
