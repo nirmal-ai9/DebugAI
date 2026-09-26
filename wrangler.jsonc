@@ -1,0 +1,18 @@
+{
+  "name": "debugai-backend",
+  "main": "src/index.js",
+  "compatibility_date": "2026-09-13",
+  "ai": {
+    "binding": "AI"
+  },
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      // Account-unique identifier for this limiter's counter storage.
+      "namespace_id": "1001",
+      // 10 requests per 60s per IP, per Cloudflare location — enough for normal
+      // use, cheap insurance against a script hammering the AI-backed endpoint.
+      "simple": { "limit": 10, "period": 60 }
+    }
+  ]
+}
