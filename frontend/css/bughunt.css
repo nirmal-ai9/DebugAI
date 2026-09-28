@@ -1,1 +1,250 @@
+/* Bug Hunt — whack-a-bug mini-game (Upgraded Theme) */
 
+.hunt-hero {
+  position: relative;
+  z-index: 2;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-lg) var(--space-md);
+  text-align: center;
+}
+
+.hunt-hero .hero-eyebrow {
+  justify-content: center;
+}
+
+.hunt-hero .hero-heading,
+.hunt-hero .hero-sub {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hunt {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 2 * var(--space-md), 27rem);
+  margin: 0 auto var(--space-xl);
+  padding: var(--space-md);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: transform 0.1s ease;
+}
+
+/* Shake effect when hitting a feature */
+.hunt.is-shaking {
+  animation: hunt-shake 0.3s var(--ease);
+}
+
+@keyframes hunt-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+.hunt-top-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-xs);
+}
+
+.hunt-audio-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 0.72rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: calc(var(--radius) * 0.7);
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.hunt-audio-btn:hover {
+  color: var(--accent-green);
+  border-color: var(--accent-green);
+}
+
+.hunt-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xs);
+  margin: 0 0 var(--space-md);
+}
+
+.hunt-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0;
+}
+
+.hunt-stat-label {
+  color: var(--text-faint);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hunt-stat-value {
+  color: var(--accent-green);
+  font-size: 1.35rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hunt-stat-value.is-combo {
+  color: var(--text-dim);
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.hunt-stat-value.is-combo.is-active {
+  color: #f59e0b;
+  transform: scale(1.1);
+}
+
+.hunt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xs);
+}
+
+.hole {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  color: inherit;
+  font: inherit;
+  font-size: clamp(1.8rem, 8.5vw, 2.5rem);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color var(--transition), box-shadow var(--transition), transform 0.08s ease;
+}
+
+.hole::before {
+  content: attr(data-key);
+  position: absolute;
+  top: 0.35rem;
+  left: 0.5rem;
+  color: var(--text-faint);
+  font-size: 0.65rem;
+  pointer-events: none;
+}
+
+.hole:focus-visible,
+.hole.is-key-pressed {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 2px;
+  transform: scale(0.96);
+}
+
+.hole-glyph {
+  transform: scale(0);
+  transition: transform 0.12s var(--ease);
+  pointer-events: none;
+}
+
+.hole.is-active .hole-glyph {
+  transform: scale(1);
+}
+
+.hole[data-kind="bug"].is-active {
+  border-color: var(--accent-red);
+  box-shadow: var(--glow-red);
+}
+
+.hole[data-kind="crit"].is-active {
+  border-color: #a855f7;
+  box-shadow: 0 0 14px rgba(168, 85, 247, 0.4);
+}
+
+.hole[data-kind="feature"].is-active {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 14px rgba(75, 224, 209, 0.3);
+}
+
+.hole[data-kind="coffee"].is-active {
+  border-color: #f59e0b;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.4);
+}
+
+/* Floating score text overlay */
+.score-pop {
+  position: absolute;
+  top: 30%;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--accent-green);
+  pointer-events: none;
+  animation: score-float 0.65s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
+.score-pop.is-bad {
+  color: var(--accent-red);
+}
+
+.score-pop.is-crit {
+  color: #c084fc;
+}
+
+.score-pop.is-coffee {
+  color: #f59e0b;
+}
+
+@keyframes score-float {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(0.8);
+  }
+  50% {
+    transform: translateY(-16px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.9);
+  }
+}
+
+.hunt-status {
+  min-height: 3em;
+  margin: var(--space-md) 0 var(--space-sm);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.hunt-status.is-bad {
+  color: var(--accent-red);
+}
+
+.hunt-start {
+  display: flex;
+  width: 100%;
+}
+
+.hunt-start:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+@media (hover: none) {
+  .hole::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hole-glyph,
+  .hunt.is-shaking {
+    transition: none;
+    animation: none;
+  }
+}
