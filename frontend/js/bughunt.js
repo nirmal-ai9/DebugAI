@@ -6,10 +6,10 @@ const MAX_ACTIVE = 2;
 const BEST_KEY = "bughunt-best";
 
 const TARGETS = {
-  bug: { glyph: "🐛", label: "Bug! Squash it", pts: 1, type: "bug" },
-  crit: { glyph: "👾", label: "Memory Leak! High priority!", pts: 3, type: "crit" },
-  feature: { glyph: "✨", label: "Feature! Leave it alone", penalty: 2, type: "feature" },
-  coffee: { glyph: "☕", label: "Hot Patch! +3 Seconds", bonusTime: 3, type: "coffee" }
+  bug: { glyph: "🐛", label: "Bug! Squash it", pts: 1, kind: "bug" },
+  crit: { glyph: "👾", label: "Memory Leak! High priority!", pts: 3, kind: "crit" },
+  feature: { glyph: "✨", label: "Feature! Leave it alone", penalty: 2, kind: "feature" },
+  coffee: { glyph: "☕", label: "Hot Patch! +3 Seconds", bonusTime: 3, kind: "coffee" }
 };
 
 const RESULT_LINES = [
@@ -19,10 +19,9 @@ const RESULT_LINES = [
   { min: 0, text: "The bugs are filing for residency. 🐛" }
 ];
 
-// Web Audio API Synthesizer (No external assets required)
+// Synthesized Web Audio (Zero external files, auto-initializes on first click)
 const SoundFX = (() => {
   let ctx = null;
-  let muted = false;
 
   function init() {
     if (!ctx) {
@@ -32,8 +31,7 @@ const SoundFX = (() => {
     if (ctx && ctx.state === "suspended") ctx.resume();
   }
 
-  function playTone(freq, type, duration, gainVal = 0.1) {
-    if (muted) return;
+  function play(freq, type, duration, gainVal = 0.1) {
     init();
     if (!ctx) return;
     try {
@@ -54,31 +52,11 @@ const SoundFX = (() => {
 
   return {
     init,
-    toggleMute() {
-      muted = !muted;
-      return muted;
-    },
-    squash() {
-      playTone(520, "triangle", 0.08, 0.15);
-      setTimeout(() => playTone(880, "sine", 0.1, 0.12), 30);
-    },
-    crit() {
-      playTone(880, "square", 0.08, 0.12);
-      setTimeout(() => playTone(1320, "sine", 0.15, 0.15), 50);
-    },
-    feature() {
-      playTone(180, "sawtooth", 0.18, 0.2);
-      setTimeout(() => playTone(120, "sawtooth", 0.22, 0.2), 70);
-    },
-    coffee() {
-      playTone(523, "sine", 0.08, 0.12);
-      setTimeout(() => playTone(659, "sine", 0.08, 0.12), 50);
-      setTimeout(() => playTone(784, "sine", 0.12, 0.15), 100);
-    },
-    gameover() {
-      playTone(300, "sawtooth", 0.15, 0.15);
-      setTimeout(() => playTone(200, "sawtooth", 0.3, 0.15), 120);
-    }
+    squash: () => { play(520, "triangle", 0.08, 0.12); setTimeout(() => play(880, "sine", 0.1, 0.1), 30); },
+    crit: () => { play(880, "square", 0.08, 0.1); setTimeout(() => play(1320, "sine", 0.15, 0.12), 50); },
+    feature: () => { play(180, "sawtooth", 0.18, 0.18); setTimeout(() => play(120, "sawtooth", 0.22, 0.18), 70); },
+    coffee: () => { play(523, "sine", 0.08, 0.1); setTimeout(() => play(659, "sine", 0.08, 0.1), 50); setTimeout(() => play(784, "sine", 0.12, 0.12), 100); },
+    gameover: () => { play(300, "sawtooth", 0.15, 0.12); setTimeout(() => play(200, "sawtooth", 0.3, 0.12), 120); }
   };
 })();
 
@@ -104,12 +82,9 @@ function initBugHunt() {
   const grid = document.getElementById("hunt-grid");
   const scoreEl = document.getElementById("hunt-score");
   const timeEl = document.getElementById("hunt-time");
-  const comboEl = document.getElementById("hunt-combo");
   const bestEl = document.getElementById("hunt-best");
   const statusEl = document.getElementById("hunt-status");
   const startBtn = document.getElementById("hunt-start");
-  const audioBtn = document.getElementById("hunt-audio-toggle");
-  const huntCard = document.querySelector(".hunt");
 
   const holes = Array.from({ length: HOLE_COUNT }, (_, index) => {
     const hole = document.createElement("button");
@@ -144,16 +119,7 @@ function initBugHunt() {
   function render() {
     scoreEl.textContent = score;
     timeEl.textContent = timeLeft;
-    comboEl.textContent = combo > 1 ? `${combo}x` : "1x";
-    comboEl.classList.toggle("is-active", combo > 1);
     bestEl.textContent = best;
-  }
-
-  function triggerShake() {
-    if (!huntCard) return;
-    huntCard.classList.remove("is-shaking");
-    void huntCard.offsetWidth;
-    huntCard.classList.add("is-shaking");
   }
 
   function spawnPopText(hole, text, kindClass = "") {
@@ -161,7 +127,7 @@ function initBugHunt() {
     pop.className = `score-pop ${kindClass}`;
     pop.textContent = text;
     hole.appendChild(pop);
-    setTimeout(() => pop.remove(), 650);
+    setTimeout(() => pop.remove(), 600);
   }
 
   function hideTarget(index) {
@@ -181,10 +147,10 @@ function initBugHunt() {
 
   function getRandomKind() {
     const rand = Math.random();
-    if (rand < 0.55) return "bug";      // 55%
-    if (rand < 0.72) return "feature";  // 17%
-    if (rand < 0.88) return "crit";     // 16%
-    return "coffee";                    // 12%
+    if (rand < 0.55) return "bug";      // 55% standard bug
+    if (rand < 0.72) return "feature";  // 17% feature penalty
+    if (rand < 0.88) return "crit";     // 16% fast memory leak
+    return "coffee";                    // 12% hot patch (+time)
   }
 
   function showTarget() {
@@ -224,14 +190,13 @@ function initBugHunt() {
       combo = 0;
       score = Math.max(0, score - target.penalty);
       SoundFX.feature();
-      triggerShake();
       spawnPopText(hole, `−${target.penalty}`, "is-bad");
       setStatus(`Touched a feature! −${target.penalty}`, true);
     } else if (kind === "coffee") {
       timeLeft += target.bonusTime;
       SoundFX.coffee();
-      spawnPopText(hole, `+${target.bonusTime}s`, "is-coffee");
-      setStatus(`Hot Patch deployed! +${target.bonusTime}s time`);
+      spawnPopText(hole, `+${target.bonusTime}s`, "is-good");
+      setStatus(`Hot Patch deployed! +${target.bonusTime}s`);
     } else {
       combo += 1;
       const multiplier = Math.min(5, Math.floor(combo / 3) + 1);
@@ -241,8 +206,8 @@ function initBugHunt() {
       if (kind === "crit") SoundFX.crit();
       else SoundFX.squash();
 
-      const popLabel = multiplier > 1 ? `+${points} (${multiplier}x)` : `+${points}`;
-      spawnPopText(hole, popLabel, kind === "crit" ? "is-crit" : "is-good");
+      const label = multiplier > 1 ? `+${points} (${multiplier}x)` : `+${points}`;
+      spawnPopText(hole, label, "is-good");
       setStatus(kind === "crit" ? "Memory leak patched!" : "Squashed!");
     }
 
@@ -265,7 +230,7 @@ function initBugHunt() {
     }
 
     const { text } = RESULT_LINES.find(line => score >= line.min) || RESULT_LINES[RESULT_LINES.length - 1];
-    setStatus(`${isNewBest ? "New Best Score! " : ""}Final Score: ${score}. ${text}`);
+    setStatus(`${isNewBest ? "New best! " : ""}Score ${score}. ${text}`);
     startBtn.disabled = false;
     startBtn.textContent = "Play again";
     render();
@@ -278,7 +243,7 @@ function initBugHunt() {
     running = true;
     startBtn.disabled = true;
     startBtn.textContent = "Playing…";
-    setStatus("Squash the bugs! Watch out for features.");
+    setStatus("Go!");
     render();
 
     countdownTimer = setInterval(() => {
@@ -301,21 +266,8 @@ function initBugHunt() {
     if (/^[1-9]$/.test(event.key)) keyNum = Number(event.key);
     else if (/^Numpad[1-9]$/.test(event.code)) keyNum = Number(event.code.replace("Numpad", ""));
 
-    if (keyNum !== null) {
-      const targetIndex = keyNum - 1;
-      hit(targetIndex);
-      holes[targetIndex].classList.add("is-key-pressed");
-      setTimeout(() => holes[targetIndex].classList.remove("is-key-pressed"), 120);
-    }
+    if (keyNum !== null) hit(keyNum - 1);
   });
-
-  if (audioBtn) {
-    audioBtn.addEventListener("click", () => {
-      const isMuted = SoundFX.toggleMute();
-      audioBtn.textContent = isMuted ? "🔇 Sound Off" : "🔊 Sound On";
-      audioBtn.setAttribute("aria-label", isMuted ? "Sound muted" : "Sound enabled");
-    });
-  }
 
   startBtn.addEventListener("click", () => {
     SoundFX.init();
