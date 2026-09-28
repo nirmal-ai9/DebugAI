@@ -3,39 +3,55 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Bug Hunt — a 30-second mini-game from DebugAI. Squash the bugs, spare the features." />
+  <meta name="description" content="DebugAI is an AI-powered code debugging tool founded and built by Nirmal." />
   <meta name="robots" content="index, follow" />
+  <meta name="google-site-verification" content="SWZjLPPT9XOmK1D6qw-5ehnOCJLxgMNhEYzSn8yr6-Q" />
   <meta name="author" content="Nirmal">
-  <title>Bug Hunt — DebugAI</title>
-  <link rel="canonical" href="https://nirmal-ai9.github.io/DebugAI/bughunt.html" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "DebugAI",
+    "url": "https://nirmal-ai9.github.io/DebugAI/",
+    "description": "AI-powered code debugging tool.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "author": {
+      "@type": "Person",
+      "name": "Nirmal",
+      "sameAs": ["https://github.com/nirmal-ai9"]
+    }
+  }
+  </script>
+  <title>DebugAI — find the mismatch, not just the error</title>
+  <link rel="canonical" href="https://nirmal-ai9.github.io/DebugAI/" />
 
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="DebugAI" />
-  <meta property="og:title" content="Bug Hunt — DebugAI" />
-  <meta property="og:description" content="30 seconds. Squash the bugs. Don't touch the features." />
-  <meta property="og:url" content="https://nirmal-ai9.github.io/DebugAI/bughunt.html" />
+  <meta property="og:title" content="DebugAI — find the mismatch, not just the error" />
+  <meta property="og:description" content="Paste your intent, code and console error. DebugAI finds where the three disagree and hands back a fix." />
+  <meta property="og:url" content="https://nirmal-ai9.github.io/DebugAI/" />
   <meta property="og:image" content="https://nirmal-ai9.github.io/DebugAI/logo/icon-512.png" />
   <meta property="og:image:width" content="512" />
   <meta property="og:image:height" content="512" />
   <meta property="og:image:alt" content="DebugAI logo" />
 
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Bug Hunt — DebugAI" />
-  <meta name="twitter:description" content="30 seconds. Squash the bugs. Don't touch the features." />
-  <meta name="twitter:image" content="https://nirmal-ai9.github.io/DebugAI/logo/icon-512.png" />
-
   <meta name="theme-color" content="#050a07" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="logo/icon-512.png" sizes="any" />
+  <link rel="icon" href="logo/favicon.ico" sizes="any" />
   <link rel="icon" href="logo/favicon-32x32.png" type="image/png" sizes="32x32" />
   <link rel="icon" href="logo/favicon-16x16.png" type="image/png" sizes="16x16" />
   <link rel="apple-touch-icon" href="logo/apple-touch-icon.png" />
+  
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DebugAI — find the mismatch, not just the error" />
+  <meta name="twitter:description" content="Paste your intent, code and console error. DebugAI finds where the three disagree and hands back a fix." />
+  <meta name="twitter:image" content="https://nirmal-ai9.github.io/DebugAI/logo/icon-512.png" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/bughunt.css" />
   <script src="js/theme-init.js"></script>
 </head>
 <body>
@@ -44,54 +60,505 @@
   <div class="scanline" aria-hidden="true"></div>
 
   <nav class="nav" aria-label="Primary">
-    <a class="wordmark" href="index.html">
+    <div class="wordmark">
       <span class="wordmark-glyph">&gt;_</span>
       <span class="wordmark-text">DebugAI</span>
-    </a>
-    <a class="nav-cta" href="index.html#debug-tool">Try it</a>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="about.html">About</a>
+      <a class="nav-link" href="#links">Links</a>
+      <a class="nav-cta" href="#debug-tool">Try it</a>
+    </div>
   </nav>
 
   <main>
-    <header class="hunt-hero">
-      <p class="hero-eyebrow">mini-game · 30s</p>
-      <h1 class="hero-heading glitch" data-text="Bug Hunt">Bug Hunt</h1>
+  <section class="hero">
+    <div>
+      <p class="hero-eyebrow">diagnostic terminal · v1.0</p>
+      <h1 class="hero-heading glitch" data-text="Paste what broke. Get the fix, not a lecture.">Paste what broke. Get the fix, not a lecture.</h1>
+  
       <p class="hero-sub">
-        Squash bugs (🐛) &amp; memory leaks (👾). Grab hot patches (☕). Spare features (✨). Tap holes or press 1–9.
+        DebugAI doesn't run your code — it reads it. Give it what the code was supposed to do,
+          the code itself, and what the console shows. It finds the mismatch between the three.
       </p>
-    </header>
+  
+      <div class="hero-actions">
+        <a class="hero-primary" href="#debug-tool">Debug something</a>
+        <button type="button" id="theme-toggle-btn" class="hero-secondary">Light Mode</button>
+        <button type="button" id="rain-toggle-btn" class="hero-secondary">Stop Rain</button>
+        <a class="hero-secondary" href="#how-it-works">See how it works</a>
+      </div>
+    </div>
 
-    <section class="hunt bracket" aria-label="Bug Hunt game">
-      <div class="hunt-top-bar">
-        <button type="button" class="hunt-audio-btn" id="hunt-audio-toggle" aria-label="Sound enabled">🔊 Sound On</button>
+    <div class="terminal bracket" aria-label="Debug session terminal">
+      <div class="terminal-bar">
+        <span class="terminal-dot"></span>
+        <span class="terminal-dot"></span>
+        <span class="terminal-dot"></span>
+        <span class="terminal-bar-label">session.log</span>
+      </div>
+      <div class="terminal-body" id="demo"></div>
+    </div>
+  </section>
+
+  <section class="steps" id="how-it-works">
+    <h2 class="steps-title">How it works</h2>
+    <ol class="step-list">
+      <li class="step reveal" style="--dot-color: var(--accent-amber);">
+        <p class="step-prompt">$ describe</p>
+        <p class="step-desc">Say what the code was supposed to do, in plain language.</p>
+      </li>
+      <li class="step reveal" style="--dot-color: var(--accent-cyan);">
+        <p class="step-prompt">$ paste</p>
+        <p class="step-desc">Drop in the function, component, or file that isn't behaving — any language.</p>
+      </li>
+      <li class="step reveal" style="--dot-color: var(--accent-red);">
+        <p class="step-prompt">$ console</p>
+        <p class="step-desc">Add the error if there is one. No error at all works too.</p>
+      </li>
+      <li class="step reveal" style="--dot-color: var(--accent-green);">
+        <p class="step-prompt">$ diagnose</p>
+        <p class="step-desc">Get the bug, why it happens, and a fix you can copy straight into your file.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="log">
+    <h2 class="log-title">What it's built for</h2>
+
+    <div class="log-entry reveal">
+      <span class="log-dot" style="--dot-color: var(--accent-amber);"></span>
+      <div class="log-text">
+        <strong>Reads intent, not just syntax</strong>
+        <span>Most linters catch typos. DebugAI catches the gap between what you meant and what you wrote.</span>
+      </div>
+    </div>
+
+    <div class="log-entry reveal">
+      <span class="log-dot" style="--dot-color: var(--accent-cyan);"></span>
+      <div class="log-text">
+        <strong>Works without a stack trace</strong>
+        <span>Silent logic bugs — wrong scope, off-by-one, stale closures — get diagnosed from code and intent alone.</span>
+      </div>
+    </div>
+
+    <div class="log-entry reveal">
+      <span class="log-dot" style="--dot-color: var(--accent-red);"></span>
+      <div class="log-text">
+        <strong>Any language, no setup</strong>
+        <span>Paste and go. No install, no linking a repo, no sandboxed execution of your code.</span>
+      </div>
+    </div>
+
+    <div class="log-entry reveal">
+      <span class="log-dot" style="--dot-color: var(--accent-green);"></span>
+      <div class="log-text">
+        <strong>A fix you can copy, not a paragraph to decode</strong>
+        <span>Every diagnosis ends in working code, ready to paste back in.</span>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="triangle" id="triangle-demo">
+    <h2 class="triangle-title">The three things that have to agree</h2>
+    <p class="section-lead">
+      A bug is just a disagreement between three things: what you meant, what you wrote,
+      and what the console says happened. DebugAI's whole job is finding which edge broke.
+      Toggle the code below and watch the triangle react.
+    </p>
+
+    <div class="triangle-layout">
+      <figure class="triangle-figure">
+        <svg class="triangle-svg" viewBox="0 0 320 280" role="img" aria-label="Diagram showing intent, code and console as three connected nodes">
+          <g class="triangle-link" id="edge-intent-code" data-state="ok">
+            <line x1="160" y1="40" x2="70" y2="220"></line>
+            <text class="triangle-mark" x="100" y="120">?</text>
+          </g>
+          <g class="triangle-link" id="edge-code-console" data-state="ok">
+            <line x1="70" y1="220" x2="250" y2="220"></line>
+            <text class="triangle-mark" x="160" y="240">?</text>
+          </g>
+          <g class="triangle-link" id="edge-intent-console" data-state="ok">
+            <line x1="160" y1="40" x2="250" y2="220"></line>
+            <text class="triangle-mark" x="220" y="120">?</text>
+          </g>
+
+          <g class="triangle-node">
+            <rect x="105" y="10" width="110" height="40" rx="6"></rect>
+            <text x="160" y="31">intent</text>
+          </g>
+          <g class="triangle-node">
+            <rect x="15" y="200" width="110" height="40" rx="6"></rect>
+            <text x="70" y="221">code</text>
+          </g>
+          <g class="triangle-node">
+            <rect x="195" y="200" width="110" height="40" rx="6"></rect>
+            <text x="250" y="221">console</text>
+          </g>
+        </svg>
+      </figure>
+
+      <div class="showcase-panel bracket reveal" style="--dot-color: var(--accent-cyan);">
+        <div class="closure-controls">
+          <span class="challenge-label">$ scenario</span>
+        </div>
+        <select id="triangle-select" class="scenario-select" aria-label="Choose a bug scenario">
+          <option value="working">Everything agrees</option>
+          <option value="logic">Code doesn't match intent</option>
+          <option value="runtime" selected>Console doesn't match either</option>
+        </select>
+        <p class="showcase-readout" id="triangle-readout" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="closure" id="closure-demo">
+    <h2 class="closure-title">Why <code>var i</code> breaks the loop</h2>
+    <p class="section-lead">
+      It's one of the most common JavaScript bugs there is. Scrub the
+      slider to watch <code>var</code> share one binding across every iteration, while
+      <code>let</code> gives each one its own.
+    </p>
+
+    <div class="showcase-panel bracket reveal" style="--dot-color: var(--accent-amber);">
+      <pre class="closure-code"><code>for (<span id="closure-keyword">let</span> i = 0; i &lt; 3; i++) {
+  setTimeout(() =&gt; console.log(i), 100);
+}</code></pre>
+
+      <div class="closure-controls">
+        <div class="closure-slider">
+          <span>var</span>
+          <input type="range" id="closure-slider" min="0" max="1" step="1" value="1" aria-label="Toggle between var and let">
+          <span>let</span>
+        </div>
+        <button type="button" id="closure-run" class="hero-secondary">Run it</button>
       </div>
 
-      <div class="hunt-stats">
-        <p class="hunt-stat"><span class="hunt-stat-label">Score</span><span class="hunt-stat-value" id="hunt-score">0</span></p>
-        <p class="hunt-stat"><span class="hunt-stat-label">Time</span><span class="hunt-stat-value" id="hunt-time">30</span></p>
-        <p class="hunt-stat"><span class="hunt-stat-label">Combo</span><span class="hunt-stat-value is-combo" id="hunt-combo">1x</span></p>
-        <p class="hunt-stat"><span class="hunt-stat-label">Best</span><span class="hunt-stat-value" id="hunt-best">0</span></p>
+      <div class="closure-memory" id="closure-memory-let">
+        <div class="closure-handler" style="--row: 1;">handler[0]<span>→</span></div>
+        <div class="closure-handler" style="--row: 2;">handler[1]<span>→</span></div>
+        <div class="closure-handler" style="--row: 3;">handler[2]<span>→</span></div>
+        <div class="closure-cell" style="--row: 1;">i = <span class="closure-value">0</span></div>
+        <div class="closure-cell" style="--row: 2;">i = <span class="closure-value">1</span></div>
+        <div class="closure-cell" style="--row: 3;">i = <span class="closure-value">2</span></div>
       </div>
 
-      <div class="hunt-grid" id="hunt-grid" role="group" aria-label="Bug holes"></div>
+      <p class="showcase-readout" id="closure-readout" aria-live="polite"></p>
+    </div>
+  </section>
 
-      <p class="hunt-status" id="hunt-status" role="status" aria-live="polite">Ready when you are.</p>
+  <section class="examples">
+    <h2 class="examples-title">Real diagnoses</h2>
+    <div class="example-grid">
 
-      <button type="button" class="hero-primary hunt-start" id="hunt-start">Start</button>
+      <article class="result-card result-card--fix fake bracket reveal">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🔴</span>
+          <h3 class="result-title">variable scope issue — line 1</h3>
+        </div>
+        <p class="result-prose">
+          <code>var i</code> is function-scoped, so every click handler shares the same
+          <code>i</code> — by the time a click happens, the loop has already finished.
+        </p>
+        <pre class="code-fix"><code
+          ><span class="code-line"><span class="line-num">1</span>for (let i = 0; i &lt; items.length; i++) {</span
+          ><span class="code-line"><span class="line-num">2</span>  items[i].addEventListener("click", ...);</span
+          ><span class="code-line"><span class="line-num">3</span>}</span
+        ></code></pre>
+      </article>
+
+      <article class="result-card fake result-card--fix bracket reveal">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🔴</span>
+          <h3 class="result-title">missing await — line 2</h3>
+        </div>
+        <p class="result-prose">
+          <code>res.json()</code> returns a Promise. Without <code>await</code>, <code>user</code>
+          is the Promise itself, so <code>user.name</code> is undefined.
+        </p>
+        <pre class="code-fix"><code
+          ><span class="code-line"><span class="line-num">1</span>const res = await fetch(url);</span
+          ><span class="code-line"><span class="line-num">2</span>const user = await res.json();</span
+          ><span class="code-line"><span class="line-num">3</span>nameEl.textContent = user.name;</span
+        ></code></pre>
+      </article>
+
+    </div>
+  </section>
+
+
+  <section class="challenge" id="challenge-demo">
+    <h2 class="challenge-title">Beat the diagnostic</h2>
+    <p class="section-lead">
+      Three real bugs, no hints beyond the console. Click the line you think is wrong before
+      reading the fix — most people get one of these three wrong.
+    </p>
+
+    <div class="showcase-panel bracket reveal" style="--dot-color: var(--accent-red);">
+      <div class="challenge-head">
+        <span id="challenge-progress">Round 1 of 3</span>
+        <span id="challenge-score">Score: 0</span>
+      </div>
+      <p class="challenge-intent"><span class="challenge-label">$ intent</span><span id="challenge-intent-text"></span></p>
+      <ol class="challenge-code" id="challenge-code"></ol>
+      <pre class="challenge-console" id="challenge-console"></pre>
+      <button type="button" id="challenge-next" class="hero-secondary challenge-next" hidden>Next bug</button>
+    </div>
+  </section>
+
+  <section class="workspace" id="debug-tool" aria-labelledby="tool-title">
+    <form class="debug-form">
+      <h2 class="tool-title" id="tool-title">try it yourself</h2>
+      <div class="panel panel--requirements bracket reveal" style="--dot-color: var(--accent-amber);">
+        <span class="panel-scan" aria-hidden="true"></span>
+        <div class="panel-head">
+          <span class="panel-dot" style="--dot-color: var(--accent-amber);"></span>
+          <label for="requirements" class="panel-label">What was this supposed to do?</label>
+        </div>
+        <textarea
+          id="requirements"
+          name="requirements"
+          class="field field--prose"
+          placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds."
+          rows="4"
+          maxlength="2000"
+        ></textarea>
+      </div>
+
+      <div class="panel panel--code bracket reveal" style="--dot-color: var(--accent-cyan);">
+        <span class="panel-scan" aria-hidden="true"></span>
+        <div class="panel-head">
+          <span class="panel-dot" style="--dot-color: var(--accent-cyan);"></span>
+          <label for="code" class="panel-label">The code in question</label>
+          <span class="panel-hint">any language</span>
+        </div>
+        <textarea
+          id="code"
+          name="code"
+          class="field field--code"
+          placeholder="Paste the function, component, or file that isn't behaving."
+          rows="14"
+          maxlength="20000"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+      <div class="panel panel--error bracket reveal" style="--dot-color: var(--accent-red);">
+        <span class="panel-scan" aria-hidden="true"></span>
+        <div class="panel-head">
+          <span class="panel-dot" style="--dot-color: var(--accent-red);"></span>
+          <label for="err" class="panel-label">What the console shows</label>
+          <span class="panel-hint">optional</span>
+        </div>
+        <textarea
+          id="err"
+          name="err"
+          class="field field--code field--error"
+          placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')"
+          rows="6"
+          maxlength="5000"
+          spellcheck="false"
+        ></textarea>
+      </div>
+
+      <div class="submit-row">
+        <p class="submit-note" role="status" aria-live="polite">DebugAI reads all three together — the mismatch between them is usually the bug.</p>
+        <button type="submit" class="submit-button">
+          <span class="submit-button-spinner" aria-hidden="true"></span>
+          <span class="submit-button-label">Find the fix</span>
+        </button>
+      </div>
+
+    </form>
+
+    <section class="results" id="results" hidden aria-labelledby="results-heading">
+      <h2 id="results-heading" class="visually-hidden">Diagnosis</h2>
+
+      <article class="result-card result-card--bug bracket reveal">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🔴</span>
+          <h3 class="result-title">Bug found</h3>
+        </div>
+        <dl class="bug-meta">
+          <div class="bug-meta-item">
+            <dt>Type</dt>
+            <dd>ReferenceError</dd>
+          </div>
+          <div class="bug-meta-item">
+            <dt>Line</dt>
+            <dd>2</dd>
+          </div>
+        </dl>
+        <p class="bug-message">saveData is not defined</p>
+      </article>
+
+      <article class="result-card result-card--why bracket reveal">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🧠</span>
+          <h3 class="result-title">Why</h3>
+        </div>
+        <p class="result-prose">
+          The click handler calls <code>saveData()</code>, but the function isn't defined
+          in the provided code.
+        </p>
+      </article>
+
+      <article class="result-card result-card--fix bracket reveal">
+        <div class="result-head">
+          <span class="result-icon" aria-hidden="true">🔧</span>
+          <h3 class="result-title">The fix</h3>
+        </div>
+        <p class="result-prose">Define <code>saveData()</code> before calling it.</p>
+        <div class="code-window">
+          <div class="code-window-bar">
+            <span class="window-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+            <div class="view-toggle" role="group" aria-label="Fix view">
+              <button type="button" class="view-toggle-option" data-view="code" aria-pressed="true">Code</button>
+              <button type="button" class="view-toggle-option" data-view="preview" aria-pressed="false" disabled
+                title="Preview is available for HTML fixes">Preview</button>
+            </div>
+          </div>
+          <pre class="code-fix"><code
+            ><span class="code-line"><span class="line-num">1</span>function saveData() {</span
+            ><span class="code-line"><span class="line-num">2</span>    ...</span
+            ><span class="code-line"><span class="line-num">3</span>}</span
+          ></code></pre>
+          <iframe class="code-preview" title="Preview of the fixed code" sandbox="allow-scripts" hidden></iframe>
+        </div>
+        <button type="button" class="apply-fix-button">Copy fix</button>
+      </article>
     </section>
+  </section>
+
+  <section class="links" id="links" aria-labelledby="links-title">
+    <h2 class="links-title" id="links-title">Around DebugAI</h2>
+    <p class="section-lead">Read the code, see what else Nirmal has built, or check how your code is handled.</p>
+    <ul class="link-grid">
+      <li class="reveal">
+        <a class="link-card bracket" href="https://github.com/nirmal-ai9/DebugAI" target="_blank" rel="noopener" style="--dot-color: var(--accent-green);">
+          <span class="link-card-prompt">$ git clone</span>
+          <span class="link-card-title">Source code<span class="visually-hidden"> (opens in a new tab)</span></span>
+          <span class="link-card-desc">Read how it works, open an issue or send a pull request.</span>
+          <span class="link-card-url">github.com/nirmal-ai9/DebugAI</span>
+          <svg class="link-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="https://github.com/nirmal-ai9/DebugAI/issues" target="_blank" rel="noopener" style="--dot-color: var(--accent-red);">
+          <span class="link-card-prompt">$ report</span>
+          <span class="link-card-title">Report a bug<span class="visually-hidden"> (opens in a new tab)</span></span>
+          <span class="link-card-desc">Did DebugAI get one wrong? File an issue with the code that fooled it.</span>
+          <span class="link-card-url">github.com/nirmal-ai9/DebugAI/issues</span>
+          <svg class="link-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="https://nirmal-ai9.github.io/" target="_blank" rel="noopener" style="--dot-color: var(--accent-cyan);">
+          <span class="link-card-prompt">$ cd ~</span>
+          <span class="link-card-title">Portfolio<span class="visually-hidden"> (opens in a new tab)</span></span>
+          <span class="link-card-desc">More self-contained web projects from the same developer.</span>
+          <span class="link-card-url">nirmal-ai9.github.io</span>
+          <svg class="link-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="https://github.com/nirmal-ai9/JavaScript-challenges" target="_blank" rel="noopener" style="--dot-color: var(--accent-amber);">
+          <span class="link-card-prompt">$ practice</span>
+          <span class="link-card-title">JavaScript challenges<span class="visually-hidden"> (opens in a new tab)</span></span>
+          <span class="link-card-desc">A repo of terminal-based JavaScript exercises to sharpen your debugging.</span>
+          <span class="link-card-url">github.com/nirmal-ai9/JavaScript-challenges</span>
+          <svg class="link-card-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="privacy.html" style="--dot-color: var(--accent-cyan);">
+          <span class="link-card-prompt">$ cat privacy</span>
+          <span class="link-card-title">Privacy</span>
+          <span class="link-card-desc">What happens to the code you paste in. Short version: nothing is stored.</span>
+          <span class="link-card-url">privacy.html</span>
+        </a>
+      </li>
+      <li class="reveal">
+        <a class="link-card bracket" href="license.html" style="--dot-color: var(--accent-amber);">
+          <span class="link-card-prompt">$ cat license</span>
+          <span class="link-card-title">License</span>
+          <span class="link-card-desc">GPL v3.0, explained in plain terms.</span>
+          <span class="link-card-url">license.html</span>
+        </a>
+      </li>
+    </ul>
+  </section>
   </main>
 
   <footer class="site-footer">
     <p>DebugAI doesn't run your code. It reads it.</p>
     <ul class="footer-links">
       <li><a href="about.html">About</a></li>
-      <li><a href="bughunt.html">Bug Hunt</a></li>
       <li><a href="license.html">License</a></li>
       <li><a href="privacy.html">Privacy</a></li>
       <li><a href="https://github.com/nirmal-ai9/DebugAI" target="_blank" rel="noopener">GitHub</a></li>
     </ul>
   </footer>
 
+  <script src="js/interactive.js"></script>
   <script src="js/effects.js"></script>
-  <script src="js/bughunt.js"></script>
+  <script src="js/terminal.js"></script>
+
+  <script>
+    // One orchestrated moment: type out a realistic debug session on load.
+    (() => {
+      const demo = document.getElementById("demo");
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const typingSpeedMs = 18;
+      const linePauseMs = 250;
+
+      const demoLines = [
+        { cls: "prompt", text: "$ requirements: \"Log the clicked item's index.\"" },
+        { cls: "code", text: "for (var i = 0; i < items.length; i++) { ... }" },
+        { cls: "err", text: "> always logs the last index, never the clicked one" },
+        { cls: "out", text: "✓ bug: closure captures shared \"var i\" — use \"let\"" }
+      ];
+
+      const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+      function appendLine({ cls }) {
+        const paragraph = document.createElement("p");
+        paragraph.className = "terminal-line";
+        const span = document.createElement("span");
+        span.className = cls;
+        paragraph.append(span);
+        demo.append(paragraph);
+        return span;
+      }
+
+      async function typeInto(span, text) {
+        for (let i = 1; i <= text.length; i++) {
+          span.textContent = text.slice(0, i);
+          await wait(typingSpeedMs);
+        }
+      }
+
+      async function playDemo() {
+        for (const line of demoLines) {
+          await typeInto(appendLine(line), line.text);
+          await wait(linePauseMs);
+        }
+      }
+
+      async function boot() {
+        if (reduceMotion) {
+          demoLines.forEach(line => { appendLine(line).textContent = line.text; });
+        } else {
+          await playDemo();
+        }
+        if (window.initTerminalConsole) window.initTerminalConsole(demo);
+      }
+
+      boot();
+    })();
+  </script>
+
+  <script src="js/script.js"></script>
 </body>
 </html>
