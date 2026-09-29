@@ -92,7 +92,6 @@
   left: 0.5rem;
   color: var(--text-faint);
   font-size: 0.65rem;
-  pointer-events: none;
 }
 
 .hole:focus-visible {
@@ -103,15 +102,13 @@
 .hole-glyph {
   transform: scale(0);
   transition: transform 0.12s var(--ease);
-  pointer-events: none;
 }
 
 .hole.is-active .hole-glyph {
   transform: scale(1);
 }
 
-.hole[data-kind="bug"].is-active,
-.hole[data-kind="crit"].is-active {
+.hole[data-kind="bug"].is-active {
   border-color: var(--accent-red);
   box-shadow: var(--glow-red);
 }
@@ -119,37 +116,6 @@
 .hole[data-kind="feature"].is-active {
   border-color: var(--accent-cyan);
   box-shadow: 0 0 14px rgba(75, 224, 209, 0.3);
-}
-
-.hole[data-kind="coffee"].is-active {
-  border-color: var(--accent-green);
-  box-shadow: 0 0 14px rgba(52, 211, 153, 0.3);
-}
-
-/* Floating point popups (using theme vars only) */
-.score-pop {
-  position: absolute;
-  top: 25%;
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--accent-green);
-  pointer-events: none;
-  animation: score-float 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-}
-
-.score-pop.is-bad {
-  color: var(--accent-red);
-}
-
-@keyframes score-float {
-  0% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-22px);
-  }
 }
 
 .hunt-status {
@@ -182,9 +148,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hole-glyph,
-  .score-pop {
+  .hole-glyph {
     transition: none;
-    animation: none;
   }
 }
