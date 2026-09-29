@@ -44,7 +44,7 @@ const ROAST_LINES = [
   "Your code runs perfectly… in your imagination. 😭"
 ];
 
-const HELP_TEXT = "Commands: whoami, roast [name], fortune, secret, ping, clear, exit, fact, godmode";
+const HELP_TEXT = "Commands: whoami, roast [name], fortune, secret, ping, clear, exit, fact, godmode, play";
 
 function pickRandom(lines) {
   return lines[Math.floor(Math.random() * lines.length)];
@@ -89,6 +89,8 @@ function runCommand(value) {
         "Butterflies taste using sensors on their feet. 💌",
         "The shortest war in recorded history lasted less than an hour. ⚔️"
       ]), "out")] };
+    case "play":
+      return { lines: [line("Loading Bug Hunt... good luck. 🐛", "out")], redirect: "bughunt.html" };
     case "godmode":
       return { lines: [
         line("Activating GOD MODE...", "out"),
@@ -173,6 +175,7 @@ function initTerminalConsole(container) {
         container.querySelectorAll(".terminal-line").forEach(el => el.remove());
       }
       result.lines.forEach(({ text, cls }) => printLine(text, cls));
+      if (result.redirect) setTimeout(() => { window.location.href = result.redirect; }, 900);
     }
 
     container.scrollTop = container.scrollHeight;
