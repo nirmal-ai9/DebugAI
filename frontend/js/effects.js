@@ -24,8 +24,16 @@ document.addEventListener("DOMContentLoaded", () => {
     function applyTheme(theme) {
       document.documentElement.setAttribute("data-theme", theme);
 
-      const meta = document.querySelector('meta[name="theme-color"]');
-      if (meta) meta.setAttribute("content", theme === "dark" ? "#050a07" : "#f3f7fb");
+      const color = theme === "dark" ? "#050a07" : "#f3f7fb";
+      let meta = document.querySelector('meta[name="theme-color"]');
+
+      if (!meta) {
+        meta = document.createElement("meta");
+        meta.name = "theme-color";
+        document.head.appendChild(meta);
+      }
+
+      meta.setAttribute("content", color);
 
       if (themeBtn) {
         const isDark = theme === "dark";
