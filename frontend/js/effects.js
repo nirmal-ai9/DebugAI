@@ -74,7 +74,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let raf = null;
     let lastFrame = 0;
     const frameInterval = 1000 / 20; // 20fps for background flourish
-    let isRunning = true;
+    const RAIN_STORAGE_KEY = "debugai-rain-enabled";
+    let isRunning = localStorage.getItem(RAIN_STORAGE_KEY) !== "false";
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -119,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function startRain() {
       if (isRunning) return;
       isRunning = true;
+      localStorage.setItem(RAIN_STORAGE_KEY, "true");
       if (toggleBtn) {
         toggleBtn.textContent = "Stop Rain";
       }
@@ -127,6 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function stopRain() {
       isRunning = false;
+      localStorage.setItem(RAIN_STORAGE_KEY, "false");
       if (raf) {
         cancelAnimationFrame(raf);
         raf = null;
@@ -163,7 +166,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     resize();
-    raf = requestAnimationFrame(loop);
+
+    if (isRunning) {
+      if (toggleBtn) toggleBtn.textContent = "Stop Rain";
+      raf = requestAnimationFrame(loop);
+    } else if (toggleBtn) {
+      toggleBtn.textContent = "Start Rain";
+    }
   })();
 
   // 3. SCROLL REVEAL OBSERVER
