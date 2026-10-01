@@ -26,3 +26,4 @@
 
   meta.setAttribute("content", color);
 })();
+
