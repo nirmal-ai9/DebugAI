@@ -1,4 +1,4 @@
-## Why I Built DebugAI 
+## Why I Built DebugAI  
  
 Debugging used to eat up way too much of my dev time. Staring at stack traces for hours just to find a missing bracket or a subtle logic bug was exhausting. I wanted a tool that felt fast, smart, and actually fun to use—so I built **DebugAI**. It analyzes your code in seconds, points out where things went sideways, and gives you clear, actionable fixes without all the fluff.
  
