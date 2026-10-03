@@ -1,0 +1,71 @@
+/* Bug Hunt — holes */
+
+.hole {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-raised);
+  box-shadow: var(--shadow-xs);
+  color: inherit;
+  font: inherit;
+  font-size: clamp(1.8rem, 9vw, 2.6rem);
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.hole:hover:not(.is-active) {
+  border-color: var(--border-strong);
+}
+
+/* Key hint for the 1–9 shortcuts */
+.hole::before {
+  content: attr(data-key);
+  position: absolute;
+  top: 0.35rem;
+  left: 0.5rem;
+  color: var(--text-faint);
+  font-size: 0.65rem;
+}
+
+.hole:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 2px;
+}
+
+.hole-glyph {
+  transform: scale(0);
+  transition: transform 0.12s var(--ease);
+}
+
+.hole.is-active .hole-glyph {
+  transform: scale(1);
+}
+
+.hole[data-kind="bug"].is-active {
+  border-color: var(--accent-red);
+  box-shadow: var(--glow-red);
+}
+
+.hole[data-kind="feature"].is-active {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 14px rgba(75, 224, 209, 0.3);
+}
+
+@media (hover: none) {
+  .hole::before {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hole-glyph {
+    transition: none;
+  }
+}
