@@ -1,0 +1,30 @@
+/* Bug Hunt — game board and start button */
+
+.hunt {
+  position: relative;
+  z-index: 2;
+  width: min(100% - 2 * var(--gutter), 760px);
+  margin: 0 auto 4rem;
+  padding: clamp(1rem, 3vw, 1.75rem);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-xl);
+  transition: box-shadow var(--transition);
+}
+
+.hunt-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+}
+
+.hunt-start {
+  display: flex;
+  width: 100%;
+}
+
+.hunt-start:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
