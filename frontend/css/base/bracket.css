@@ -4,9 +4,7 @@
 }
 
 .bracket::before,
-.bracket::after,
-.bracket .bracket-tr,
-.bracket .bracket-bl {
+.bracket::after {
   content: "";
   position: absolute;
   width: 10px;
