@@ -1,1 +1,20 @@
+/* Bug Hunt — hero */
 
+.hunt-hero {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+  padding: clamp(4rem, 8vw, 6rem) var(--gutter) 2rem;
+  text-align: center;
+}
+
+.hunt-hero .hero-eyebrow {
+  justify-content: center;
+}
+
+.hunt-hero .hero-heading,
+.hunt-hero .hero-sub {
+  margin-left: auto;
+  margin-right: auto;
+}
