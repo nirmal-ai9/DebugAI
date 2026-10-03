@@ -52,13 +52,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/professional.css" />
   <script src="js/theme-init.js"></script>
 </head>
 <body>
 
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
-  <div class="scanline" aria-hidden="true"></div>
 
   <nav class="nav" aria-label="Primary">
     <div class="wordmark">
@@ -312,7 +310,6 @@
     <form class="debug-form">
       <h2 class="tool-title" id="tool-title">try it yourself</h2>
       <div class="panel panel--requirements bracket reveal" style="--dot-color: var(--accent-amber);">
-        <span class="panel-scan" aria-hidden="true"></span>
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-amber);"></span>
           <label for="requirements" class="panel-label">What was this supposed to do?</label>
@@ -328,7 +325,6 @@
       </div>
 
       <div class="panel panel--code bracket reveal" style="--dot-color: var(--accent-cyan);">
-        <span class="panel-scan" aria-hidden="true"></span>
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-cyan);"></span>
           <label for="code" class="panel-label">The code in question</label>
@@ -346,7 +342,6 @@
       </div>
 
       <div class="panel panel--error bracket reveal" style="--dot-color: var(--accent-red);">
-        <span class="panel-scan" aria-hidden="true"></span>
         <div class="panel-head">
           <span class="panel-dot" style="--dot-color: var(--accent-red);"></span>
           <label for="err" class="panel-label">What the console shows</label>
@@ -473,7 +468,7 @@
         </a>
       </li>
       <li class="reveal">
-        <a class="link-card bracket" href="privacy.html" style="--dot-color: var(--accent-cyan);">
+        <a class="link-card bracket" href="/privacy.html" style="--dot-color: var(--accent-cyan);">
           <span class="link-card-prompt">$ cat privacy</span>
           <span class="link-card-title">Privacy</span>
           <span class="link-card-desc">What happens to the code you paste in. Short version: nothing is stored.</span>
@@ -481,7 +476,7 @@
         </a>
       </li>
       <li class="reveal">
-        <a class="link-card bracket" href="license.html" style="--dot-color: var(--accent-amber);">
+        <a class="link-card bracket" href="/license.html" style="--dot-color: var(--accent-amber);">
           <span class="link-card-prompt">$ cat license</span>
           <span class="link-card-title">License</span>
           <span class="link-card-desc">GPL v3.0, explained in plain terms.</span>
