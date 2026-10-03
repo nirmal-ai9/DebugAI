@@ -5,20 +5,23 @@
   margin-top: var(--space-md);
 }
 
-.results[hidden] {
-  display: none;
-}
-
+/* Left rule defaults to the "why" accent; the variants below recolour it */
 .result-card {
   position: relative;
   overflow: hidden;
+  padding: var(--space-md);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 2px solid var(--accent-cyan, var(--border-strong));
+  border-left: 3px solid var(--accent-cyan);
   border-radius: var(--radius);
-  padding: var(--space-md);
-  box-shadow: inset 6px 0 18px -12px var(--accent-cyan, transparent);
-  animation: result-card-pulse 2.8s ease-in-out infinite;
+}
+
+.result-card--bug {
+  border-left-color: var(--accent-red);
+}
+
+.result-card--fix {
+  border-left-color: var(--accent-green);
 }
 
 /* Full-width scanning beam */
@@ -35,37 +38,11 @@
   animation: result-scan 2.2s linear infinite;
 }
 
-/* Scanning animation */
 @keyframes result-scan {
   0% { top: -4px; opacity: 0; }
   10% { opacity: 1; }
   90% { opacity: 1; }
   100% { top: 100%; opacity: 0; }
-}
-
-/* Card breathing glow */
-@keyframes result-card-pulse {
-  0%, 100% { box-shadow: inset 6px 0 18px -12px var(--accent-cyan, transparent); }
-  50% { box-shadow: inset 10px 0 30px -8px var(--accent-cyan, transparent), 0 0 24px -12px var(--accent-cyan, transparent); }
-}
-
-
-@media (prefers-reduced-motion: reduce) {
-  .result-card {
-    animation: none;
-  }
-}
-
-.result-card--bug {
-  --card-accent: var(--accent-red);
-}
-
-.result-card--why {
-  --card-accent: var(--accent-cyan);
-}
-
-.result-card--fix {
-  --card-accent: var(--accent-green);
 }
 
 .result-head {
@@ -82,7 +59,7 @@
 
 .result-title {
   margin: 0;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--text);
   letter-spacing: 0.01em;
