@@ -1,14 +1,5 @@
 /* Links — where to read the code, find more work and check the fine print */
 
-.links {
-  position: relative;
-  z-index: 2;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: var(--space-lg);
-  border-top: 1px solid var(--border);
-}
-
 .link-grid {
   display: grid;
   gap: var(--space-sm);
@@ -39,9 +30,6 @@
   flex-direction: column;
   gap: 0.35rem;
   padding: var(--space-md);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
   color: inherit;
   text-decoration: none;
   transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
@@ -52,14 +40,11 @@
   border-color: var(--dot-color);
 }
 
-.link-card:hover,
+/* Keyboard focus tints the card with its own accent; hover stays neutral (see card.css) */
 .link-card:focus-visible {
   border-color: color-mix(in srgb, var(--dot-color) 55%, var(--border));
   box-shadow: 0 0 18px -8px var(--dot-color);
   transform: translateY(-2px);
-}
-
-.link-card:focus-visible {
   outline: 2px solid var(--dot-color);
   outline-offset: 3px;
 }
@@ -112,7 +97,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .link-card:hover,
   .link-card:focus-visible,
   .link-card:hover .link-card-icon,
   .link-card:focus-visible .link-card-icon {
