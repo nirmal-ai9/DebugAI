@@ -1,15 +1,16 @@
 .debug-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: 1rem;
 }
 
 .panel {
   position: relative;
+  padding: clamp(1rem, 2.2vw, 1.5rem);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: var(--space-md);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
   transition: border-color var(--transition), box-shadow var(--transition);
 }
@@ -19,53 +20,16 @@
   border-color: var(--dot-color, var(--border-strong));
 }
 
-.panel-head {
-  position: relative;
-  z-index: 1;
-}
-
-.field {
-  position: relative;
-  z-index: 1;
-}
-
 .panel:focus-within {
   border-color: var(--border-strong);
-  box-shadow: 0 0 0 1px var(--border-strong);
-}
-
-.panel:focus-within .panel-scan {
-  opacity: 1;
-}
-
-.panel-scan {
-  position: absolute;
-  left: 0;
-  right: 0;
-  height: 2px;
-  top: -2px;
-  background: linear-gradient(90deg, transparent, var(--dot-color, var(--accent-green)), transparent);
-  opacity: 0;
-  animation: panel-sweep 1.8s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes panel-sweep {
-  0% { top: -2px; }
-  100% { top: 100%; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .panel-scan {
-    display: none;
-  }
+  box-shadow: var(--glow-green-sm);
 }
 
 .panel-head {
   display: flex;
   align-items: center;
   gap: var(--space-xs);
-  margin-bottom: var(--space-sm);
+  margin-bottom: 0.75rem;
 }
 
 .panel-dot {
@@ -77,15 +41,15 @@
 }
 
 .panel-label {
-  font-weight: 600;
-  font-size: 0.875rem;
+  font-weight: 700;
+  font-size: 0.9rem;
   color: var(--text);
   letter-spacing: 0.01em;
 }
 
 .panel-hint {
   margin-left: auto;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-faint);
   font-family: var(--font-code);
 }

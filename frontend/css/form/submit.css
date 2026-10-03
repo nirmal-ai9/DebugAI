@@ -5,14 +5,15 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  padding-top: var(--space-xs);
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
 }
 
 .submit-note {
   margin: 0;
+  max-width: 60ch;
   color: var(--text-faint);
   font-size: 0.8rem;
-  max-width: 34ch;
 }
 
 .submit-note--error {
@@ -24,20 +25,18 @@
 }
 
 .submit-button {
-  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   flex-shrink: 0;
   border: 1px solid var(--accent-green);
-  border-radius: var(--radius-sm);
-  background: var(--accent-cyan);
-  color: var(--surface);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.75rem 1.5rem;
-  overflow: hidden;
+  border-radius: var(--radius-control);
+  background: var(--accent-green);
+  color: var(--bg);
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 0.85rem 1.25rem;
   cursor: pointer;
   transition: box-shadow var(--transition), background var(--transition), transform var(--transition);
 }
@@ -71,33 +70,13 @@
   }
 }
 
-.submit-button::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -60%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.6s var(--ease);
-}
-
-.submit-button:hover::before {
-  left: 130%;
-}
-
-.submit-button:hover {
-  box-shadow: var(--glow-green);
-}
-
 .submit-button:active {
   transform: scale(0.98);
 }
 
-.submit-button:focus-visible {
-  outline: 2px solid var(--accent-green);
-  outline-offset: 3px;
+.submit-button:hover {
+  box-shadow: var(--glow-green);
+  transform: translateY(-1px);
 }
 
 @media (max-width: 480px) {
