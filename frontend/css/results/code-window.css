@@ -4,7 +4,7 @@
   margin: var(--space-sm) 0;
   background: var(--surface-raised);
   border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius);
   box-shadow: 0 10px 28px -14px rgba(0, 0, 0, 0.55);
   overflow: hidden;
 }
@@ -14,7 +14,7 @@
   align-items: center;
   gap: var(--space-sm);
   padding: 0.6rem var(--space-sm);
-  background: var(--surface);
+  background: var(--surface-raised);
   border-bottom: 1px solid var(--border);
 }
 
