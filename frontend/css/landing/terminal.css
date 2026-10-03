@@ -2,10 +2,11 @@
 
 .terminal {
   position: relative;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface);
-  box-shadow: var(--glow-green), inset 0 0 40px rgba(57, 255, 138, 0.03);
+  /* Static fallback: the pulse animation below drives the shadow until motion is reduced */
+  box-shadow: var(--shadow-terminal);
   overflow: hidden;
   animation: terminal-pulse 4s ease-in-out infinite;
 }
@@ -40,6 +41,12 @@
   }
 }
 
+@media (max-width: 900px) {
+  .terminal {
+    width: 100%;
+  }
+}
+
 .terminal-bar {
   display: flex;
   align-items: center;
@@ -64,13 +71,19 @@
 }
 
 .terminal-body {
-  padding: var(--space-md);
+  padding: 1.25rem 1.5rem;
   font-family: var(--font-code);
   font-size: 0.85rem;
-  min-height: 220px;
+  min-height: 148px;
   max-height: 320px;
   overflow-y: auto;
   overscroll-behavior: contain;
+}
+
+@media (max-width: 480px) {
+  .terminal-body {
+    padding-inline: 1rem;
+  }
 }
 
 .terminal-line {
@@ -82,7 +95,7 @@
 .terminal-line .prompt { color: var(--accent-amber); }
 .terminal-line .code   { color: var(--accent-cyan); }
 .terminal-line .err    { color: var(--accent-red); }
-.terminal-line .out    { color: var(--accent-green); text-shadow: var(--glow-green-sm); }
+.terminal-line .out    { color: var(--accent-green); }
 
 .cursor {
   display: inline-block;
