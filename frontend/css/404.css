@@ -3,10 +3,16 @@
 .not-found {
   position: relative;
   z-index: 2;
-  max-width: 560px;
+  width: min(100% - 2 * var(--gutter), 760px);
   margin: 0 auto;
-  padding: var(--space-xl) var(--space-lg);
-  text-align: center;
+  padding: clamp(4.5rem, 11vw, 8rem) var(--gutter);
+  text-align: left;
+}
+
+@media (max-width: 700px) {
+  .not-found {
+    padding-block: 4.5rem;
+  }
 }
 
 .not-found-eyebrow {
@@ -18,18 +24,20 @@
 
 .not-found-code {
   margin: 0 0 var(--space-md);
-  font-size: clamp(4rem, 18vw, 7rem);
+  color: var(--accent-green);
+  font-size: clamp(5rem, 18vw, 8rem);
+  font-weight: 800;
   line-height: 1;
-  color: var(--text);
+  letter-spacing: -0.09em;
 }
 
 .not-found-console {
   margin: 0 0 var(--space-lg);
   padding: var(--space-md);
-  background: var(--surface-raised);
+  background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  text-align: left;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
   overflow-x: auto;
   font-family: var(--font-code);
   font-size: 0.85rem;
@@ -41,8 +49,4 @@
   display: inline-block;
   margin-top: var(--space-xs);
   color: var(--text-faint);
-}
-
-.not-found .hero-primary {
-  display: inline-flex;
 }
