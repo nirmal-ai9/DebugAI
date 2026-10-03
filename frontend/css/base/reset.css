@@ -6,7 +6,7 @@
 
 html {
   /* Keeps anchor targets clear of the sticky nav */
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 5.5rem;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -24,29 +24,32 @@ body {
   position: relative;
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(ellipse 900px 500px at 50% -10%, rgba(57, 255, 138, 0.06), transparent 60%),
-    var(--bg);
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font-ui);
-  font-size: 15.5px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* Faint circuit grid — the lab's benchtop */
+/* Faint benchtop grid, fading out toward the bottom of the viewport */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  pointer-events: none;
   z-index: 0;
+  pointer-events: none;
+  opacity: 0.18;
   background-image:
-    linear-gradient(rgba(58, 255, 138, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(58, 255, 138, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(50, 100, 72, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50, 100, 72, 0.045) 1px, transparent 1px);
   background-size: 42px 42px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 40%, transparent 90%);
+  mask-image: radial-gradient(ellipse 80% 48% at 50% 0%, black 20%, transparent 95%);
+}
+
+[data-theme="light"] body::before {
+  opacity: 0.11;
 }
 
 textarea {
@@ -56,6 +59,18 @@ textarea {
 
 button {
   font: inherit;
+}
+
+/* Default speed for interactive elements that don't declare their own transition */
+a,
+button,
+textarea {
+  transition-duration: 0.18s;
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent-cyan) 65%, transparent);
+  outline-offset: 3px;
 }
 
 .visually-hidden {
