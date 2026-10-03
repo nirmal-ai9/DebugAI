@@ -3,9 +3,9 @@
 .hunt-hero {
   position: relative;
   z-index: 2;
-  max-width: 720px;
+  max-width: var(--container-narrow);
   margin: 0 auto;
-  padding: var(--space-xl) var(--space-lg) var(--space-md);
+  padding: clamp(4rem, 8vw, 6rem) var(--gutter) 2rem;
   text-align: center;
 }
 
@@ -22,19 +22,21 @@
 .hunt {
   position: relative;
   z-index: 2;
-  width: min(100% - 2 * var(--space-md), 26rem);
-  margin: 0 auto var(--space-xl);
-  padding: var(--space-md);
+  width: min(100% - 2 * var(--gutter), 760px);
+  margin: 0 auto 4rem;
+  padding: clamp(1rem, 3vw, 1.75rem);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: 14px;
+  box-shadow: var(--shadow-xl);
   transition: box-shadow var(--transition);
 }
 
 .hunt-rank {
   margin: 0 0 var(--space-sm);
   color: var(--text-dim);
-  font-size: 0.8rem;
+  font-family: var(--font-code);
+  font-size: 0.72rem;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -50,7 +52,7 @@
 .hunt-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-xs);
+  gap: 0.65rem;
   margin: 0 0 var(--space-md);
 }
 
@@ -60,6 +62,10 @@
   align-items: center;
   gap: 0.15rem;
   margin: 0;
+  padding: 0.8rem 0.5rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 9px;
 }
 
 .hunt-stat-label {
@@ -72,14 +78,14 @@
 .hunt-stat-value {
   color: var(--accent-green);
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
 
 .hunt-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-xs);
+  gap: 0.65rem;
 }
 
 .hunt-combo {
@@ -105,6 +111,7 @@
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--surface-raised);
+  box-shadow: var(--shadow-xs);
   color: inherit;
   font: inherit;
   font-size: clamp(1.8rem, 9vw, 2.6rem);
@@ -113,6 +120,10 @@
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.hole:hover:not(.is-active) {
+  border-color: var(--border-strong);
 }
 
 /* Key hint for the 1–9 shortcuts */
