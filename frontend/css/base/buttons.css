@@ -1,1 +1,36 @@
+/* Shared button behaviour — light sweep on primary actions, one focus ring for every button */
 
+.hero-primary,
+.submit-button,
+.apply-fix-button {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-primary::before,
+.submit-button::before,
+.apply-fix-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease);
+}
+
+.hero-primary:hover::before,
+.submit-button:hover::before,
+.apply-fix-button:hover::before {
+  left: 130%;
+}
+
+.hero-primary:focus-visible,
+.hero-secondary:focus-visible,
+.submit-button:focus-visible,
+.apply-fix-button:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+}

@@ -1,29 +1,19 @@
-/* Section label — shared lab-log heading style */
+/* Card surface — shared by steps, feature-log entries and link cards.
+   Imported after links.css so the hover state outranks the link card's focus state. */
 
-.steps-title,
-.log-title,
-.examples-title,
-.triangle-title,
-.closure-title,
-.challenge-title,
-.links-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.8rem;
-  color: var(--text-faint);
-  margin: 0 0 var(--space-md);
-  font-weight: 500;
-  letter-spacing: 0.02em;
+.step,
+.log-entry,
+.link-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }
 
-.steps-title::before,
-.log-title::before,
-.examples-title::before,
-.triangle-title::before,
-.closure-title::before,
-.challenge-title::before,
-.links-title::before {
-  content: "//";
-  color: var(--accent-green);
+.step:hover,
+.log-entry:hover,
+.link-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-green);
+  transform: translateY(-2px);
 }
