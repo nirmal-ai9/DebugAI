@@ -1,49 +1,58 @@
-/* About page — hero, section shell, card grid */
+/* About page — hero, section shell, card grid (also the shell for the License and Privacy pages) */
 
 .about-hero {
   position: relative;
   z-index: 2;
-  max-width: 720px;
+  max-width: var(--container-narrow);
   margin: 0 auto;
-  padding: var(--space-xl) var(--space-lg) var(--space-lg);
-  text-align: center;
+  padding: clamp(4rem, 8vw, 6rem) var(--gutter) 2rem;
+  text-align: left;
 }
 
 .about-hero .hero-sub {
-  margin: var(--space-sm) auto 0;
+  margin: 1rem 0 0;
 }
 
 .about-section {
   position: relative;
   z-index: 2;
-  max-width: 720px;
+  max-width: var(--container-narrow);
   margin: 0 auto;
-  padding: var(--space-lg);
+  padding: 2rem var(--gutter) 2.5rem;
   border-top: 1px solid var(--border);
+}
+
+@media (max-width: 700px) {
+  .about-section {
+    padding-block: 1.6rem 2rem;
+  }
 }
 
 .about-section-title {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 var(--space-md);
-  font-size: 0.8rem;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  color: var(--text-faint);
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+  color: var(--text);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .about-section-title::before {
-  content: "//";
-  color: var(--accent-green);
+  content: "";
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent-green);
 }
 
 .about-prose {
   max-width: 62ch;
   margin: 0 0 var(--space-sm);
   color: var(--text-dim);
-  font-size: 0.95rem;
-  line-height: 1.75;
+  font-size: 0.94rem;
+  line-height: 1.8;
 }
 
 .about-prose:last-of-type {
@@ -51,14 +60,16 @@
 }
 
 .about-link {
-  color: var(--accent-cyan);
+  color: var(--accent-green);
+  font-weight: 600;
   text-decoration: underline;
+  text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
   transition: color var(--transition);
 }
 
 .about-link:hover {
-  color: var(--text);
+  color: var(--accent-cyan);
 }
 
 .about-grid {
@@ -72,12 +83,24 @@
   }
 }
 
-.about-card {
-  position: relative;
+/* Card surface shared with the License and Privacy pages */
+.about-card,
+.legal-card {
   padding: var(--space-md);
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.about-card:hover,
+.legal-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--glow-green);
+}
+
+.about-card {
+  position: relative;
 }
 
 .about-card-dot {
@@ -86,19 +109,26 @@
   height: 7px;
   margin-bottom: var(--space-xs);
   background: var(--dot-color);
-  box-shadow: 0 0 8px color-mix(in srgb, var(--dot-color) 60%, transparent);
   border-radius: 50%;
+}
+
+.about-card h3,
+.legal-card h3 {
+  color: var(--text);
+  font-size: 0.95rem;
 }
 
 .about-card h3 {
   margin: 0 0 0.4rem;
-  font-size: 0.95rem;
-  color: var(--text);
+}
+
+.about-card p,
+.legal-card ul {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+  line-height: 1.75;
 }
 
 .about-card p {
   margin: 0;
-  color: var(--text-dim);
-  font-size: 0.85rem;
-  line-height: 1.65;
 }
