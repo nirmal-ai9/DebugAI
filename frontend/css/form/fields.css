@@ -5,7 +5,7 @@
   width: 100%;
   resize: vertical;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-control);
   background: var(--surface-raised);
   color: var(--text);
   padding: var(--space-sm);
@@ -31,7 +31,8 @@
 
 .field--code {
   font-family: var(--font-code);
-  font-size: 0.85rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
   min-height: 10rem;
   tab-size: 2;
 }
@@ -39,7 +40,6 @@
 .field--error {
   min-height: 5rem;
   color: var(--accent-red);
-  background: var(--surface-raised);
 }
 
 .field--error:focus {
