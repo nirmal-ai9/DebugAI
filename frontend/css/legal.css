@@ -1,4 +1,5 @@
-/* License & Privacy pages — permission cards, license text, policy list */
+/* License & Privacy pages — permission cards, license text, policy list.
+   Card surface and typography are shared with the About cards (about.css). */
 
 .legal-grid {
   display: grid;
@@ -12,30 +13,19 @@
   }
 }
 
+/* The --yes / --no / --warn modifiers stay in the markup; their accent colours were already being
+   overridden by the neutral card border and are not applied. */
 .legal-card {
-  padding: var(--space-md);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--border-strong);
-  border-radius: var(--radius);
+  border-left: 3px solid var(--border);
 }
-
-.legal-card--yes { border-left-color: var(--accent-green); }
-.legal-card--no { border-left-color: var(--accent-cyan); }
-.legal-card--warn { border-left-color: var(--accent-red); }
 
 .legal-card h3 {
   margin: 0 0 var(--space-xs);
-  font-size: 0.85rem;
-  color: var(--text);
 }
 
 .legal-card ul {
   margin: 0;
   padding-left: 1.1rem;
-  color: var(--text-dim);
-  font-size: 0.85rem;
-  line-height: 1.7;
 }
 
 .legal-license-text {
@@ -43,12 +33,12 @@
   padding: var(--space-md);
   background: var(--surface-raised);
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: 10px;
   overflow-x: auto;
   color: var(--text-dim);
   font-family: var(--font-code);
-  font-size: 0.8rem;
-  line-height: 1.7;
+  font-size: 0.78rem;
+  line-height: 1.75;
   white-space: pre-wrap;
 }
 
@@ -56,7 +46,7 @@
   margin: 0 0 var(--space-md);
   padding-left: 1.2rem;
   color: var(--text-dim);
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   line-height: 1.8;
 }
 
