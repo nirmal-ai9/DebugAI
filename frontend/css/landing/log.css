@@ -1,15 +1,5 @@
 /* Feature Log */
 
-.log {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: var(--space-lg);
-  border-top: 1px solid var(--border);
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
-}
-
 .log::before {
   content: "";
   position: absolute;
@@ -32,22 +22,17 @@
 }
 
 .log-entry {
+  position: relative;
+  z-index: 1;
   display: flex;
   gap: var(--space-sm);
   align-items: baseline;
-  padding: 0.7rem 0;
-  border-bottom: 1px solid var(--border);
-  position: relative;
-  z-index: 1;
+  padding: 1rem 1.15rem;
   transition: transform var(--transition);
 }
 
-.log-entry:hover {
-  transform: translateX(4px);
-}
-
-.log-entry:last-child {
-  border-bottom: none;
+.log-entry + .log-entry {
+  margin-top: 0.7rem;
 }
 
 .log-dot {
