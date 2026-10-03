@@ -1,14 +1,5 @@
 /* Examples Grid */
 
-.examples {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: var(--space-lg);
-  border-top: 1px solid var(--border);
-  position: relative;
-  z-index: 2;
-}
-
 .example-grid {
   display: grid;
   gap: var(--space-md);
@@ -21,7 +12,6 @@
 }
 
 .example-grid .result-card {
-  position: relative;
   transition: transform var(--transition), box-shadow var(--transition);
 }
 
