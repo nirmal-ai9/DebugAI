@@ -1,15 +1,4 @@
-/* Interactive showcase sections — shared shell */
-
-.triangle,
-.closure,
-.challenge {
-  position: relative;
-  z-index: 2;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: var(--space-lg);
-  border-top: 1px solid var(--border);
-}
+/* Interactive showcase sections — shared content styles (shell lives in section.css) */
 
 .section-lead {
   max-width: 60ch;

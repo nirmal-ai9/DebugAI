@@ -1,62 +1,46 @@
-/* Base resets to match button and anchor tag rendering */
+/* Hero buttons — the same classes style both <a> and <button> */
+
 .hero-primary,
 .hero-secondary {
-  font-family: inherit;
-  font-size: inherit;
-  cursor: pointer;
-  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.8rem 1.4rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  border-radius: var(--radius-control);
+  font-size: 0.83rem;
+  font-weight: 700;
   text-decoration: none;
+  cursor: pointer;
   transition: box-shadow var(--transition), background var(--transition), border-color var(--transition);
 }
 
-/* Primary Action */
 .hero-primary {
-  position: relative;
-  border: 1px solid var(--accent-green-soft);
-  background: var(--accent-cyan);
-  color: var(--surface);
-  overflow: hidden;
-}
-
-.hero-primary::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -60%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(115deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-20deg);
-  transition: left 0.6s var(--ease);
-}
-
-.hero-primary:hover::before {
-  left: 130%;
+  padding: 0.8rem 1.1rem;
+  border: 1px solid var(--accent-green);
+  background: var(--accent-green);
+  color: var(--bg);
 }
 
 .hero-primary:hover {
   box-shadow: var(--glow-green);
 }
 
-/* Secondary Action */
 .hero-secondary {
-  border: 1px solid var(--border-strong);
-  background: transparent;
-  color: var(--text);
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-dim);
 }
 
 .hero-secondary:hover {
+  border-color: var(--border-strong);
   background: var(--surface-raised);
+  color: var(--text);
+  box-shadow: var(--glow-green-sm);
 }
 
-.hero-primary:focus-visible,
-.hero-secondary:focus-visible {
-  outline: 2px solid var(--accent-green);
-  outline-offset: 3px;
+@media (max-width: 480px) {
+  .hero-primary,
+  .hero-secondary {
+    padding: 0.72rem 0.75rem;
+  }
 }
