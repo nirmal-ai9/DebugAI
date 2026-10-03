@@ -1,0 +1,82 @@
+/* Bug Hunt — rank, stats, combo and status readouts */
+
+.hunt-rank {
+  margin: 0 0 var(--space-sm);
+  color: var(--text-dim);
+  font-family: var(--font-code);
+  font-size: 0.72rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.hunt-rank #hunt-rank-name {
+  color: var(--accent-amber);
+  font-weight: 600;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.hunt-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.65rem;
+  margin: 0 0 var(--space-md);
+}
+
+.hunt-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.8rem 0.5rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.hunt-stat-label {
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hunt-stat-value {
+  color: var(--accent-green);
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.hunt-combo {
+  margin: var(--space-sm) 0 0;
+  min-height: 1.2em;
+  color: var(--accent-green);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.hunt-combo[data-tier="2"] { color: var(--accent-cyan); }
+.hunt-combo[data-tier="3"] { color: var(--accent-amber); }
+.hunt-combo[data-tier="4"],
+.hunt-combo[data-tier="5"] { color: var(--accent-red); }
+
+.hunt-status {
+  min-height: 3em;
+  margin: var(--space-md) 0 var(--space-sm);
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.hunt-status.is-bad {
+  color: var(--accent-red);
+}
+
+.hunt-status.is-good {
+  color: var(--accent-green);
+}
