@@ -176,34 +176,98 @@ async function analyseWholeFile(env, args) {
 
 const MAX_FIX_LINES = 20;
 const MAX_DISTANCE_FROM_BUG = 5;
+// Allow a much looser hint distance before falling back to a fuzzy match.
+const MAX_HINT_DISTANCE = 200;
 
-// Finds where fix.original really sits in the file. The model's own line numbers are
-// only a hint: a wrong range would splice the fix into unrelated code.
-function locateFix(lines, fix, bugLine) {
-  let original = typeof fix?.original === "string" ? fix.original.replace(/\r?\n$/, "") : "";
-  if (!original.trim()) return null;
+function normalizeLine(line) {
+  return line.replace(/\r$/, "").replace(/^\s*\d+:\s?/, "").trim();
+}
 
-  let target = original.split(/\r?\n/);
-  if (target.every(line => !line.trim() || /^\s*\d+:/.test(line))) {
-    target = target.map(line => line.replace(/^\s*\d+:\s?/, ""));
-  }
-  target = target.map(line => line.trim());
-  if (target.length > MAX_FIX_LINES) return null;
-
-  const hint = Number.isInteger(bugLine) ? bugLine : fix.startLine;
-  let best = null;
-
+function findExact(lines, target) {
+  const matches = [];
   for (let i = 0; i + target.length <= lines.length; i++) {
-    if (target.some((line, j) => lines[i + j].trim() !== line)) continue;
+    let ok = true;
+    for (let j = 0; j < target.length; j++) {
+      if (normalizeLine(lines[i + j]) !== target[j]) { ok = false; break; }
+    }
+    if (ok) matches.push({ startLine: i + 1, endLine: i + target.length });
+  }
+  return matches;
+}
 
-    const start = i + 1;
-    const end = i + target.length;
-    const distance = hint >= start && hint <= end ? 0 : Math.min(Math.abs(hint - start), Math.abs(hint - end));
-    if (!best || distance < best.distance) best = { startLine: start, endLine: end, distance };
+function findFuzzy(lines, target) {
+  // Score each window by how many lines match after normalization.
+  // Requires >= 70% line matches and a unique best window.
+  let best = null;
+  const need = Math.max(1, Math.ceil(target.length * 0.7));
+  for (let i = 0; i + target.length <= lines.length; i++) {
+    let hits = 0;
+    for (let j = 0; j < target.length; j++) {
+      if (normalizeLine(lines[i + j]) === target[j]) hits++;
+    }
+    if (hits < need) continue;
+    const score = hits / target.length;
+    if (!best || score > best.score) {
+      best = { startLine: i + 1, endLine: i + target.length, score };
+    } else if (best && score === best.score) {
+      best.ambiguous = true; // tie — refuse to guess
+    }
+  }
+  return best && !best.ambiguous ? best : null;
+}
+
+function locateFix(lines, fix, bugLine) {
+  const raw = typeof fix?.original === "string" ? fix.original.replace(/\r?\n$/, "") : "";
+  if (!raw.trim()) return null;
+
+  let target = raw.split(/\r?\n/).map(normalizeLine).filter((_, i, a) => {
+    // keep blanks in the middle, drop leading/trailing blanks
+    return true;
+  });
+  // Drop leading/trailing blank lines only
+  while (target.length && !target[0]) target.shift();
+  while (target.length && !target[target.length - 1]) target.pop();
+  if (!target.length || target.length > MAX_FIX_LINES) return null;
+
+  const hint = Number.isInteger(bugLine)
+    ? bugLine
+    : Number.isInteger(fix?.startLine) ? fix.startLine : null;
+
+  const pickClosest = matches => {
+    if (matches.length === 0) return null;
+    if (!Number.isInteger(hint)) return matches[0];
+    return matches.reduce((a, b) => {
+      const da = Math.min(Math.abs(hint - a.startLine), Math.abs(hint - a.endLine));
+      const db = Math.min(Math.abs(hint - b.startLine), Math.abs(hint - b.endLine));
+      return db < da ? b : a;
+    });
+  };
+
+  // 1. Exact match (normalized whitespace + optional "NN:" prefixes)
+  const exact = findExact(lines, target);
+  const exactPick = pickClosest(exact);
+  if (exactPick) {
+    const d = Number.isInteger(hint)
+      ? Math.min(Math.abs(hint - exactPick.startLine), Math.abs(hint - exactPick.endLine))
+      : 0;
+    // Accept any exact match; the text is byte-identical after normalization.
+    if (exact.length === 1 || d <= MAX_HINT_DISTANCE) {
+      return { startLine: exactPick.startLine, endLine: exactPick.endLine };
+    }
   }
 
-  if (!best || (Number.isInteger(hint) && best.distance > MAX_DISTANCE_FROM_BUG)) return null;
-  return { startLine: best.startLine, endLine: best.endLine };
+  // 2. Fuzzy match — only if unique
+  const fuzzy = findFuzzy(lines, target);
+  if (fuzzy) {
+    const d = Number.isInteger(hint)
+      ? Math.min(Math.abs(hint - fuzzy.startLine), Math.abs(hint - fuzzy.endLine))
+      : 0;
+    if (fuzzy.score >= 0.8 && d <= MAX_HINT_DISTANCE) {
+      return { startLine: fuzzy.startLine, endLine: fuzzy.endLine };
+    }
+  }
+
+  return null;
 }
 
 function mergeResults(results, lines) {
