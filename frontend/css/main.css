@@ -30,6 +30,7 @@
 /* Form */
 @import url("form/panel.css");
 @import url("form/fields.css");
+@import url("form/fields-enhanced.css");
 @import url("form/submit.css");
 
 /* Layout */
@@ -37,6 +38,7 @@
 
 /* Results */
 @import url("results/card.css");
+@import url("results/card-enhanced.css");
 @import url("results/bug.css");
 @import url("results/code-fix.css");
 @import url("results/code-window.css");
