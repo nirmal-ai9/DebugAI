@@ -23,3 +23,28 @@
 .apply-fix-button:active:not(:disabled) {
   transform: scale(0.98);
 }
+
+.apply-fix-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.apply-fix-button--ghost {
+  background: transparent;
+  color: var(--accent-green);
+}
+
+.apply-fix-button--ghost[hidden] {
+  display: none;
+}
+
+.fix-range {
+  margin: 0 0 0.5rem;
+  color: var(--text-faint);
+  font: 500 0.78rem var(--font-code);
+}
+
+.fix-range[hidden] {
+  display: none;
+}

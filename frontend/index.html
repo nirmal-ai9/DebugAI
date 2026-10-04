@@ -324,22 +324,34 @@
         <fieldset class="wizard-step" data-step="0">
           <label for="requirements" class="wizard-question">What was this supposed to do?</label>
           <p class="wizard-help">Describe the behavior you expected, in plain words.</p>
-          <textarea id="requirements" name="requirements" class="field field--prose" placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds." rows="5" maxlength="2000"></textarea>
-          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="requirements">0 / 2000</span></div>
+          <textarea id="requirements" name="requirements" class="field field--prose" placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds." rows="5" maxlength="4000"></textarea>
+          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="requirements">0 / 4,000</span></div>
         </fieldset>
 
         <fieldset class="wizard-step" data-step="1" hidden>
-          <label for="code" class="wizard-question">Paste the code that isn't behaving</label>
-          <p class="wizard-help">A function, component, or file. Any language.</p>
-          <textarea id="code" name="code" class="field field--code" placeholder="function save() { ... }" rows="14" maxlength="20000" spellcheck="false"></textarea>
-          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="code">0 / 20000</span></div>
+          <label for="code" class="wizard-question">Add the code that isn't behaving</label>
+          <p class="wizard-help">Upload a file or paste it below. Large files are fine.</p>
+          <div class="upload-row">
+            <input type="file" id="code-file" class="visually-hidden" />
+            <label for="code-file" class="upload-button">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+              Upload file
+            </label>
+            <span class="upload-or">or drop a file on the box</span>
+            <span class="file-chip" hidden>
+              <span class="file-chip-name"></span>
+              <button type="button" class="file-chip-remove" aria-label="Remove file">&times;</button>
+            </span>
+          </div>
+          <textarea id="code" name="code" class="field field--code" placeholder="function save() { ... }" rows="14" spellcheck="false"></textarea>
+          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="code">0</span></div>
         </fieldset>
 
         <fieldset class="wizard-step" data-step="2" hidden>
           <label for="err" class="wizard-question">What does the console say? <span class="wizard-optional">Optional</span></label>
           <p class="wizard-help">Paste the error message or stack trace. Skip it if there isn't one.</p>
-          <textarea id="err" name="err" class="field field--code field--error" placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')" rows="7" maxlength="5000" spellcheck="false"></textarea>
-          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="err">0 / 5000</span></div>
+          <textarea id="err" name="err" class="field field--code field--error" placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')" rows="7" maxlength="8000" spellcheck="false"></textarea>
+          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="err">0 / 8,000</span></div>
         </fieldset>
 
         <footer class="wizard-actions">
@@ -392,6 +404,7 @@
           <h3 class="result-title">The fix</h3>
         </div>
         <p class="result-prose">Define <code>saveData()</code> before calling it.</p>
+        <p class="fix-range" hidden></p>
         <div class="code-window">
           <div class="code-window-bar">
             <span class="window-dots" aria-hidden="true"><span></span><span></span><span></span></span>
@@ -408,7 +421,10 @@
           ></code></pre>
           <iframe class="code-preview" title="Preview of the fixed code" sandbox="allow-scripts" hidden></iframe>
         </div>
-        <button type="button" class="apply-fix-button">Copy fix</button>
+        <div class="apply-fix-actions">
+          <button type="button" class="apply-fix-button">Copy fix</button>
+          <button type="button" class="apply-fix-button apply-fix-button--ghost download-fix-button" hidden>Download fixed file</button>
+        </div>
       </article>
     </section>
   </section>
