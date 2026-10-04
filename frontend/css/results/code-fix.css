@@ -6,7 +6,9 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: var(--space-sm) 0;
-  overflow-x: auto;
+  position: relative;
+  max-height: 30rem;
+  overflow: auto;
 }
 
 .code-fix code {
@@ -29,4 +31,9 @@
   text-align: right;
   color: var(--text-faint);
   user-select: none;
+}
+
+.code-line.is-changed {
+  background: var(--accent-green-soft);
+  box-shadow: inset 2px 0 0 var(--accent-green);
 }
