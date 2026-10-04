@@ -62,8 +62,8 @@ function goToStep(index, { focus = true } = {}) {
   tabs.forEach((tab, i) => {
     tab.classList.toggle("is-active", i === current);
     tab.classList.toggle("is-done", i < current);
-    tab.toggleAttribute("aria-current", i === current);
-    if (i !== current) tab.removeAttribute("aria-current");
+    if (i === current) tab.setAttribute("aria-current", "step");
+    else tab.removeAttribute("aria-current");
   });
 
   countEl.textContent = `Step ${current + 1} of ${steps.length}`;
@@ -112,6 +112,7 @@ steps.forEach((step, index) => {
   field.addEventListener("input", () => {
     updateCount(index);
     if (field.value.trim()) stepError(index);
+    else if (index === 1 && uploadedName) clearUpload();
   });
   field.addEventListener("keydown", event => {
     if (event.key !== "Enter" || !(event.ctrlKey || event.metaKey)) return;
@@ -150,7 +151,13 @@ async function loadFile(file) {
     return;
   }
 
-  const text = await file.text();
+  let text;
+  try {
+    text = await file.text();
+  } catch {
+    stepError(1, "Couldn't read that file. Try again or paste the code instead.");
+    return;
+  }
   if (text.includes("\u0000")) {
     stepError(1, "That looks like a binary file. Upload a text or source-code file.");
     return;
@@ -214,6 +221,7 @@ function describeFailure(error) {
 
 form.addEventListener("submit", async event => {
   event.preventDefault();
+  if (btn.disabled) return;
 
   const debugData = {
     requirements: form.elements.requirements.value,
@@ -268,6 +276,21 @@ let currentFixCode = "";
 // The whole file with the fix applied, when the model gave a valid line range.
 let currentFullCode = "";
 
+// The model often drops leading indentation; restore the original line's.
+function reindent(source, fix) {
+  const code = fix.code ?? "";
+  const original = source.split(/\r?\n/)[fix.startLine - 1];
+  if (!code || original === undefined) return code;
+
+  const indent = original.match(/^[\t ]*/)[0];
+  const lines = code.split(/\r?\n/);
+  const widths = lines.filter(l => l.trim()).map(l => l.match(/^[\t ]*/)[0].length);
+  const min = widths.length ? Math.min(...widths) : 0;
+  if (min >= indent.length) return code;
+
+  return lines.map(l => (l.trim() ? indent + l.slice(min) : l)).join("\n");
+}
+
 function applyPatch(source, fix) {
   const { startLine, endLine, code } = fix;
   if (!Number.isInteger(startLine) || !Number.isInteger(endLine) || startLine < 1 || endLine < startLine) return null;
@@ -280,13 +303,16 @@ function applyPatch(source, fix) {
   return lines.join(source.includes("\r\n") ? "\r\n" : "\n");
 }
 
-function renderCodeLines(codeElement, source, firstLine = 1) {
+function renderCodeLines(codeElement, source, firstLine = 1, mark = null) {
   const lines = source ? source.replace(/\n$/, "").split(/\r?\n/) : [];
   const fragment = document.createDocumentFragment();
 
   lines.forEach((text, index) => {
     const line = document.createElement("span");
     line.className = "code-line";
+    if (mark && firstLine + index >= mark.from && firstLine + index <= mark.to) {
+      line.classList.add("is-changed");
+    }
 
     const number = document.createElement("span");
     number.className = "line-num";
@@ -334,37 +360,46 @@ function showResult(data) {
 
   // Fill fix
   const fixRange = results.querySelector(".fix-range");
-  let firstLine = 1;
+  let mark = null;
   currentFullCode = "";
+  currentFixCode = "";
   fixRange.hidden = true;
 
   if (result.fix) {
     fixExplanation.textContent = result.fix.explanation;
-    currentFixCode = result.fix.code ?? "";
+    const where = submitted.filename ? `: ${submitted.filename}` : "";
 
     if (result.fix.scope === "file") {
-      currentFullCode = currentFixCode;
-      fixRange.textContent = `Complete fixed file${submitted.filename ? `: ${submitted.filename}` : ""}`;
-      fixRange.hidden = false;
+      currentFullCode = result.fix.code ?? "";
+      fixRange.textContent = `Complete fixed file${where}`;
     } else {
-      currentFullCode = applyPatch(submitted.code, result.fix) ?? "";
+      const { startLine, endLine } = result.fix;
+      const snippet = Number.isInteger(startLine) && startLine >= 1
+        ? reindent(submitted.code, result.fix)
+        : (result.fix.code ?? "");
+      currentFullCode = applyPatch(submitted.code, { ...result.fix, code: snippet }) ?? "";
+
       if (currentFullCode) {
-        firstLine = result.fix.startLine;
-        const span = result.fix.startLine === result.fix.endLine
-          ? `line ${result.fix.startLine}`
-          : `lines ${result.fix.startLine}\u2013${result.fix.endLine}`;
-        fixRange.textContent = `Replace ${span}${submitted.filename ? ` in ${submitted.filename}` : ""}`;
-        fixRange.hidden = false;
+        const count = snippet ? snippet.replace(/\r?\n$/, "").split(/\r?\n/).length : 0;
+        mark = count ? { from: startLine, to: startLine + count - 1 } : null;
+        const span = startLine === endLine ? `line ${startLine}` : `lines ${startLine}\u2013${endLine}`;
+        fixRange.textContent = `Complete fixed file${where} \u00b7 changed ${span} highlighted`;
+      } else {
+        currentFullCode = snippet;
+        fixRange.textContent = "Fix snippet (couldn't place it in your file)";
       }
     }
+    currentFixCode = currentFullCode;
+    fixRange.hidden = false;
   } else {
     fixExplanation.textContent = "No fix is required.";
-    currentFixCode = "";
   }
-  renderCodeLines(fixCode, currentFixCode, firstLine);
-  resetCodeWindow(currentFullCode || currentFixCode);
+
+  renderCodeLines(fixCode, currentFixCode, 1, mark);
+  resetCodeWindow(currentFixCode);
   copyBtn.disabled = !currentFixCode;
-  downloadBtn.hidden = !currentFullCode;
+  downloadBtn.hidden = !currentFixCode;
+  const firstChanged = fixCode.querySelector(".is-changed");
 
   // Show results
   results.hidden = false;
@@ -375,9 +410,14 @@ function showResult(data) {
     behavior: "smooth",
     block: "start"
   });
+
+  // Bring the changed line into view inside the code box.
+  if (firstChanged) {
+    codePanel.scrollTop = Math.max(0, firstChanged.offsetTop - codePanel.clientHeight / 3);
+  }
 }
  
-const copyBtn = document.querySelector(".apply-fix-button");
+const copyBtn = document.querySelector(".apply-fix-actions .apply-fix-button:not(.download-fix-button)");
 const COPY_LABEL = copyBtn.textContent;
 
 function flashCopyLabel(text) {
@@ -408,8 +448,10 @@ downloadBtn.addEventListener("click", () => {
   const link = document.createElement("a");
   link.href = url;
   link.download = fixedName;
+  document.body.append(link);
   link.click();
-  URL.revokeObjectURL(url);
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 });
 
 // Code window: Code / Preview toggle
@@ -447,11 +489,11 @@ function setView(view) {
   codePanel.hidden = showPreview;
   previewFrame.hidden = !showPreview;
   previewFrame.style.height = "";
-  previewFrame.srcdoc = showPreview ? (currentFullCode || currentFixCode) + PREVIEW_REPORTER : "";
+  previewFrame.srcdoc = showPreview ? currentFixCode + PREVIEW_REPORTER : "";
 }
 
 function resetCodeWindow(code) {
-  previewButton.disabled = !HTML_PATTERN.test(code);
+  previewButton.disabled = !HTML_PATTERN.test(code.slice(0, 20000));
   setView("code");
 }
 
