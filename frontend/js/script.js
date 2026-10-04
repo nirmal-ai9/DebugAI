@@ -341,15 +341,21 @@ function showResult(data) {
   if (result.fix) {
     fixExplanation.textContent = result.fix.explanation;
     currentFixCode = result.fix.code ?? "";
-    currentFullCode = applyPatch(submitted.code, result.fix) ?? "";
 
-    if (currentFullCode) {
-      firstLine = result.fix.startLine;
-      const span = result.fix.startLine === result.fix.endLine
-        ? `line ${result.fix.startLine}`
-        : `lines ${result.fix.startLine}\u2013${result.fix.endLine}`;
-      fixRange.textContent = `Replace ${span}${submitted.filename ? ` in ${submitted.filename}` : ""}`;
+    if (result.fix.scope === "file") {
+      currentFullCode = currentFixCode;
+      fixRange.textContent = `Complete fixed file${submitted.filename ? `: ${submitted.filename}` : ""}`;
       fixRange.hidden = false;
+    } else {
+      currentFullCode = applyPatch(submitted.code, result.fix) ?? "";
+      if (currentFullCode) {
+        firstLine = result.fix.startLine;
+        const span = result.fix.startLine === result.fix.endLine
+          ? `line ${result.fix.startLine}`
+          : `lines ${result.fix.startLine}\u2013${result.fix.endLine}`;
+        fixRange.textContent = `Replace ${span}${submitted.filename ? ` in ${submitted.filename}` : ""}`;
+        fixRange.hidden = false;
+      }
     }
   } else {
     fixExplanation.textContent = "No fix is required.";
