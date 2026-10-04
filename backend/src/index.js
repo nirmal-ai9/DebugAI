@@ -33,7 +33,7 @@ const MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 
 const LIMITS = {
   requirements: 4000,
-  code: 120000,
+  code: 20000,
   error: 8000
 };
 
