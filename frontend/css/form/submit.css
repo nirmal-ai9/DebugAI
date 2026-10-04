@@ -1,19 +1,20 @@
-/* Form Actions */
+/* Wizard actions */
 
-.submit-row {
+.wizard-actions {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--space-md);
-  padding-top: 1.1rem;
+  gap: var(--space-sm);
+  margin-top: 0.75rem;
+  padding: 1rem clamp(1rem, 2.5vw, 1.5rem);
   border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--surface-raised) 45%, transparent);
 }
 
 .submit-note {
+  flex: 1;
   margin: 0;
-  max-width: 60ch;
   color: var(--text-faint);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
 }
 
 .submit-note--error {
@@ -24,21 +25,60 @@
   color: var(--text-dim);
 }
 
+.wizard-back,
+.wizard-next,
 .submit-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
   flex-shrink: 0;
-  border: 1px solid var(--accent-green);
   border-radius: var(--radius-control);
+  font: 700 0.85rem var(--font-ui);
+  padding: 0.7rem 1.25rem;
+  cursor: pointer;
+  transition: box-shadow var(--transition), background var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.wizard-back[hidden],
+.wizard-next[hidden],
+.submit-button[hidden] {
+  display: none;
+}
+
+.wizard-back {
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-dim);
+}
+
+.wizard-back:hover {
+  color: var(--text);
+  border-color: var(--text-faint);
+}
+
+.wizard-next,
+.submit-button {
+  border: 1px solid var(--accent-green);
   background: var(--accent-green);
   color: var(--bg);
-  font-weight: 800;
-  font-size: 0.85rem;
-  padding: 0.85rem 1.25rem;
-  cursor: pointer;
-  transition: box-shadow var(--transition), background var(--transition), transform var(--transition);
+}
+
+.wizard-next:hover,
+.submit-button:hover {
+  box-shadow: var(--glow-green);
+  transform: translateY(-1px);
+}
+
+.wizard-next:active,
+.submit-button:active {
+  transform: scale(0.98);
+}
+
+.wizard-back:focus-visible,
+.wizard-next:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
 }
 
 .submit-button-spinner {
@@ -70,21 +110,16 @@
   }
 }
 
-.submit-button:active {
-  transform: scale(0.98);
-}
-
-.submit-button:hover {
-  box-shadow: var(--glow-green);
-  transform: translateY(-1px);
-}
-
-@media (max-width: 480px) {
-  .submit-row {
-    flex-direction: column;
-    align-items: stretch;
+@media (max-width: 560px) {
+  .wizard-actions {
+    flex-wrap: wrap;
   }
+  .submit-note {
+    order: 3;
+    flex-basis: 100%;
+  }
+  .wizard-next,
   .submit-button {
-    width: 100%;
+    flex: 1;
   }
 }

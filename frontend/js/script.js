@@ -10,6 +10,100 @@ const btn = document.querySelector(".submit-button");
 const btnLabel = btn.querySelector(".submit-button-label");
 const btnDefaultLabel = btnLabel.textContent;
 
+// Wizard: one question at a time
+const steps = [...form.querySelectorAll(".wizard-step")];
+const tabs = [...form.querySelectorAll(".wizard-step-tab")];
+const nextBtn = form.querySelector(".wizard-next");
+const backBtn = form.querySelector(".wizard-back");
+const countEl = form.querySelector(".wizard-count");
+const barEl = form.querySelector(".wizard-bar span");
+const HINT = "Ctrl + Enter to continue";
+const REQUIRED_STEPS = [0, 1];
+let current = 0;
+
+function stepField(index) {
+  return steps[index].querySelector("textarea");
+}
+
+function stepError(index, text = "") {
+  const field = stepField(index);
+  steps[index].querySelector(".field-error").textContent = text;
+  field.toggleAttribute("aria-invalid", Boolean(text));
+  if (!text) field.removeAttribute("aria-invalid");
+}
+
+function validateStep(index) {
+  if (!REQUIRED_STEPS.includes(index)) return true;
+  if (stepField(index).value.trim()) {
+    stepError(index);
+    return true;
+  }
+  stepError(index, index === 0 ? "Tell us what it should do." : "Paste the code to debug.");
+  return false;
+}
+
+function goToStep(index, { focus = true } = {}) {
+  current = Math.max(0, Math.min(steps.length - 1, index));
+  const last = current === steps.length - 1;
+
+  steps.forEach((step, i) => { step.hidden = i !== current; });
+  tabs.forEach((tab, i) => {
+    tab.classList.toggle("is-active", i === current);
+    tab.classList.toggle("is-done", i < current);
+    tab.toggleAttribute("aria-current", i === current);
+    if (i !== current) tab.removeAttribute("aria-current");
+  });
+
+  countEl.textContent = `Step ${current + 1} of ${steps.length}`;
+  barEl.style.width = `${((current + 1) / steps.length) * 100}%`;
+  backBtn.hidden = current === 0;
+  nextBtn.hidden = last;
+  btn.hidden = !last;
+  setStatus(last ? "Ctrl + Enter to submit" : HINT);
+
+  if (focus) stepField(current).focus({ preventScroll: true });
+}
+
+function advance() {
+  if (!validateStep(current)) {
+    stepField(current).focus();
+    return;
+  }
+  goToStep(current + 1);
+}
+
+nextBtn.addEventListener("click", advance);
+backBtn.addEventListener("click", () => goToStep(current - 1));
+
+tabs.forEach((tab, target) => {
+  tab.addEventListener("click", () => {
+    for (let i = current; i < target; i++) {
+      if (!validateStep(i)) {
+        goToStep(i);
+        return;
+      }
+    }
+    goToStep(target);
+  });
+});
+
+steps.forEach((step, index) => {
+  const field = stepField(index);
+  const counter = step.querySelector(".field-count");
+  field.addEventListener("input", () => {
+    counter.textContent = `${field.value.length} / ${field.maxLength}`;
+    if (field.value.trim()) stepError(index);
+  });
+  field.addEventListener("keydown", event => {
+    if (event.key !== "Enter" || !(event.ctrlKey || event.metaKey)) return;
+    event.preventDefault();
+    if (current === steps.length - 1) form.requestSubmit();
+    else advance();
+  });
+});
+
+goToStep(0, { focus: false });
+
 function setStatus(text, state = "") {
   msg.textContent = text;
   msg.classList.toggle("submit-note--error", state === "error");
@@ -41,10 +135,10 @@ form.addEventListener("submit", async event => {
     error: form.elements.err.value
   };
 
-  const emptyField = [requirementsField, codeField].find(field => !field.value.trim());
-  if (emptyField) {
+  const missing = REQUIRED_STEPS.find(i => !validateStep(i));
+  if (missing !== undefined) {
+    goToStep(missing);
     setStatus("Requirements and code are required", "error");
-    emptyField.focus();
     return;
   }
 
