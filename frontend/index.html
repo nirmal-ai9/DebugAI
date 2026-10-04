@@ -307,65 +307,51 @@
   </section>
 
   <section class="workspace" id="debug-tool" aria-labelledby="tool-title">
-    <form class="debug-form">
+    <form class="debug-form" novalidate>
       <h2 class="tool-title" id="tool-title">try it yourself</h2>
-      <div class="panel panel--requirements bracket reveal" style="--dot-color: var(--accent-amber);">
-        <div class="panel-head">
-          <span class="panel-dot" style="--dot-color: var(--accent-amber);"></span>
-          <label for="requirements" class="panel-label">What was this supposed to do?</label>
-        </div>
-        <textarea
-          id="requirements"
-          name="requirements"
-          class="field field--prose"
-          placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds."
-          rows="4"
-          maxlength="2000"
-        ></textarea>
-      </div>
 
-      <div class="panel panel--code bracket reveal" style="--dot-color: var(--accent-cyan);">
-        <div class="panel-head">
-          <span class="panel-dot" style="--dot-color: var(--accent-cyan);"></span>
-          <label for="code" class="panel-label">The code in question</label>
-          <span class="panel-hint">any language</span>
-        </div>
-        <textarea
-          id="code"
-          name="code"
-          class="field field--code"
-          placeholder="Paste the function, component, or file that isn't behaving."
-          rows="14"
-          maxlength="20000"
-          spellcheck="false"
-        ></textarea>
-      </div>
+      <div class="wizard reveal">
+        <header class="wizard-head">
+          <ol class="wizard-steps" aria-label="Progress">
+            <li><button type="button" class="wizard-step-tab" data-goto="0"><span class="wizard-step-num">1</span><span class="wizard-step-name">Intent</span></button></li>
+            <li><button type="button" class="wizard-step-tab" data-goto="1"><span class="wizard-step-num">2</span><span class="wizard-step-name">Code</span></button></li>
+            <li><button type="button" class="wizard-step-tab" data-goto="2"><span class="wizard-step-num">3</span><span class="wizard-step-name">Console</span></button></li>
+          </ol>
+          <span class="wizard-count" aria-live="polite">Step 1 of 3</span>
+        </header>
+        <div class="wizard-bar" aria-hidden="true"><span></span></div>
 
-      <div class="panel panel--error bracket reveal" style="--dot-color: var(--accent-red);">
-        <div class="panel-head">
-          <span class="panel-dot" style="--dot-color: var(--accent-red);"></span>
-          <label for="err" class="panel-label">What the console shows</label>
-          <span class="panel-hint">optional</span>
-        </div>
-        <textarea
-          id="err"
-          name="err"
-          class="field field--code field--error"
-          placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')"
-          rows="6"
-          maxlength="5000"
-          spellcheck="false"
-        ></textarea>
-      </div>
+        <fieldset class="wizard-step" data-step="0">
+          <label for="requirements" class="wizard-question">What was this supposed to do?</label>
+          <p class="wizard-help">Describe the behavior you expected, in plain words.</p>
+          <textarea id="requirements" name="requirements" class="field field--prose" placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds." rows="5" maxlength="2000"></textarea>
+          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="requirements">0 / 2000</span></div>
+        </fieldset>
 
-      <div class="submit-row">
-        <p class="submit-note" role="status" aria-live="polite">DebugAI reads all three together — the mismatch between them is usually the bug.</p>
-        <button type="submit" class="submit-button">
-          <span class="submit-button-spinner" aria-hidden="true"></span>
-          <span class="submit-button-label">Find the fix</span>
-        </button>
-      </div>
+        <fieldset class="wizard-step" data-step="1" hidden>
+          <label for="code" class="wizard-question">Paste the code that isn't behaving</label>
+          <p class="wizard-help">A function, component, or file. Any language.</p>
+          <textarea id="code" name="code" class="field field--code" placeholder="function save() { ... }" rows="14" maxlength="20000" spellcheck="false"></textarea>
+          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="code">0 / 20000</span></div>
+        </fieldset>
 
+        <fieldset class="wizard-step" data-step="2" hidden>
+          <label for="err" class="wizard-question">What does the console say? <span class="wizard-optional">Optional</span></label>
+          <p class="wizard-help">Paste the error message or stack trace. Skip it if there isn't one.</p>
+          <textarea id="err" name="err" class="field field--code field--error" placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')" rows="7" maxlength="5000" spellcheck="false"></textarea>
+          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="err">0 / 5000</span></div>
+        </fieldset>
+
+        <footer class="wizard-actions">
+          <button type="button" class="wizard-back" hidden>Back</button>
+          <p class="submit-note" role="status" aria-live="polite">Ctrl + Enter to continue</p>
+          <button type="button" class="wizard-next">Continue</button>
+          <button type="submit" class="submit-button" hidden>
+            <span class="submit-button-spinner" aria-hidden="true"></span>
+            <span class="submit-button-label">Find the fix</span>
+          </button>
+        </footer>
+      </div>
     </form>
 
     <section class="results" id="results" hidden aria-labelledby="results-heading">
