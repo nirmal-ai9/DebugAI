@@ -361,6 +361,7 @@ function showResult(data) {
   // Fill fix
   const fixRange = results.querySelector(".fix-range");
   let mark = null;
+  let snippetOnly = "";
   currentFullCode = "";
   currentFixCode = "";
   fixRange.hidden = true;
@@ -385,20 +386,21 @@ function showResult(data) {
         const span = startLine === endLine ? `line ${startLine}` : `lines ${startLine}\u2013${endLine}`;
         fixRange.textContent = `Complete fixed file${where} \u00b7 changed ${span} highlighted`;
       } else {
-        currentFullCode = snippet;
-        fixRange.textContent = "Fix snippet (couldn't place it in your file)";
+        // Never guess a position: a misplaced fix would corrupt the file.
+        snippetOnly = snippet;
+        fixRange.textContent = "Couldn't safely place this fix in your file. Apply the snippet below by hand.";
       }
     }
-    currentFixCode = currentFullCode;
+    currentFixCode = currentFullCode || snippetOnly;
     fixRange.hidden = false;
   } else {
     fixExplanation.textContent = "No fix is required.";
   }
 
   renderCodeLines(fixCode, currentFixCode, 1, mark);
-  resetCodeWindow(currentFixCode);
+  resetCodeWindow(currentFullCode);
   copyBtn.disabled = !currentFixCode;
-  downloadBtn.hidden = !currentFixCode;
+  downloadBtn.hidden = !currentFullCode;
   const firstChanged = fixCode.querySelector(".is-changed");
 
   // Show results
