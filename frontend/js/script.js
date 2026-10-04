@@ -5,7 +5,7 @@ const API_URL = LOCAL_HOSTS.includes(location.hostname)
 const REQUEST_TIMEOUT_MS = 90000;
 
 // Keep in sync with LIMITS in backend/src/index.js
-const FIELD_LIMITS = { requirements: 4000, code: 120000, err: 8000 };
+const FIELD_LIMITS = { requirements: 4000, code: 20000, err: 8000 };
 const MAX_UPLOAD_BYTES = 600 * 1024;
 const BLOCKED_EXTENSIONS = /\.(zip|rar|7z|tar|gz|tgz|bz2|xz|png|jpe?g|gif|webp|bmp|ico|svgz|pdf|docx?|xlsx?|pptx?|exe|dll|so|bin|class|jar|mp[34]|mov|avi|wav|woff2?|ttf|otf)$/i;
 
