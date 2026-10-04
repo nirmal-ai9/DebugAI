@@ -140,7 +140,7 @@ async function analyseChunk(env, { requirements, error, filename, chunk, totalLi
     ],
     response_format: { type: "json_schema", json_schema: resultSchema },
     // Room for a full JSON diagnosis plus the replacement snippet.
-    max_tokens: 2048
+    max_tokens: 3000
   });
 
   return parseAiResult(aiResponse);
