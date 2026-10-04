@@ -44,9 +44,12 @@ const OVERLAP_LINES = 30;
 const MAX_FILENAME = 255;
 
 // Files up to this size get the complete fixed file back; larger ones get only the changed section.
-const FULL_FILE_CHARS = 16000;
-const FULL_FILE_MAX_TOKENS = 8192;
-const SECTION_MAX_TOKENS = 2048;
+// Keep a safety buffer: medium-large files are still worth trying as a full-file pass first,
+// because chunked section diffs are much more likely to fail when a caller tries to splice them
+// back into an existing file.
+const FULL_FILE_CHARS = 40000;
+const FULL_FILE_MAX_TOKENS = 12000;
+const SECTION_MAX_TOKENS = 4096;
 
 const PRODUCTION_ORIGIN = "https://nirmal-ai9.github.io";
 const LOCAL_ORIGIN_PATTERN = /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
@@ -59,7 +62,7 @@ Set "found" to false when there is no real bug in the shown code; then use empty
 Put raw code only in the "fix.code" field, without markdown backticks or code fences.`;
 
 const FULL_PROMPT = `${BASE_PROMPT}
-"fix.code" must be the COMPLETE corrected file, from the first line to the last, with only the bug fixed and everything else unchanged. Never abbreviate, never use placeholders like "...rest of the code".`;
+"fix.code" must be the COMPLETE corrected file, from the first line to the last, with only the bug fixed and everything else unchanged. Never abbreviate, never use placeholders like "...rest of the file" or "[unchanged code]".`;
 
 const SECTION_PROMPT = `${BASE_PROMPT}
 If <file_context> says the code is only a section of a larger file, report only bugs visible in the shown lines.
@@ -374,14 +377,21 @@ export default {
     const args = { requirements, error, filename: filename?.trim(), totalLines, partial };
 
     let settled;
-    if (!partial && code.length <= FULL_FILE_CHARS) {
+    // For medium-sized files it is much safer to ask the model for the complete fixed file,
+    // rather than forcing a patch splice into an older file state. Chunked section fixes are
+    // very likely to "merge old code to new code" incorrectly when a caller tries to apply them.
+    if (code.length <= FULL_FILE_CHARS) {
       settled = await Promise.allSettled([analyseWholeFile(env, { ...args, chunk: chunks[0], originalCode: code })]);
-      // Fall back to a section fix if the whole-file answer was unusable.
       if (settled[0].status === "fulfilled" && settled[0].value === null) {
         settled = await Promise.allSettled([analyseChunk(env, { ...args, chunk: chunks[0] })]);
       }
     } else {
-      settled = await Promise.allSettled(chunks.map(chunk => analyseChunk(env, { ...args, chunk })));
+      // Try a whole-file pass first for files that are still manageable. If the model cannot
+      // provide a safe full-file fix, fall back to chunk analysis.
+      settled = await Promise.allSettled([analyseWholeFile(env, { ...args, chunk: chunks[0], originalCode: code })]);
+      if (settled[0].status === "fulfilled" && settled[0].value === null) {
+        settled = await Promise.allSettled(chunks.map(chunk => analyseChunk(env, { ...args, chunk })));
+      }
     }
 
     const failures = settled.filter(r => r.status === "rejected");
