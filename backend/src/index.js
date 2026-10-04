@@ -1,7 +1,7 @@
 function buildSchema(full) {
   const fixProps = {
     explanation: { type: "string" },
-    ...(!full && { startLine: { type: "number" }, endLine: { type: "number" } }),
+    ...(!full && { startLine: { type: "number" }, endLine: { type: "number" }, original: { type: "string" } }),
     code: { type: "string" }
   };
 
@@ -62,7 +62,10 @@ const FULL_PROMPT = `${BASE_PROMPT}
 
 const SECTION_PROMPT = `${BASE_PROMPT}
 If <file_context> says the code is only a section of a larger file, report only bugs visible in the shown lines.
-Return the smallest possible fix, never the whole file: "fix.startLine" and "fix.endLine" are the inclusive absolute line range of the original code to replace (use 0 when found is false), and "fix.code" is only the new text for that range.`;
+Return the smallest possible fix, never the whole file, and change only the lines that contain the bug. Do not rewrite, move, add or remove any other code or tags.
+"fix.original" is the exact original text of the line(s) being replaced, copied verbatim from <code> without the line-number prefixes.
+"fix.startLine" and "fix.endLine" are the inclusive absolute line range of "fix.original" (0 when found is false); this range must contain "bug.line" and be at most 20 lines.
+"fix.code" is only the new text that replaces "fix.original".`;
 
 function corsHeadersFor(request) {
   const origin = request.headers.get("Origin");
@@ -104,7 +107,7 @@ function splitIntoChunks(code) {
     start = Math.max(end - OVERLAP_LINES, start + 1);
   }
 
-  return { chunks, totalLines: lines.length };
+  return { chunks, totalLines: lines.length, lines };
 }
 
 function findLimitViolation({ requirements, code, error }) {
@@ -171,17 +174,39 @@ async function analyseWholeFile(env, args) {
   return { ...result, fix: { ...result.fix, scope: "file" } };
 }
 
-function isValidRange(fix, totalLines) {
-  return (
-    Number.isInteger(fix?.startLine) &&
-    Number.isInteger(fix?.endLine) &&
-    fix.startLine >= 1 &&
-    fix.endLine >= fix.startLine &&
-    fix.endLine <= totalLines
-  );
+const MAX_FIX_LINES = 20;
+const MAX_DISTANCE_FROM_BUG = 5;
+
+// Finds where fix.original really sits in the file. The model's own line numbers are
+// only a hint: a wrong range would splice the fix into unrelated code.
+function locateFix(lines, fix, bugLine) {
+  let original = typeof fix?.original === "string" ? fix.original.replace(/\r?\n$/, "") : "";
+  if (!original.trim()) return null;
+
+  let target = original.split(/\r?\n/);
+  if (target.every(line => !line.trim() || /^\s*\d+:/.test(line))) {
+    target = target.map(line => line.replace(/^\s*\d+:\s?/, ""));
+  }
+  target = target.map(line => line.trim());
+  if (target.length > MAX_FIX_LINES) return null;
+
+  const hint = Number.isInteger(bugLine) ? bugLine : fix.startLine;
+  let best = null;
+
+  for (let i = 0; i + target.length <= lines.length; i++) {
+    if (target.some((line, j) => lines[i + j].trim() !== line)) continue;
+
+    const start = i + 1;
+    const end = i + target.length;
+    const distance = hint >= start && hint <= end ? 0 : Math.min(Math.abs(hint - start), Math.abs(hint - end));
+    if (!best || distance < best.distance) best = { startLine: start, endLine: end, distance };
+  }
+
+  if (!best || (Number.isInteger(hint) && best.distance > MAX_DISTANCE_FROM_BUG)) return null;
+  return { startLine: best.startLine, endLine: best.endLine };
 }
 
-function mergeResults(results, totalLines) {
+function mergeResults(results, lines) {
   const found = results.filter(r => r?.found !== false && r?.bug?.message);
   if (found.length === 0) {
     return { bug: null, why: "No obvious bug was found in the code provided.", fix: null };
@@ -198,8 +223,9 @@ function mergeResults(results, totalLines) {
     };
   }
 
-  if (result.fix?.scope !== "file" && !isValidRange(result.fix, totalLines)) {
-    result.fix = { ...result.fix, startLine: null, endLine: null };
+  if (result.fix?.scope !== "file") {
+    const located = locateFix(lines, result.fix, result.bug.line);
+    result.fix = { ...result.fix, ...(located ?? { startLine: null, endLine: null }) };
   }
 
   return result;
@@ -260,7 +286,7 @@ export default {
       );
     }
 
-    const { chunks, totalLines } = splitIntoChunks(code);
+    const { chunks, totalLines, lines } = splitIntoChunks(code);
     const partial = chunks.length > 1;
     const args = { requirements, error, filename: filename?.trim(), totalLines, partial };
 
@@ -290,7 +316,7 @@ export default {
       );
     }
 
-    const result = mergeResults(parsed, totalLines);
+    const result = mergeResults(parsed, lines);
 
     if (!result.bug && (failures.length > 0 || parsed.length < results.length)) {
       return jsonResponse(
