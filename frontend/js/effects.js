@@ -83,7 +83,24 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastFrame = 0;
     const frameInterval = 1000 / 20; // 20fps for background flourish
     const RAIN_STORAGE_KEY = "debugai-rain-enabled";
-    let isRunning = localStorage.getItem(RAIN_STORAGE_KEY) !== "false";
+
+    function readRainPreference() {
+      try {
+        return localStorage.getItem(RAIN_STORAGE_KEY);
+      } catch {
+        return null;
+      }
+    }
+
+    function saveRainPreference(value) {
+      try {
+        localStorage.setItem(RAIN_STORAGE_KEY, value);
+      } catch {
+        // Storage can be blocked; the animation still works for this visit.
+      }
+    }
+
+    let isRunning = readRainPreference() !== "false";
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -128,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function startRain() {
       if (isRunning) return;
       isRunning = true;
-      localStorage.setItem(RAIN_STORAGE_KEY, "true");
+      saveRainPreference("true");
       if (toggleBtn) {
         toggleBtn.textContent = "Stop Rain";
       }
@@ -137,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function stopRain() {
       isRunning = false;
-      localStorage.setItem(RAIN_STORAGE_KEY, "false");
+      saveRainPreference("false");
       if (raf) {
         cancelAnimationFrame(raf);
         raf = null;
