@@ -83,23 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let lastFrame = 0;
     const frameInterval = 1000 / 20; // 20fps for background flourish
     const RAIN_STORAGE_KEY = "debugai-rain-enabled";
-    function readRainSetting() {
-      try {
-        return localStorage.getItem(RAIN_STORAGE_KEY) !== "false";
-      } catch {
-        return true;
-      }
-    }
-
-    function saveRainSetting(enabled) {
-      try {
-        localStorage.setItem(RAIN_STORAGE_KEY, String(enabled));
-      } catch {
-        // Not persisting is fine.
-      }
-    }
-
-    let isRunning = readRainSetting();
+    let isRunning = localStorage.getItem(RAIN_STORAGE_KEY) !== "false";
 
     function resize() {
       canvas.width = window.innerWidth;
@@ -144,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function startRain() {
       if (isRunning) return;
       isRunning = true;
-      saveRainSetting(true);
+      localStorage.setItem(RAIN_STORAGE_KEY, "true");
       if (toggleBtn) {
         toggleBtn.textContent = "Stop Rain";
       }
@@ -153,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function stopRain() {
       isRunning = false;
-      saveRainSetting(false);
+      localStorage.setItem(RAIN_STORAGE_KEY, "false");
       if (raf) {
         cancelAnimationFrame(raf);
         raf = null;
@@ -184,8 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         if (raf) cancelAnimationFrame(raf);
-        raf = null;
-      } else if (isRunning && !raf) {
+      } else if (isRunning) {
         raf = requestAnimationFrame(loop);
       }
     });

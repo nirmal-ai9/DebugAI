@@ -175,11 +175,7 @@ async function loadFile(file) {
   stepError(1);
 }
 
-fileInput.addEventListener("change", async () => {
-  await loadFile(fileInput.files[0]);
-  // Allow re-selecting the same file after an error or removal.
-  fileInput.value = "";
-});
+fileInput.addEventListener("change", () => loadFile(fileInput.files[0]));
 form.querySelector(".file-chip-remove").addEventListener("click", () => {
   clearUpload();
   codeField.value = "";

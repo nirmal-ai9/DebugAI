@@ -43,7 +43,11 @@ const CHUNK_CHARS = 30000;
 const OVERLAP_LINES = 30;
 const MAX_FILENAME = 255;
 
-// Single-chunk files get the complete fixed file back; multi-chunk files get section patches.
+// Files up to this size get the complete fixed file back; larger ones get only the changed section.
+// Keep a safety buffer: medium-large files are still worth trying as a full-file pass first,
+// because chunked section diffs are much more likely to fail when a caller tries to splice them
+// back into an existing file.
+const FULL_FILE_CHARS = 40000;
 const FULL_FILE_MAX_TOKENS = 12000;
 const SECTION_MAX_TOKENS = 4096;
 
@@ -373,15 +377,21 @@ export default {
     const args = { requirements, error, filename: filename?.trim(), totalLines, partial };
 
     let settled;
-    // Whole-file fix is only safe when the file fits in a single chunk; otherwise the model
-    // would only see part of it and could return a truncated "complete" file.
-    if (chunks.length === 1) {
+    // For medium-sized files it is much safer to ask the model for the complete fixed file,
+    // rather than forcing a patch splice into an older file state. Chunked section fixes are
+    // very likely to "merge old code to new code" incorrectly when a caller tries to apply them.
+    if (code.length <= FULL_FILE_CHARS) {
       settled = await Promise.allSettled([analyseWholeFile(env, { ...args, chunk: chunks[0], originalCode: code })]);
       if (settled[0].status === "fulfilled" && settled[0].value === null) {
         settled = await Promise.allSettled([analyseChunk(env, { ...args, chunk: chunks[0] })]);
       }
     } else {
-      settled = await Promise.allSettled(chunks.map(chunk => analyseChunk(env, { ...args, chunk })));
+      // Try a whole-file pass first for files that are still manageable. If the model cannot
+      // provide a safe full-file fix, fall back to chunk analysis.
+      settled = await Promise.allSettled([analyseWholeFile(env, { ...args, chunk: chunks[0], originalCode: code })]);
+      if (settled[0].status === "fulfilled" && settled[0].value === null) {
+        settled = await Promise.allSettled(chunks.map(chunk => analyseChunk(env, { ...args, chunk })));
+      }
     }
 
     const failures = settled.filter(r => r.status === "rejected");
