@@ -43,10 +43,8 @@ const CHUNK_CHARS = 30000;
 const OVERLAP_LINES = 30;
 const MAX_FILENAME = 255;
 
-// Files up to this size get the complete fixed file back; larger ones get only the changed section.
-// Keep a safety buffer: medium-large files are still worth trying as a full-file pass first,
-// because chunked section diffs are much more likely to fail when a caller tries to splice them
-// back into an existing file.
+// This is the upper bound for attempting a complete-file response. The actual full-file
+// path also requires the source to fit inside a single model chunk.
 const FULL_FILE_CHARS = 40000;
 const FULL_FILE_MAX_TOKENS = 12000;
 const SECTION_MAX_TOKENS = 4096;
@@ -377,21 +375,29 @@ export default {
     const args = { requirements, error, filename: filename?.trim(), totalLines, partial };
 
     let settled;
-    // For medium-sized files it is much safer to ask the model for the complete fixed file,
-    // rather than forcing a patch splice into an older file state. Chunked section fixes are
-    // very likely to "merge old code to new code" incorrectly when a caller tries to apply them.
-    if (code.length <= FULL_FILE_CHARS) {
-      settled = await Promise.allSettled([analyseWholeFile(env, { ...args, chunk: chunks[0], originalCode: code })]);
+    // A full-file prompt must actually contain the complete file. The old implementation
+    // passed chunks[0] while claiming it was the complete file, which could silently return
+    // a truncated "fixed" file for code larger than one chunk.
+    if (code.length <= FULL_FILE_CHARS && chunks.length === 1) {
+      settled = await Promise.allSettled([
+        analyseWholeFile(env, {
+          ...args,
+          chunk: chunks[0],
+          originalCode: code
+        })
+      ]);
+
       if (settled[0].status === "fulfilled" && settled[0].value === null) {
-        settled = await Promise.allSettled([analyseChunk(env, { ...args, chunk: chunks[0] })]);
+        settled = await Promise.allSettled([
+          analyseChunk(env, { ...args, chunk: chunks[0] })
+        ]);
       }
     } else {
-      // Try a whole-file pass first for files that are still manageable. If the model cannot
-      // provide a safe full-file fix, fall back to chunk analysis.
-      settled = await Promise.allSettled([analyseWholeFile(env, { ...args, chunk: chunks[0], originalCode: code })]);
-      if (settled[0].status === "fulfilled" && settled[0].value === null) {
-        settled = await Promise.allSettled(chunks.map(chunk => analyseChunk(env, { ...args, chunk })));
-      }
+      // Larger files are analysed as overlapping sections. Never label a partial section
+      // as a complete fixed file.
+      settled = await Promise.allSettled(
+        chunks.map(chunk => analyseChunk(env, { ...args, chunk }))
+      );
     }
 
     const failures = settled.filter(r => r.status === "rejected");
