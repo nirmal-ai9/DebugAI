@@ -143,10 +143,12 @@ async function loadFile(file) {
   if (!file) return;
 
   if (BLOCKED_EXTENSIONS.test(file.name)) {
+    fileInput.value = "";
     stepError(1, "That file type isn't supported. Upload a text or source-code file.");
     return;
   }
   if (file.size > MAX_UPLOAD_BYTES) {
+    fileInput.value = "";
     stepError(1, `File is too large (${formatSize(file.size)}). Max is ${formatSize(MAX_UPLOAD_BYTES)}.`);
     return;
   }
@@ -155,14 +157,17 @@ async function loadFile(file) {
   try {
     text = await file.text();
   } catch {
+    fileInput.value = "";
     stepError(1, "Couldn't read that file. Try again or paste the code instead.");
     return;
   }
   if (text.includes("\u0000")) {
+    fileInput.value = "";
     stepError(1, "That looks like a binary file. Upload a text or source-code file.");
     return;
   }
   if (text.length > FIELD_LIMITS.code) {
+    fileInput.value = "";
     stepError(1, `File has ${text.length.toLocaleString()} characters (max ${FIELD_LIMITS.code.toLocaleString()}).`);
     return;
   }
