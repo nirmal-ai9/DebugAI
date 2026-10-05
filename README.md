@@ -14,7 +14,7 @@ To keep response times lightning fast, I put the backend on Cloudflare Workers i
  
 Every push to the repo triggers automated deployments via GitHub Actions (`deploy.yml`), keeping the infrastructure effortless and always up to date.
  
-## Want to Run It Yourself?
+## Want to Run It Yourself? 
  
 Getting DebugAI running on your local machine takes less than two minutes:
  
