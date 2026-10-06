@@ -55,6 +55,7 @@
   <script src="js/theme-init.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <canvas id="matrix-rain" aria-hidden="true"></canvas>
 
@@ -70,7 +71,7 @@
     </div>
   </nav>
 
-  <main>
+  <main id="main-content">
   <section class="hero">
     <div>
       <p class="hero-eyebrow">diagnostic terminal · v1.0</p>
@@ -312,46 +313,46 @@
 
       <div class="wizard reveal">
         <header class="wizard-head">
-          <ol class="wizard-steps" aria-label="Progress">
-            <li><button type="button" class="wizard-step-tab" data-goto="0"><span class="wizard-step-num">1</span><span class="wizard-step-name">Intent</span></button></li>
-            <li><button type="button" class="wizard-step-tab" data-goto="1"><span class="wizard-step-num">2</span><span class="wizard-step-name">Code</span></button></li>
-            <li><button type="button" class="wizard-step-tab" data-goto="2"><span class="wizard-step-num">3</span><span class="wizard-step-name">Console</span></button></li>
+          <ol class="wizard-steps" role="tablist" aria-label="Progress">
+            <li><button type="button" class="wizard-step-tab" id="wizard-tab-0" role="tab" aria-controls="wizard-panel-0" aria-selected="true" tabindex="0" data-goto="0"><span class="wizard-step-num">1</span><span class="wizard-step-name">Intent</span></button></li>
+            <li><button type="button" class="wizard-step-tab" id="wizard-tab-1" role="tab" aria-controls="wizard-panel-1" aria-selected="false" tabindex="-1" data-goto="1"><span class="wizard-step-num">2</span><span class="wizard-step-name">Code</span></button></li>
+            <li><button type="button" class="wizard-step-tab" id="wizard-tab-2" role="tab" aria-controls="wizard-panel-2" aria-selected="false" tabindex="-1" data-goto="2"><span class="wizard-step-num">3</span><span class="wizard-step-name">Console</span></button></li>
           </ol>
           <span class="wizard-count" aria-live="polite">Step 1 of 3</span>
         </header>
         <div class="wizard-bar" aria-hidden="true"><span></span></div>
 
-        <fieldset class="wizard-step" data-step="0">
+        <fieldset class="wizard-step" id="wizard-panel-0" role="tabpanel" aria-labelledby="wizard-tab-0" data-step="0">
           <label for="requirements" class="wizard-question">What was this supposed to do?</label>
-          <p class="wizard-help">Describe the behavior you expected, in plain words.</p>
-          <textarea id="requirements" name="requirements" class="field field--prose" placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds." rows="5" maxlength="4000"></textarea>
-          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="requirements">0 / 4,000</span></div>
+          <p class="wizard-help" id="requirements-help">Describe the behavior you expected, in plain words.</p>
+          <textarea id="requirements" name="requirements" class="field field--prose" placeholder="e.g. The submit button should disable itself while the form is saving, then re-enable once the API responds." rows="5" maxlength="4000" aria-describedby="requirements-help requirements-error"></textarea>
+          <div class="field-meta"><span id="requirements-error" class="field-error" role="alert"></span><span class="field-count" data-for="requirements">0 / 4,000</span></div>
         </fieldset>
 
-        <fieldset class="wizard-step" data-step="1" hidden>
+        <fieldset class="wizard-step" id="wizard-panel-1" role="tabpanel" aria-labelledby="wizard-tab-1" data-step="1" hidden>
           <label for="code" class="wizard-question">Add the code that isn't behaving</label>
-          <p class="wizard-help">Upload a file or paste it below. Large files are fine.</p>
+          <p class="wizard-help" id="code-help">Upload a file or paste it below. Large files are fine.</p>
           <div class="upload-row">
             <input type="file" id="code-file" class="visually-hidden" />
-            <label for="code-file" class="upload-button">
+            <button type="button" id="code-file-trigger" class="upload-button">
               <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
               Upload file
-            </label>
+            </button>
             <span class="upload-or">or drop a file on the box</span>
             <span class="file-chip" hidden>
               <span class="file-chip-name"></span>
               <button type="button" class="file-chip-remove" aria-label="Remove file">&times;</button>
             </span>
           </div>
-          <textarea id="code" name="code" class="field field--code" placeholder="function save() { ... }" rows="14" spellcheck="false"></textarea>
-          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="code">0</span></div>
+          <textarea id="code" name="code" class="field field--code" placeholder="function save() { ... }" rows="14" spellcheck="false" aria-describedby="code-help code-error"></textarea>
+          <div class="field-meta"><span id="code-error" class="field-error" role="alert"></span><span class="field-count" data-for="code">0</span></div>
         </fieldset>
 
-        <fieldset class="wizard-step" data-step="2" hidden>
+        <fieldset class="wizard-step" id="wizard-panel-2" role="tabpanel" aria-labelledby="wizard-tab-2" data-step="2" hidden>
           <label for="err" class="wizard-question">What does the console say? <span class="wizard-optional">Optional</span></label>
-          <p class="wizard-help">Paste the error message or stack trace. Skip it if there isn't one.</p>
-          <textarea id="err" name="err" class="field field--code field--error" placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')" rows="7" maxlength="8000" spellcheck="false"></textarea>
-          <div class="field-meta"><span class="field-error" role="alert"></span><span class="field-count" data-for="err">0 / 8,000</span></div>
+          <p class="wizard-help" id="err-help">Paste the error message or stack trace. Skip it if there isn't one.</p>
+          <textarea id="err" name="err" class="field field--code field--error" placeholder="Uncaught TypeError: Cannot read properties of undefined (reading 'map')" rows="7" maxlength="8000" spellcheck="false" aria-describedby="err-help err-error"></textarea>
+          <div class="field-meta"><span id="err-error" class="field-error" role="alert"></span><span class="field-count" data-for="err">0 / 8,000</span></div>
         </fieldset>
 
         <footer class="wizard-actions">
@@ -367,7 +368,7 @@
     </form>
 
     <section class="results" id="results" hidden aria-labelledby="results-heading">
-      <h2 id="results-heading" class="visually-hidden">Diagnosis</h2>
+      <h2 id="results-heading" class="visually-hidden" tabindex="-1">Diagnosis</h2>
 
       <article class="result-card result-card--bug bracket reveal">
         <div class="result-head">
