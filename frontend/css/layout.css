@@ -1,3 +1,36 @@
+/* Keyboard navigation helpers */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 9999;
+  padding: 0.65rem 0.9rem;
+  border: 1px solid var(--accent-green);
+  border-radius: 0.5rem;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  text-decoration: none;
+  transform: translateY(-150%);
+  transition: transform var(--transition);
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+}
+
+.footer-column a:focus-visible,
+.footer-profile:focus-visible,
+.footer-wordmark:focus-visible,
+.footer-bottom a:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+  border-radius: 0.2rem;
+}
+
 /* Workspace Container */
 
 .workspace {
