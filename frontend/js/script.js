@@ -18,6 +18,8 @@ const btnDefaultLabel = btnLabel.textContent;
 // Wizard: one question at a time
 const steps = [...form.querySelectorAll(".wizard-step")];
 const tabs = [...form.querySelectorAll(".wizard-step-tab")];
+const fileTrigger = document.getElementById("code-file-trigger");
+const resultsHeading = document.getElementById("results-heading");
 const nextBtn = form.querySelector(".wizard-next");
 const backBtn = form.querySelector(".wizard-back");
 const countEl = form.querySelector(".wizard-count");
@@ -62,6 +64,8 @@ function goToStep(index, { focus = true } = {}) {
   tabs.forEach((tab, i) => {
     tab.classList.toggle("is-active", i === current);
     tab.classList.toggle("is-done", i < current);
+    tab.setAttribute("aria-selected", String(i === current));
+    tab.setAttribute("tabindex", i === current ? "0" : "-1");
     if (i === current) tab.setAttribute("aria-current", "step");
     else tab.removeAttribute("aria-current");
   });
@@ -99,6 +103,25 @@ tabs.forEach((tab, target) => {
   });
 });
 
+// Keep the wizard fully operable without a mouse: arrow keys move between tabs,
+// while Enter/Space activates the focused step.
+tabs.forEach((tab, target) => {
+  tab.addEventListener("keydown", event => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        tab.click();
+      }
+      return;
+    }
+
+    event.preventDefault();
+    const direction = event.key === "ArrowLeft" ? -1 : 1;
+    const next = event.key === "Home" ? 0 : event.key === "End" ? tabs.length - 1 : (target + direction + tabs.length) % tabs.length;
+    tabs[next].focus();
+  });
+});
+
 function updateCount(index) {
   const field = stepField(index);
   const limit = FIELD_LIMITS[field.name];
@@ -125,6 +148,7 @@ steps.forEach((step, index) => {
 // File upload (code step)
 const codeField = form.elements.code;
 const fileInput = document.getElementById("code-file");
+if (fileTrigger) fileTrigger.addEventListener("click", () => fileInput.click());
 const fileChip = form.querySelector(".file-chip");
 const fileChipName = form.querySelector(".file-chip-name");
 let uploadedName = "";
@@ -417,6 +441,9 @@ function showResult(data) {
     behavior: "smooth",
     block: "start"
   });
+  if (resultsHeading) {
+    resultsHeading.focus({ preventScroll: true });
+  }
 
   // Bring the changed line into view inside the code box.
   if (firstChanged) {

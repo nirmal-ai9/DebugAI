@@ -314,7 +314,33 @@ function initBugHunt() {
 
   document.addEventListener("keydown", event => {
     if (event.ctrlKey || event.metaKey || event.altKey) return;
-    if (/^[1-9]$/.test(event.key)) hit(Number(event.key) - 1);
+
+    // Keep the existing 1–9 shortcuts, but also let keyboard users move
+    // around the 3×3 board without reaching for a mouse.
+    if (/^[1-9]$/.test(event.key)) {
+      event.preventDefault();
+      const index = Number(event.key) - 1;
+      holes[index].focus();
+      hit(index);
+      return;
+    }
+
+    const activeIndex = holes.indexOf(document.activeElement);
+    if (activeIndex === -1) return;
+
+    const row = Math.floor(activeIndex / 3);
+    const col = activeIndex % 3;
+    let nextIndex = activeIndex;
+
+    if (event.key === "ArrowRight") nextIndex = row * 3 + (col + 1) % 3;
+    if (event.key === "ArrowLeft") nextIndex = row * 3 + (col + 2) % 3;
+    if (event.key === "ArrowDown") nextIndex = ((row + 1) % 3) * 3 + col;
+    if (event.key === "ArrowUp") nextIndex = ((row + 2) % 3) * 3 + col;
+
+    if (nextIndex !== activeIndex) {
+      event.preventDefault();
+      holes[nextIndex].focus();
+    }
   });
 
   startBtn.addEventListener("click", startGame);
