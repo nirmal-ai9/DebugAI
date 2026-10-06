@@ -34,3 +34,24 @@
   outline: 2px solid var(--accent-green);
   outline-offset: 3px;
 }
+
+
+/* Keyboard users should always get a clear target, including less-common controls. */
+button,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--accent-green);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-primary::before,
+  .submit-button::before,
+  .apply-fix-button::before {
+    transition: none;
+  }
+}
