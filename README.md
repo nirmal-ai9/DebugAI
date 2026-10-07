@@ -3,7 +3,7 @@
 Debugging used to eat up way too much of my dev time. Staring at stack traces for hours just to find a missing bracket or a subtle logic bug was exhausting. I wanted a tool that felt fast, smart, and actually fun to use—so I built **DebugAI**. It analyzes your code in seconds, points out where things went sideways, and gives you clear, actionable fixes without all the fluff.
  
 ## A Frontend with Personality
- 
+  
 I didn't want this to look like another generic, boring admin dashboard. I went with a clean, retro-inspired UI complete with dynamic code windows, CRT-style token displays, and subtle glitch effects to give it character.
  
 Underneath the aesthetics, I kept it super lightweight—just clean modular HTML, CSS, and vanilla JavaScript (`effects.js` and `interactive.js`). No massive frontend frameworks dragging down load times or bloating the project.
