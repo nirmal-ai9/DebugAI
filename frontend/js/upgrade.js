@@ -19,7 +19,7 @@
   };
 
   // ---------- Syntax highlighting ----------
-  const TOKEN = /(\/\/.*|#.*|\/\*.*?\*\/|<!--.*?-->)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|\b(\d+\.?\d*)\b|\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|class|new|this|import|export|from|default|async|await|try|catch|finally|throw|typeof|instanceof|in|of|null|undefined|true|false|def|self|None|True|False|elif|lambda|pass|with|as|yield|public|private|static|void|int|string|bool)\b/g;
+  const TOKEN = /(\/\/.*|#.*|\/\*[\s\S]*?\*\/|<!--[\s\S]*?-->)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|\b(\d+\.?\d*)\b|\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|class|new|this|import|export|from|default|async|await|try|catch|finally|throw|typeof|instanceof|in|of|null|undefined|true|false|def|self|None|True|False|elif|lambda|pass|with|as|yield|public|private|static|void|int|string|bool)\b/g;
   function highlight(codeEl) {
     codeEl.querySelectorAll(".code-line").forEach(line => {
       const node = line.lastChild;
