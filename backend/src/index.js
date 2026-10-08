@@ -1,7 +1,9 @@
-function buildSchema(full) {
+function buildSchema() {
   const fixProps = {
     explanation: { type: "string" },
-    ...(!full && { startLine: { type: "number" }, endLine: { type: "number" }, original: { type: "string" } }),
+    startLine: { type: "number" },
+    endLine: { type: "number" },
+    original: { type: "string" },
     code: { type: "string" }
   };
 
@@ -46,10 +48,9 @@ const CHUNK_CHARS = 30000;
 const OVERLAP_LINES = 30;
 const MAX_FILENAME = 255;
 
-// This is the upper bound for attempting a complete-file response. The actual full-file
-// path also requires the source to fit inside a single model chunk.
-const FULL_FILE_CHARS = 40000;
-const FULL_FILE_MAX_TOKENS = 12000;
+// Keep AI output bounded to the small patch the frontend can safely apply.
+// Returning an entire file makes even tiny requests much slower and can hit the
+// frontend timeout before the model finishes generating unchanged code.
 const SECTION_MAX_TOKENS = 4096;
 
 const PRODUCTION_ORIGIN = "https://nirmal-ai9.github.io";
@@ -61,9 +62,6 @@ Each line of <code> is prefixed with its absolute line number and a colon so you
 Never include those "NN: " prefixes in any field of your answer, including "fix.code" and "fix.original".
 Set "found" to false when there is no real bug in the shown code; then use empty strings, null for bug.line and empty fix fields.
 Set "severity" to low, medium, high or critical by real-world impact, "confidence" to an integer 0-100 for how sure you are, and "alsoCheck" to at most 3 short strings naming other risky spots in the shown code (empty array if none).\nPut raw code only in the "fix.code" field, without markdown backticks or code fences.`;
-
-const FULL_PROMPT = `${BASE_PROMPT}
-"fix.code" must be the COMPLETE corrected file, from the first line to the last, with only the bug fixed and everything else unchanged. Never abbreviate, never use placeholders like "...rest of the file" or "[unchanged code]".`;
 
 const SECTION_PROMPT = `${BASE_PROMPT}
 If <file_context> says the code is only a section of a larger file, report only bugs visible in the shown lines.
@@ -145,10 +143,10 @@ function fileContext({ filename, chunk, totalLines, partial }) {
   return parts.join("\n");
 }
 
-async function analyseChunk(env, { requirements, error, filename, chunk, totalLines, partial, full = false }) {
+async function analyseChunk(env, { requirements, error, filename, chunk, totalLines, partial }) {
   const aiResponse = await env.AI.run(MODEL, {
     messages: [
-      { role: "system", content: full ? FULL_PROMPT : SECTION_PROMPT },
+      { role: "system", content: SECTION_PROMPT },
       {
         role: "user",
         content: [
@@ -159,24 +157,11 @@ async function analyseChunk(env, { requirements, error, filename, chunk, totalLi
         ].join("\n\n")
       }
     ],
-    response_format: { type: "json_schema", json_schema: buildSchema(full) },
-    max_tokens: full ? FULL_FILE_MAX_TOKENS : SECTION_MAX_TOKENS
+    response_format: { type: "json_schema", json_schema: buildSchema() },
+    max_tokens: SECTION_MAX_TOKENS
   });
 
   return parseAiResult(aiResponse);
-}
-
-// Whole-file fix for small files. Returns null when the answer looks truncated or incomplete.
-async function analyseWholeFile(env, args) {
-  const result = await analyseChunk(env, { ...args, full: true });
-  if (!result) return null;
-  if (result.found === false || !result.bug?.message) return result;
-
-  const original = args.originalCode.trim().length;
-  const fixed = (result.fix?.code ?? "").trim().length;
-  if (fixed < original * 0.5) return null;
-
-  return { ...result, fix: { ...result.fix, scope: "file" } };
 }
 
 const MAX_FIX_LINES = 20;
@@ -377,31 +362,13 @@ export default {
     const partial = chunks.length > 1;
     const args = { requirements, error, filename: filename?.trim(), totalLines, partial };
 
-    let settled;
-    // A full-file prompt must actually contain the complete file. The old implementation
-    // passed chunks[0] while claiming it was the complete file, which could silently return
-    // a truncated "fixed" file for code larger than one chunk.
-    if (code.length <= FULL_FILE_CHARS && chunks.length === 1) {
-      settled = await Promise.allSettled([
-        analyseWholeFile(env, {
-          ...args,
-          chunk: chunks[0],
-          originalCode: code
-        })
-      ]);
-
-      if (settled[0].status === "fulfilled" && settled[0].value === null) {
-        settled = await Promise.allSettled([
-          analyseChunk(env, { ...args, chunk: chunks[0] })
-        ]);
-      }
-    } else {
-      // Larger files are analysed as overlapping sections. Never label a partial section
-      // as a complete fixed file.
-      settled = await Promise.allSettled(
-        chunks.map(chunk => analyseChunk(env, { ...args, chunk }))
-      );
-    }
+    // Always ask the model for a small, line-scoped patch. For a one-chunk file this
+    // is a single fast AI request; for larger files the existing overlapping analysis
+    // runs in parallel. The frontend reconstructs the complete fixed file locally, so
+    // the model never has to regenerate unchanged code.
+    const settled = await Promise.allSettled(
+      chunks.map(chunk => analyseChunk(env, { ...args, chunk }))
+    );
 
     const failures = settled.filter(r => r.status === "rejected");
     failures.forEach(r => console.error("AI request failed:", r.reason));
