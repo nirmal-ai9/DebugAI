@@ -1,7 +1,9 @@
-function buildSchema(full) {
+function buildSchema() {
   const fixProps = {
     explanation: { type: "string" },
-    ...(!full && { startLine: { type: "number" }, endLine: { type: "number" }, original: { type: "string" } }),
+    startLine: { type: "number" },
+    endLine: { type: "number" },
+    original: { type: "string" },
     code: { type: "string" }
   };
 
@@ -43,10 +45,8 @@ const CHUNK_CHARS = 30000;
 const OVERLAP_LINES = 30;
 const MAX_FILENAME = 255;
 
-// This is the upper bound for attempting a complete-file response. The actual full-file
-// path also requires the source to fit inside a single model chunk.
-const FULL_FILE_CHARS = 40000;
-const FULL_FILE_MAX_TOKENS = 12000;
+// Keep model output focused on the actual fix. The frontend reconstructs the
+// complete fixed file from the returned line-range patch.
 const SECTION_MAX_TOKENS = 4096;
 
 const PRODUCTION_ORIGIN = "https://nirmal-ai9.github.io";
@@ -58,9 +58,6 @@ Each line of <code> is prefixed with its absolute line number and a colon so you
 Never include those "NN: " prefixes in any field of your answer, including "fix.code" and "fix.original".
 Set "found" to false when there is no real bug in the shown code; then use empty strings, null for bug.line and empty fix fields.
 Put raw code only in the "fix.code" field, without markdown backticks or code fences.`;
-
-const FULL_PROMPT = `${BASE_PROMPT}
-"fix.code" must be the COMPLETE corrected file, from the first line to the last, with only the bug fixed and everything else unchanged. Never abbreviate, never use placeholders like "...rest of the file" or "[unchanged code]".`;
 
 const SECTION_PROMPT = `${BASE_PROMPT}
 If <file_context> says the code is only a section of a larger file, report only bugs visible in the shown lines.
@@ -82,11 +79,12 @@ function corsHeadersFor(request) {
 }
 
 function jsonResponse(request, body, status = 200, extraHeaders = {}) {
-  return Response.json(body, { status, headers: { ...corsHeadersFor(request), ...extraHeaders } });
+  return Response.json(body, {
+    status,
+    headers: { ...corsHeadersFor(request), ...extraHeaders }
+  });
 }
 
-// CF-Connecting-IP is set by Cloudflare's edge and can't be spoofed by the client,
-// unlike X-Forwarded-For. Missing only in local dev without the CF emulation.
 function clientIp(request) {
   return request.headers.get("CF-Connecting-IP") ?? "unknown";
 }
@@ -100,21 +98,43 @@ function splitIntoChunks(code) {
   while (start < lines.length) {
     let end = start;
     let size = 0;
-    while (end < lines.length && (size + numbered[end].length + 1 <= CHUNK_CHARS || end === start)) {
+
+    while (
+      end < lines.length &&
+      (size + numbered[end].length + 1 <= CHUNK_CHARS || end === start)
+    ) {
       size += numbered[end].length + 1;
       end++;
     }
-    chunks.push({ start: start + 1, end, text: numbered.slice(start, end).join("\n") });
+
+    chunks.push({
+      start: start + 1,
+      end,
+      text: numbered.slice(start, end).join("\n")
+    });
+
     if (end >= lines.length) break;
+
     start = Math.max(end - OVERLAP_LINES, start + 1);
   }
 
-  return { chunks, totalLines: lines.length, lines };
+  return {
+    chunks,
+    totalLines: lines.length,
+    lines
+  };
 }
 
 function findLimitViolation({ requirements, code, error }) {
-  const fields = { requirements, code, error: error ?? "" };
-  return Object.keys(LIMITS).find(name => fields[name].length > LIMITS[name]);
+  const fields = {
+    requirements,
+    code,
+    error: error ?? ""
+  };
+
+  return Object.keys(LIMITS).find(
+    name => fields[name].length > LIMITS[name]
+  );
 }
 
 function parseAiResult(aiResponse) {
@@ -125,190 +145,358 @@ function parseAiResult(aiResponse) {
   }
 
   try {
-    return JSON.parse(String(rawOutput).replace(/```(?:json)?/gi, "").trim());
+    return JSON.parse(
+      String(rawOutput)
+        .replace(/```(?:json)?/gi, "")
+        .trim()
+    );
   } catch {
     return null;
   }
 }
 
-function fileContext({ filename, chunk, totalLines, partial }) {
+function fileContext({
+  filename,
+  chunk,
+  totalLines,
+  partial
+}) {
   const parts = [];
-  if (filename) parts.push(`File: ${filename}`);
+
+  if (filename) {
+    parts.push(`File: ${filename}`);
+  }
+
   parts.push(
     partial
       ? `This is lines ${chunk.start}-${chunk.end} of a larger file with ${totalLines} lines.`
       : `This is the complete file (${totalLines} lines).`
   );
+
   return parts.join("\n");
 }
 
-async function analyseChunk(env, { requirements, error, filename, chunk, totalLines, partial, full = false }) {
+async function analyseChunk(
+  env,
+  {
+    requirements,
+    error,
+    filename,
+    chunk,
+    totalLines,
+    partial
+  }
+) {
   const aiResponse = await env.AI.run(MODEL, {
     messages: [
-      { role: "system", content: full ? FULL_PROMPT : SECTION_PROMPT },
+      {
+        role: "system",
+        content: SECTION_PROMPT
+      },
       {
         role: "user",
         content: [
-          `<file_context>\n${fileContext({ filename, chunk, totalLines, partial })}\n</file_context>`,
+          `<file_context>\n${fileContext({
+            filename,
+            chunk,
+            totalLines,
+            partial
+          })}\n</file_context>`,
+
           `<requirements>\n${requirements}\n</requirements>`,
+
           `<code>\n${chunk.text}\n</code>`,
+
           `<console_error>\n${error?.trim() || "none"}\n</console_error>`
         ].join("\n\n")
       }
     ],
-    response_format: { type: "json_schema", json_schema: buildSchema(full) },
-    max_tokens: full ? FULL_FILE_MAX_TOKENS : SECTION_MAX_TOKENS
+
+    response_format: {
+      type: "json_schema",
+      json_schema: buildSchema()
+    },
+
+    max_tokens: SECTION_MAX_TOKENS
   });
 
   return parseAiResult(aiResponse);
 }
 
-// Whole-file fix for small files. Returns null when the answer looks truncated or incomplete.
-async function analyseWholeFile(env, args) {
-  const result = await analyseChunk(env, { ...args, full: true });
-  if (!result) return null;
-  if (result.found === false || !result.bug?.message) return result;
-
-  const original = args.originalCode.trim().length;
-  const fixed = (result.fix?.code ?? "").trim().length;
-  if (fixed < original * 0.5) return null;
-
-  return { ...result, fix: { ...result.fix, scope: "file" } };
-}
-
 const MAX_FIX_LINES = 20;
-// The model's own bug.line is a hint, not a fact. It is often 10-30 lines off
-// on real files. We therefore accept any UNIQUE exact match regardless of distance,
-// and only apply a distance guard to fuzzy matches where precision matters.
+
 const MAX_HINT_DISTANCE = 200;
 
 function normalizeLine(line) {
-  // Strip the "NN: " prefix the model sees in <code>, then trailing whitespace
-  // and CR, then leading/trailing spaces. Indentation is intentionally ignored:
-  // the model frequently re-indents snippets, and a whitespace mismatch should
-  // never be the reason a fix can't be placed.
-  return String(line).replace(/\r$/, "").replace(/^\s*\d+:\s?/, "").trim();
+  return String(line)
+    .replace(/\r$/, "")
+    .replace(/^\s*\d+:\s?/, "")
+    .trim();
 }
 
 function findExact(lines, target) {
   const matches = [];
-  for (let i = 0; i + target.length <= lines.length; i++) {
+
+  for (
+    let i = 0;
+    i + target.length <= lines.length;
+    i++
+  ) {
     let ok = true;
+
     for (let j = 0; j < target.length; j++) {
-      if (normalizeLine(lines[i + j]) !== target[j]) { ok = false; break; }
+      if (normalizeLine(lines[i + j]) !== target[j]) {
+        ok = false;
+        break;
+      }
     }
-    if (ok) matches.push({ startLine: i + 1, endLine: i + target.length });
+
+    if (ok) {
+      matches.push({
+        startLine: i + 1,
+        endLine: i + target.length
+      });
+    }
   }
+
   return matches;
 }
 
 function findFuzzy(lines, target) {
-  // Score each window by how many lines match after normalization.
-  // Requires >= 70% line matches and a unique best window.
   let best = null;
-  const need = Math.max(1, Math.ceil(target.length * 0.7));
-  for (let i = 0; i + target.length <= lines.length; i++) {
+
+  const need = Math.max(
+    1,
+    Math.ceil(target.length * 0.7)
+  );
+
+  for (
+    let i = 0;
+    i + target.length <= lines.length;
+    i++
+  ) {
     let hits = 0;
+
     for (let j = 0; j < target.length; j++) {
-      if (normalizeLine(lines[i + j]) === target[j]) hits++;
+      if (normalizeLine(lines[i + j]) === target[j]) {
+        hits++;
+      }
     }
+
     if (hits < need) continue;
+
     const score = hits / target.length;
+
     if (!best || score > best.score) {
-      best = { startLine: i + 1, endLine: i + target.length, score };
+      best = {
+        startLine: i + 1,
+        endLine: i + target.length,
+        score
+      };
     } else if (best && score === best.score) {
-      best.ambiguous = true; // tie — refuse to guess
+      best.ambiguous = true;
     }
   }
-  return best && !best.ambiguous ? best : null;
+
+  return best && !best.ambiguous
+    ? best
+    : null;
 }
 
 function locateFix(lines, fix, bugLine) {
-  const raw = typeof fix?.original === "string" ? fix.original.replace(/\r?\n$/, "") : "";
-  if (!raw.trim()) return { reason: "empty original" };
+  const raw =
+    typeof fix?.original === "string"
+      ? fix.original.replace(/\r?\n$/, "")
+      : "";
 
-  let target = raw.split(/\r?\n/).map(normalizeLine);
-  while (target.length && !target[0]) target.shift();
-  while (target.length && !target[target.length - 1]) target.pop();
-  if (!target.length) return { reason: "original has no non-blank lines" };
+  if (!raw.trim()) {
+    return { reason: "empty original" };
+  }
+
+  let target = raw
+    .split(/\r?\n/)
+    .map(normalizeLine);
+
+  while (target.length && !target[0]) {
+    target.shift();
+  }
+
+  while (
+    target.length &&
+    !target[target.length - 1]
+  ) {
+    target.pop();
+  }
+
+  if (!target.length) {
+    return {
+      reason: "original has no non-blank lines"
+    };
+  }
+
   if (target.length > MAX_FIX_LINES) {
-    return { reason: `original is ${target.length} lines (max ${MAX_FIX_LINES})` };
+    return {
+      reason: `original is ${target.length} lines (max ${MAX_FIX_LINES})`
+    };
   }
 
   const hint = Number.isInteger(bugLine)
     ? bugLine
-    : Number.isInteger(fix?.startLine) ? fix.startLine : null;
+    : Number.isInteger(fix?.startLine)
+      ? fix.startLine
+      : null;
 
   const pickClosest = matches => {
-    if (matches.length === 0) return null;
-    if (!Number.isInteger(hint)) return matches[0];
+    if (matches.length === 0) {
+      return null;
+    }
+
+    if (!Number.isInteger(hint)) {
+      return matches[0];
+    }
+
     return matches.reduce((a, b) => {
-      const da = Math.min(Math.abs(hint - a.startLine), Math.abs(hint - a.endLine));
-      const db = Math.min(Math.abs(hint - b.startLine), Math.abs(hint - b.endLine));
+      const da = Math.min(
+        Math.abs(hint - a.startLine),
+        Math.abs(hint - a.endLine)
+      );
+
+      const db = Math.min(
+        Math.abs(hint - b.startLine),
+        Math.abs(hint - b.endLine)
+      );
+
       return db < da ? b : a;
     });
   };
 
-  // 1. Exact match (normalized whitespace + optional "NN:" prefixes).
   const exact = findExact(lines, target);
+
   if (exact.length > 0) {
     const picked = pickClosest(exact);
-    // A unique exact match is trusted regardless of how far the model's
-    // bug.line hint was off. Multiple exact matches fall back to the
-    // closest-to-hint one, but only if it is within MAX_HINT_DISTANCE.
+
     if (exact.length === 1) {
-      return { startLine: picked.startLine, endLine: picked.endLine };
+      return {
+        startLine: picked.startLine,
+        endLine: picked.endLine
+      };
     }
+
     const d = Number.isInteger(hint)
-      ? Math.min(Math.abs(hint - picked.startLine), Math.abs(hint - picked.endLine))
+      ? Math.min(
+          Math.abs(hint - picked.startLine),
+          Math.abs(hint - picked.endLine)
+        )
       : 0;
+
     if (d <= MAX_HINT_DISTANCE) {
-      return { startLine: picked.startLine, endLine: picked.endLine };
+      return {
+        startLine: picked.startLine,
+        endLine: picked.endLine
+      };
     }
-    return { reason: `${exact.length} exact matches, nearest is ${d} lines from bug.line` };
+
+    return {
+      reason: `${exact.length} exact matches, nearest is ${d} lines from bug.line`
+    };
   }
 
-  // 2. Fuzzy match — only if unique and close enough to the hint.
   const fuzzy = findFuzzy(lines, target);
+
   if (fuzzy) {
     const d = Number.isInteger(hint)
-      ? Math.min(Math.abs(hint - fuzzy.startLine), Math.abs(hint - fuzzy.endLine))
+      ? Math.min(
+          Math.abs(hint - fuzzy.startLine),
+          Math.abs(hint - fuzzy.endLine)
+        )
       : 0;
-    if (fuzzy.score >= 0.8 && d <= MAX_HINT_DISTANCE) {
-      return { startLine: fuzzy.startLine, endLine: fuzzy.endLine };
+
+    if (
+      fuzzy.score >= 0.8 &&
+      d <= MAX_HINT_DISTANCE
+    ) {
+      return {
+        startLine: fuzzy.startLine,
+        endLine: fuzzy.endLine
+      };
     }
-    return { reason: `fuzzy score ${fuzzy.score.toFixed(2)}, distance ${d}` };
+
+    return {
+      reason: `fuzzy score ${fuzzy.score.toFixed(2)}, distance ${d}`
+    };
   }
 
-  return { reason: "no exact or fuzzy match" };
+  return {
+    reason: "no exact or fuzzy match"
+  };
 }
 
 function mergeResults(results, lines) {
-  const found = results.filter(r => r?.found !== false && r?.bug?.message);
+  const found = results.filter(
+    r => r?.found !== false && r?.bug?.message
+  );
+
   if (found.length === 0) {
-    return { bug: null, why: "No obvious bug was found in the code provided.", fix: null };
+    return {
+      bug: null,
+      why: "No obvious bug was found in the code provided.",
+      fix: null
+    };
   }
 
-  const primary = found.find(r => Number.isInteger(r.bug.line)) ?? found[0];
-  const { found: _found, ...result } = primary;
+  const primary =
+    found.find(r => Number.isInteger(r.bug.line)) ??
+    found[0];
+
+  const {
+    found: _found,
+    ...result
+  } = primary;
+
   const extra = found.length - 1;
 
   if (extra > 0) {
     result.bug = {
       ...result.bug,
-      message: `${result.bug.message} (+${extra} more possible ${extra === 1 ? "issue" : "issues"} in other sections of the file)`
+      message: `${result.bug.message} (+${extra} more possible ${
+        extra === 1 ? "issue" : "issues"
+      } in other sections of the file)`
     };
   }
 
   if (result.fix?.scope !== "file") {
-    const located = locateFix(lines, result.fix, result.bug.line);
+    const located = locateFix(
+      lines,
+      result.fix,
+      result.bug.line
+    );
+
     if (located.startLine) {
-      result.fix = { ...result.fix, startLine: located.startLine, endLine: located.endLine };
+      result.fix = {
+        ...result.fix,
+        startLine: located.startLine,
+        endLine: located.endLine
+      };
     } else {
-      console.log("locateFix failed:", located.reason, "| bug.line:", result.bug.line,
-        "| model startLine:", result.fix?.startLine,
-        "| original first line:", JSON.stringify((result.fix?.original ?? "").split(/\r?\n/)[0]));
-      result.fix = { ...result.fix, startLine: null, endLine: null };
+      console.log(
+        "locateFix failed:",
+        located.reason,
+        "| bug.line:",
+        result.bug.line,
+        "| model startLine:",
+        result.fix?.startLine,
+        "| original first line:",
+        JSON.stringify(
+          (result.fix?.original ?? "")
+            .split(/\r?\n/)[0]
+        )
+      );
+
+      result.fix = {
+        ...result.fix,
+        startLine: null,
+        endLine: null
+      };
     }
   }
 
@@ -318,31 +506,65 @@ function mergeResults(results, lines) {
 export default {
   async fetch(request, env) {
     if (request.method === "OPTIONS") {
-      return new Response(null, { headers: corsHeadersFor(request) });
+      return new Response(null, {
+        headers: corsHeadersFor(request)
+      });
     }
 
     if (request.method !== "POST") {
-      return jsonResponse(request, { success: false, message: "Method not allowed" }, 405);
+      return jsonResponse(
+        request,
+        {
+          success: false,
+          message: "Method not allowed"
+        },
+        405
+      );
     }
 
-    const { success: withinLimit } = await env.RATE_LIMITER.limit({ key: clientIp(request) });
+    const {
+      success: withinLimit
+    } = await env.RATE_LIMITER.limit({
+      key: clientIp(request)
+    });
+
     if (!withinLimit) {
       return jsonResponse(
         request,
-        { success: false, message: "Too many requests. Please wait a moment and try again." },
+        {
+          success: false,
+          message:
+            "Too many requests. Please wait a moment and try again."
+        },
         429,
-        { "Retry-After": "60" }
+        {
+          "Retry-After": "60"
+        }
       );
     }
 
     let data;
+
     try {
       data = await request.json();
     } catch {
-      return jsonResponse(request, { success: false, message: "Invalid request payload JSON format" }, 400);
+      return jsonResponse(
+        request,
+        {
+          success: false,
+          message:
+            "Invalid request payload JSON format"
+        },
+        400
+      );
     }
 
-    const { requirements, code, error, filename } = data ?? {};
+    const {
+      requirements,
+      code,
+      error,
+      filename
+    } = data ?? {};
 
     if (
       typeof requirements !== "string" ||
@@ -350,81 +572,160 @@ export default {
       typeof code !== "string" ||
       code.trim() === ""
     ) {
-      return jsonResponse(request, { success: false, message: "Requirements and code are required" }, 400);
+      return jsonResponse(
+        request,
+        {
+          success: false,
+          message:
+            "Requirements and code are required"
+        },
+        400
+      );
     }
 
-    if (error !== undefined && typeof error !== "string") {
-      return jsonResponse(request, { success: false, message: "Error must be a string" }, 400);
+    if (
+      error !== undefined &&
+      typeof error !== "string"
+    ) {
+      return jsonResponse(
+        request,
+        {
+          success: false,
+          message: "Error must be a string"
+        },
+        400
+      );
     }
 
-    if (filename !== undefined && (typeof filename !== "string" || filename.length > MAX_FILENAME)) {
-      return jsonResponse(request, { success: false, message: "Invalid file name" }, 400);
+    if (
+      filename !== undefined &&
+      (
+        typeof filename !== "string" ||
+        filename.length > MAX_FILENAME
+      )
+    ) {
+      return jsonResponse(
+        request,
+        {
+          success: false,
+          message: "Invalid file name"
+        },
+        400
+      );
     }
 
-    const tooLong = findLimitViolation({ requirements, code, error });
+    const tooLong = findLimitViolation({
+      requirements,
+      code,
+      error
+    });
+
     if (tooLong) {
       return jsonResponse(
         request,
-        { success: false, message: `The ${tooLong} field is too long (max ${LIMITS[tooLong]} characters)` },
+        {
+          success: false,
+          message: `The ${tooLong} field is too long (max ${LIMITS[tooLong]} characters)`
+        },
         413
       );
     }
 
-    const { chunks, totalLines, lines } = splitIntoChunks(code);
+    const {
+      chunks,
+      totalLines,
+      lines
+    } = splitIntoChunks(code);
+
     const partial = chunks.length > 1;
-    const args = { requirements, error, filename: filename?.trim(), totalLines, partial };
 
-    let settled;
-    // A full-file prompt must actually contain the complete file. The old implementation
-    // passed chunks[0] while claiming it was the complete file, which could silently return
-    // a truncated "fixed" file for code larger than one chunk.
-    if (code.length <= FULL_FILE_CHARS && chunks.length === 1) {
-      settled = await Promise.allSettled([
-        analyseWholeFile(env, {
+    const args = {
+      requirements,
+      error,
+      filename: filename?.trim(),
+      totalLines,
+      partial
+    };
+
+    // Always analyse sections and return a small line-range patch.
+    // The frontend applies that patch to the original source, so even tiny files
+    // never force the model to regenerate the entire file.
+    const settled = await Promise.allSettled(
+      chunks.map(chunk =>
+        analyseChunk(env, {
           ...args,
-          chunk: chunks[0],
-          originalCode: code
+          chunk
         })
-      ]);
+      )
+    );
 
-      if (settled[0].status === "fulfilled" && settled[0].value === null) {
-        settled = await Promise.allSettled([
-          analyseChunk(env, { ...args, chunk: chunks[0] })
-        ]);
-      }
-    } else {
-      // Larger files are analysed as overlapping sections. Never label a partial section
-      // as a complete fixed file.
-      settled = await Promise.allSettled(
-        chunks.map(chunk => analyseChunk(env, { ...args, chunk }))
-      );
-    }
+    const failures = settled.filter(
+      r => r.status === "rejected"
+    );
 
-    const failures = settled.filter(r => r.status === "rejected");
-    failures.forEach(r => console.error("AI request failed:", r.reason));
-    const results = settled.filter(r => r.status === "fulfilled").map(r => r.value);
+    failures.forEach(r =>
+      console.error(
+        "AI request failed:",
+        r.reason
+      )
+    );
+
+    const results = settled
+      .filter(r => r.status === "fulfilled")
+      .map(r => r.value);
+
     const parsed = results.filter(Boolean);
 
     if (parsed.length === 0) {
       const unavailable = failures.length > 0;
-      if (!unavailable) console.error("AI returned unparseable output");
+
+      if (!unavailable) {
+        console.error(
+          "AI returned unparseable output"
+        );
+      }
+
       return jsonResponse(
         request,
-        { success: false, message: unavailable ? "The AI service is unavailable. Please try again." : "AI returned unparseable output" },
+        {
+          success: false,
+          message: unavailable
+            ? "The AI service is unavailable. Please try again."
+            : "AI returned unparseable output"
+        },
         502
       );
     }
 
-    const result = mergeResults(parsed, lines);
+    const result = mergeResults(
+      parsed,
+      lines
+    );
 
-    if (!result.bug && (failures.length > 0 || parsed.length < results.length)) {
+    if (
+      !result.bug &&
+      (
+        failures.length > 0 ||
+        parsed.length < results.length
+      )
+    ) {
       return jsonResponse(
         request,
-        { success: false, message: "Some sections of the file couldn't be analysed. Please try again." },
+        {
+          success: false,
+          message:
+            "Some sections of the file couldn't be analysed. Please try again."
+        },
         502
       );
     }
 
-    return jsonResponse(request, { success: true, result });
+    return jsonResponse(
+      request,
+      {
+        success: true,
+        result
+      }
+    );
   }
 };
