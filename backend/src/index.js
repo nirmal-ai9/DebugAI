@@ -19,13 +19,16 @@ function buildSchema(full) {
         required: ["type", "line", "message"]
       },
       why: { type: "string" },
+      severity: { type: "string", enum: ["low", "medium", "high", "critical"] },
+      confidence: { type: "number" },
+      alsoCheck: { type: "array", items: { type: "string" } },
       fix: {
         type: "object",
         properties: fixProps,
         required: Object.keys(fixProps)
       }
     },
-    required: ["found", "bug", "why", "fix"]
+    required: ["found", "bug", "why", "severity", "confidence", "alsoCheck", "fix"]
   };
 }
 
@@ -57,7 +60,7 @@ The user's message contains tagged sections: <file_context>, <requirements>, <co
 Each line of <code> is prefixed with its absolute line number and a colon so you can report lines accurately.
 Never include those "NN: " prefixes in any field of your answer, including "fix.code" and "fix.original".
 Set "found" to false when there is no real bug in the shown code; then use empty strings, null for bug.line and empty fix fields.
-Put raw code only in the "fix.code" field, without markdown backticks or code fences.`;
+Set "severity" to low, medium, high or critical by real-world impact, "confidence" to an integer 0-100 for how sure you are, and "alsoCheck" to at most 3 short strings naming other risky spots in the shown code (empty array if none).\nPut raw code only in the "fix.code" field, without markdown backticks or code fences.`;
 
 const FULL_PROMPT = `${BASE_PROMPT}
 "fix.code" must be the COMPLETE corrected file, from the first line to the last, with only the bug fixed and everything else unchanged. Never abbreviate, never use placeholders like "...rest of the file" or "[unchanged code]".`;
