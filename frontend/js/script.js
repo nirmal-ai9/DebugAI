@@ -361,7 +361,7 @@ function applyPatches(source, patches) {
 }
 
 function renderCodeLines(codeElement, source, firstLine = 1, marks = []) {
-  const lines = source ? source.replace(/\n$/, "").split(/\r?\n/) : [];
+  const lines = source ? source.replace(/\r?\n$/, "").split(/\r?\n/) : [];
   const fragment = document.createDocumentFragment();
 
   lines.forEach((text, index) => {
