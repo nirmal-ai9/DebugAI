@@ -370,39 +370,12 @@
     <section class="results" id="results" hidden aria-labelledby="results-heading">
       <h2 id="results-heading" class="visually-hidden" tabindex="-1">Diagnosis</h2>
 
-      <article class="result-card result-card--bug bracket reveal">
-        <div class="result-head">
-          <span class="result-icon" aria-hidden="true">🔴</span>
-          <h3 class="result-title">Bug found</h3>
-        </div>
-        <dl class="bug-meta">
-          <div class="bug-meta-item">
-            <dt>Type</dt>
-            <dd>ReferenceError</dd>
-          </div>
-          <div class="bug-meta-item">
-            <dt>Line</dt>
-            <dd>2</dd>
-          </div>
-        </dl>
-        <p class="bug-message">saveData is not defined</p>
-      </article>
-
-      <article class="result-card result-card--why bracket reveal">
-        <div class="result-head">
-          <span class="result-icon" aria-hidden="true">🧠</span>
-          <h3 class="result-title">Why</h3>
-        </div>
-        <p class="result-prose">
-          The click handler calls <code>saveData()</code>, but the function isn't defined
-          in the provided code.
-        </p>
-      </article>
+      <div class="bug-list" id="bug-list"></div>
 
       <article class="result-card result-card--fix bracket reveal">
         <div class="result-head">
           <span class="result-icon" aria-hidden="true">🔧</span>
-          <h3 class="result-title">The fix</h3>
+          <h3 class="result-title">Fixed file</h3>
         </div>
         <p class="result-prose">Define <code>saveData()</code> before calling it.</p>
         <p class="fix-range" hidden></p>
