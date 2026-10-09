@@ -270,6 +270,7 @@ function initBugHunt() {
 
   function endGame() {
     running = false;
+    rank = rankFor(aura);
     clearInterval(countdownTimer);
     clearTimeout(spawnTimer);
     [...hideTimers.keys()].forEach(index => hideTarget(index, "cleanup"));
