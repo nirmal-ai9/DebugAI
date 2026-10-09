@@ -34,3 +34,35 @@
   border-radius: var(--radius-sm);
   padding: var(--space-sm);
 }
+
+.bug-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.bug-subhead {
+  margin: var(--space-sm) 0 0.15rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.bug-patches {
+  margin: var(--space-sm) 0 0;
+  font-family: var(--font-code);
+  font-size: 0.75rem;
+  color: var(--accent-green);
+}
+
+.bug-manual-code {
+  margin: 0.25rem 0 0;
+  padding: var(--space-sm);
+  overflow-x: auto;
+  font-family: var(--font-code);
+  font-size: 0.8rem;
+  background: var(--accent-red-soft);
+  border-radius: var(--radius-sm);
+}
