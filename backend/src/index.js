@@ -473,7 +473,8 @@ function mergeResults(results, lines) {
   const patches = [];
   let nextPatchId = 1;
 
-  raw.sort((a, b) => (a.line ?? Infinity) - (b.line ?? Infinity));
+  const lineKey = b => (Number.isInteger(b.line) ? b.line : Number.MAX_SAFE_INTEGER);
+  raw.sort((a, b) => lineKey(a) - lineKey(b));
 
   for (const b of raw) {
     if (bugs.length >= MAX_BUGS_TOTAL) break;
@@ -487,6 +488,14 @@ function mergeResults(results, lines) {
       patchIds: [],
       unplaced: []
     };
+
+    const sameBug = bugs.some(
+      x =>
+        x.line === entry.line &&
+        x.message.trim().toLowerCase() === entry.message.trim().toLowerCase()
+    );
+
+    if (sameBug) continue;
 
     let duplicates = 0;
     const candidates = Array.isArray(b.patches) ? b.patches : [];
@@ -542,13 +551,7 @@ function mergeResults(results, lines) {
     const isRepeat =
       duplicates > 0 && duplicates === candidates.length;
 
-    const sameBug = bugs.some(
-      x =>
-        x.line === entry.line &&
-        x.message.trim().toLowerCase() === entry.message.trim().toLowerCase()
-    );
-
-    if (isRepeat || sameBug) continue;
+    if (isRepeat) continue;
 
     bugs.push(entry);
   }
