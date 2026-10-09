@@ -26,10 +26,9 @@ function buildSchema() {
   return {
     type: "object",
     properties: {
-      found: { type: "boolean" },
       bugs: { type: "array", items: bug }
     },
-    required: ["found", "bugs"]
+    required: ["bugs"]
   };
 }
 
@@ -62,7 +61,7 @@ The user's message contains tagged sections: <file_context>, <requirements>, <co
 Each line of <code> is prefixed with its absolute line number and a colon so you can report lines accurately.
 Never include those "NN: " prefixes in any field of your answer, including "patches[].code" and "patches[].original".
 Report EVERY distinct real bug you can see, up to ${MAX_BUGS_PER_CHUNK}, one entry per bug in "bugs". Do not stop at the first one and do not invent bugs.
-Set "found" to false and "bugs" to [] when there is no real bug in the shown code.
+Return "bugs": [] only when the shown code truly has no bug; if the console error or requirements contradict the code, there is a bug.
 Put raw code only in "patches[].code", without markdown backticks or code fences.`;
 
 const SECTION_PROMPT = `${BASE_PROMPT}
@@ -228,7 +227,9 @@ async function analyseChunk(
     max_tokens: SECTION_MAX_TOKENS
   });
 
-  return parseAiResult(aiResponse);
+  const parsed = parseAiResult(aiResponse);
+  if (!parsed) console.error("unparseable:", JSON.stringify(aiResponse).slice(0, 500));
+  return parsed;
 }
 
 const MAX_HINT_DISTANCE = 200;
@@ -458,9 +459,15 @@ const normCode = code =>
 
 function mergeResults(results, lines) {
   const raw = results
-    .filter(r => r && r.found !== false && Array.isArray(r.bugs))
-    .flatMap(r => r.bugs)
+    .flatMap(r => {
+      if (!r) return [];
+      if (Array.isArray(r.bugs)) return r.bugs;
+      if (r.bug?.message) return [{ ...r.bug, why: r.why, explanation: r.fix?.explanation, patches: r.fix ? [r.fix] : [] }];
+      return [];
+    })
     .filter(b => b && typeof b.message === "string" && b.message.trim());
+
+  console.log("merge: raw bugs", raw.length, "from", results.length, "chunks");
 
   const bugs = [];
   const patches = [];
