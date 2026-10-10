@@ -1,3 +1,5 @@
+const SEVERITIES = ["critical", "high", "medium", "low"];
+
 function buildSchema() {
   const patch = {
     type: "object",
@@ -18,9 +20,12 @@ function buildSchema() {
       message: { type: "string" },
       why: { type: "string" },
       explanation: { type: "string" },
+      severity: { type: "string", enum: SEVERITIES },
+      confidence: { type: "number" },
+      alsoCheck: { type: "array", items: { type: "string" } },
       patches: { type: "array", items: patch }
     },
-    required: ["type", "line", "message", "why", "explanation", "patches"]
+    required: ["type", "line", "message", "why", "explanation", "severity", "confidence", "alsoCheck", "patches"]
   };
 
   return {
@@ -71,7 +76,8 @@ Each bug has "type", "line" (absolute line of the fault), "message", "why" (caus
 Each patch changes only the lines that need changing, never the whole file, and never moves or reformats other code.
 "original" is the exact original text of the line(s) replaced, copied verbatim from <code> WITHOUT "NN: " prefixes.
 "startLine" and "endLine" are the inclusive absolute line range of "original" in the ORIGINAL code (never renumber after earlier edits), at most ${MAX_FIX_LINES} lines.
-"code" is the new text replacing "original", WITHOUT "NN: " prefixes. Patches must never overlap each other, including across different bugs.`;
+"code" is the new text replacing "original", WITHOUT "NN: " prefixes. Patches must never overlap each other, including across different bugs.
+Also give each bug "severity" (critical: crash or data loss, high: core behaviour wrong, medium: edge case or partial failure, low: minor), "confidence" (0 to 1, how sure you are it is a real bug) and "alsoCheck" (at most 2 short, related things worth checking elsewhere, or []).`;
 
 function corsHeadersFor(request) {
   const origin = request.headers.get("Origin");
@@ -457,6 +463,12 @@ const normCode = code =>
     .join("\n")
     .trim();
 
+function normConfidence(value) {
+  if (!Number.isFinite(value)) return null;
+  const v = value > 1 && value <= 100 ? value / 100 : value;
+  return Math.min(1, Math.max(0, v));
+}
+
 function mergeResults(results, lines) {
   const raw = results
     .flatMap(r => {
@@ -474,7 +486,11 @@ function mergeResults(results, lines) {
   let nextPatchId = 1;
 
   const lineKey = b => (Number.isInteger(b.line) ? b.line : Number.MAX_SAFE_INTEGER);
-  raw.sort((a, b) => lineKey(a) - lineKey(b));
+  const rank = b => {
+    const i = SEVERITIES.indexOf(b.severity);
+    return i === -1 ? 2 : i;
+  };
+  raw.sort((a, b) => rank(a) - rank(b) || lineKey(a) - lineKey(b));
 
   for (const b of raw) {
     if (bugs.length >= MAX_BUGS_TOTAL) break;
@@ -485,6 +501,11 @@ function mergeResults(results, lines) {
       message: b.message,
       why: String(b.why ?? ""),
       explanation: String(b.explanation ?? ""),
+      severity: SEVERITIES.includes(b.severity) ? b.severity : "medium",
+      confidence: normConfidence(b.confidence),
+      alsoCheck: Array.isArray(b.alsoCheck)
+        ? b.alsoCheck.filter(s => typeof s === "string" && s.trim()).slice(0, 2).map(s => s.slice(0, 200))
+        : [],
       patchIds: [],
       unplaced: []
     };

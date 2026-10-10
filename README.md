@@ -12,6 +12,12 @@ Most debuggers only look at the code. DebugAI compares three things: what the co
 - **Safe placement:** if an edit can't be placed with confidence, it is shown as a manual snippet instead of risking a corrupted file.
 - **Copy or download:** copy the fix, or download the complete fixed file.
 - **HTML preview:** fixed HTML can be previewed in a sandboxed frame.
+- **Severity and confidence:** every bug is ranked critical to low, with a confidence score and related things to check.
+- **Diff view:** see exactly what changed, with syntax-highlighted code.
+- **History:** your last 12 diagnoses are saved in your browser and can be restored in one click.
+- **Command palette:** press `Ctrl K` (or `Cmd K`) for quick actions.
+- **Markdown report:** export the full diagnosis and diff as a `.md` file.
+- **Sample bug:** try the tool instantly without writing any code.
 - **Dark / light theme** and an optional matrix-rain background.
 - **Bug Hunt:** a 30-second whack-a-bug mini-game, plus a hidden terminal on the landing page.
 
@@ -24,6 +30,7 @@ It stays lightweight: plain HTML, CSS, and vanilla JavaScript with no framework 
 | File | Job |
 | --- | --- |
 | `script.js` | Wizard form, file upload, API call, patch application, result rendering |
+| `upgrade.js` | Diff view, highlighting, history, command palette, report export |
 | `effects.js` | Theme switcher, matrix rain, scroll reveal |
 | `interactive.js` | Landing page demos (triangle, closure, challenge) |
 | `terminal.js` | Hidden terminal commands |
