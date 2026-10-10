@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="What DebugAI does and doesn't do with the code, requirements and console errors you submit." />
+  <meta name="description" content="How DebugAI processes submitted code and stores your diagnosis history locally in your browser." />
   <meta name="robots" content="index, follow" />
   <meta name="author" content="Nirmal">
 
@@ -13,7 +13,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="DebugAI" />
   <meta property="og:title" content="Privacy Policy — DebugAI" />
-  <meta property="og:description" content="What DebugAI does and doesn't do with what you submit." />
+  <meta property="og:description" content="How DebugAI processes submissions and keeps diagnosis history locally in your browser." />
   <meta property="og:url" content="https://nirmal-ai9.github.io/DebugAI/privacy.html" />
   <meta property="og:image" content="https://nirmal-ai9.github.io/DebugAI/logo/icon-512.png" />
   <meta property="og:image:width" content="512" />
@@ -22,7 +22,7 @@
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Privacy Policy — DebugAI" />
-  <meta name="twitter:description" content="What DebugAI does and doesn't do with what you submit." />
+  <meta name="twitter:description" content="How DebugAI processes submissions and keeps diagnosis history locally in your browser." />
   <meta name="twitter:image" content="https://nirmal-ai9.github.io/DebugAI/logo/icon-512.png" />
 
   <meta name="theme-color" content="#050a07" />
@@ -56,9 +56,9 @@
   </nav>
 
   <header class="about-hero">
-    <p class="hero-eyebrow">legal · last updated Sep 2026</p>
+    <p class="hero-eyebrow">legal · last updated Oct 2026</p>
     <h1 class="hero-heading glitch" data-text="Privacy Policy">Privacy Policy</h1>
-    <p class="hero-sub">Short version: nothing you submit is stored. Here's the full version.</p>
+    <p class="hero-sub">Short version: diagnosis history is saved in your browser, while submissions are sent to the backend for analysis. Here's the full version.</p>
   </header>
 
   <section class="about-section">
@@ -68,7 +68,7 @@
       <li><strong>No accounts.</strong> There's nothing to sign up for, so there's no email, password or profile to store.</li>
       <li><strong>No cookies.</strong> DebugAI doesn't set any.</li>
       <li><strong>No analytics or trackers.</strong> Nothing watches which pages you visit or how you use the tool.</li>
-      <li><strong>One thing in local storage:</strong> your light/dark theme choice, saved in your own browser via <code>localStorage</code>. It never leaves your device and DebugAI's servers never see it.</li>
+      <li><strong>Browser storage:</strong> your light/dark theme choice and your diagnosis history are saved in your browser using <code>localStorage</code>. This data is not uploaded to a DebugAI history database and is not synced between devices or browsers.</li>
     </ul>
   </section>
 
@@ -80,14 +80,25 @@
       function — which forwards them to Cloudflare's AI inference service to generate a diagnosis. That's the entire round trip.
     </p>
     <p class="about-prose">
-      DebugAI itself doesn't write your submission to a database, a log file, or anywhere else. Once
-      the response reaches your browser, the backend keeps nothing. Cloudflare processes the request
-      to run the model; their handling of that processing is governed by
-      <a class="about-link" href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's own privacy policy</a>, not this one.
+      DebugAI does not save your submission to a server-side history database. However, when a diagnosis
+      completes, the browser's History feature saves a local copy so you can reopen previous results.
+      Each saved entry can include your filename, requirements, original code, console error, diagnosis
+      results, a short title, a bug count and a timestamp. History keeps up to 12 entries in the current
+      browser's <code>localStorage</code>; older entries may be removed as new ones are added. Anyone with
+      access to your unlocked browser profile may be able to view that history.
     </p>
     <p class="about-prose">
-      Avoid pasting real secrets — API keys, passwords, tokens — into the code or console fields.
-      Treat it the same way you'd treat pasting code into any third-party tool.
+      You can remove an individual history entry or use <strong>Clear all</strong> in the History panel.
+      Clearing browser site data or local storage also removes saved history. History is stored on your
+      device, but the code, requirements and console error are still sent to DebugAI's backend for analysis
+      when you submit them. The backend forwards the request to Cloudflare's AI inference service;
+      Cloudflare's handling of that processing is governed by
+      <a class="about-link" href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare's own privacy policy</a>.
+    </p>
+    <p class="about-prose">
+      Avoid pasting real secrets — API keys, passwords, tokens — into the code or console fields. If you
+      submit sensitive material, remember that it may also remain in your local diagnosis history until
+      you delete that entry or clear your browser data.
     </p>
   </section>
 
