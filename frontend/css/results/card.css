@@ -52,11 +52,6 @@
   margin-bottom: var(--space-sm);
 }
 
-.result-icon {
-  font-size: 0.95rem;
-  line-height: 1;
-}
-
 .result-title {
   margin: 0;
   font-size: 1rem;
