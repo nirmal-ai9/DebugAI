@@ -396,8 +396,9 @@ function rangeLabel(p) {
 function buildBugCard(bug, index, total, patchById) {
   const card = el("article", "result-card result-card--bug bracket reveal is-visible");
   const head = el("div", "result-head");
-  head.append(el("span", "result-icon", "\ud83d\udd34"));
-  head.lastChild.setAttribute("aria-hidden", "true");
+  const icon = el("span", "result-icon");
+  icon.setAttribute("aria-hidden", "true");
+  head.append(icon);
   head.append(el("h3", "result-title", total > 1 ? `Bug ${index + 1} of ${total}` : "Bug found"));
   card.append(head);
 
