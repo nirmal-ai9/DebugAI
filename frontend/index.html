@@ -67,6 +67,8 @@
     <div class="nav-links">
       <a class="nav-link" href="about.html">About</a>
       <a class="nav-link" href="#links">Links</a>
+      <button type="button" class="nav-link nav-btn" id="history-open">History <span class="nav-count" id="history-count" hidden>0</span></button>
+      <button type="button" class="nav-link nav-btn" id="palette-open" aria-label="Open command palette">Commands <kbd>Ctrl K</kbd></button>
       <a class="nav-cta" href="#debug-tool">Try it</a>
     </div>
   </nav>
@@ -74,7 +76,7 @@
   <main id="main-content">
   <section class="hero">
     <div>
-      <p class="hero-eyebrow">diagnostic terminal · v1.0</p>
+      <p class="hero-eyebrow">diagnostic terminal · v2.0</p>
       <h1 class="hero-heading glitch" data-text="Paste what broke. Get the fix, not a lecture.">Paste what broke. Get the fix, not a lecture.</h1>
   
       <p class="hero-sub">
@@ -310,6 +312,7 @@
   <section class="workspace" id="debug-tool" aria-labelledby="tool-title">
     <form class="debug-form" novalidate>
       <h2 class="tool-title" id="tool-title">try it yourself</h2>
+      <div class="tool-actions"><button type="button" class="sample-btn" id="sample-btn">Load a sample bug</button></div>
 
       <div class="wizard reveal">
         <header class="wizard-head">
@@ -384,6 +387,7 @@
             <span class="window-dots" aria-hidden="true"><span></span><span></span><span></span></span>
             <div class="view-toggle" role="group" aria-label="Fix view">
               <button type="button" class="view-toggle-option" data-view="code" aria-pressed="true">Code</button>
+              <button type="button" class="view-toggle-option" data-view="diff" aria-pressed="false" disabled>Diff</button>
               <button type="button" class="view-toggle-option" data-view="preview" aria-pressed="false" disabled
                 title="Preview is available for HTML fixes">Preview</button>
             </div>
@@ -393,11 +397,13 @@
             ><span class="code-line"><span class="line-num">2</span>    ...</span
             ><span class="code-line"><span class="line-num">3</span>}</span
           ></code></pre>
+          <div class="code-diff" hidden></div>
           <iframe class="code-preview" title="Preview of the fixed code" sandbox="allow-scripts" hidden></iframe>
         </div>
         <div class="apply-fix-actions">
           <button type="button" class="apply-fix-button">Copy fix</button>
           <button type="button" class="apply-fix-button apply-fix-button--ghost download-fix-button" hidden>Download full fixed file</button>
+          <button type="button" class="apply-fix-button apply-fix-button--ghost export-md-button" hidden>Export report (.md)</button>
         </div>
       </article>
     </section>
@@ -503,5 +509,6 @@
   </script>
 
   <script src="js/script.js"></script>
+  <script src="js/upgrade.js"></script>
 </body>
 </html>
