@@ -1,5 +1,5 @@
 ## Why I Built DebugAI
- 
+  
 Debugging used to eat up way too much of my dev time. Staring at stack traces for hours just to find a missing bracket or a subtle logic bug was exhausting. I wanted a tool that felt fast, smart, and actually fun to use, so I built **DebugAI**.
 
 Most debuggers only look at the code. DebugAI compares three things: what the code was **supposed to do**, the **code itself**, and what the **console** says. It finds where they disagree, explains why, and hands back a fix you can paste straight into your file.
