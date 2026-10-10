@@ -266,7 +266,7 @@ form.addEventListener("submit", async event => {
     return;
   }
 
-  submitted = { code: debugData.code, filename: uploadedName };
+  submitted = { code: debugData.code, filename: uploadedName, requirements: debugData.requirements, error: debugData.error };
 
   setLoading(true);
   setStatus("Working on it", "busy");
@@ -400,6 +400,10 @@ function buildBugCard(bug, index, total, patchById) {
   icon.setAttribute("aria-hidden", "true");
   head.append(icon);
   head.append(el("h3", "result-title", total > 1 ? `Bug ${index + 1} of ${total}` : "Bug found"));
+  const badges = el("span", "badges");
+  if (/^(critical|high|medium|low)$/.test(bug.severity)) badges.append(el("span", `badge badge--${bug.severity}`, bug.severity));
+  if (Number.isFinite(bug.confidence)) badges.append(el("span", "badge badge--conf", `${Math.round(bug.confidence * 100)}% sure`));
+  if (badges.childElementCount) head.append(badges);
   card.append(head);
 
   const meta = el("dl", "bug-meta");
@@ -415,6 +419,13 @@ function buildBugCard(bug, index, total, patchById) {
   }
   if (bug.explanation) {
     card.append(el("h4", "bug-subhead", "Fix"), el("p", "result-prose", bug.explanation));
+  }
+
+  const also = (bug.alsoCheck ?? []).filter(s => typeof s === "string" && s.trim());
+  if (also.length) {
+    const list = el("ul", "also-list");
+    also.forEach(s => list.append(el("li", "", s)));
+    card.append(el("h4", "bug-subhead", "Also check"), list);
   }
 
   const placed = (bug.patchIds ?? []).map(id => patchById.get(id)).filter(Boolean);
@@ -433,7 +444,7 @@ function buildBugCard(bug, index, total, patchById) {
   return card;
 }
 
-function showResult(data) {
+function showResult(data, { restored = false } = {}) {
   const result = data.result;
   const results = document.getElementById("results");
   const bugList = document.getElementById("bug-list");
@@ -497,6 +508,18 @@ function showResult(data) {
   if (firstChanged) {
     codePanel.scrollTop = Math.max(0, firstChanged.offsetTop - codePanel.clientHeight / 3);
   }
+
+  document.dispatchEvent(new CustomEvent("debugai:result", {
+    detail: {
+      data,
+      restored,
+      original: submitted.code,
+      fixed: currentFullCode,
+      filename: submitted.filename,
+      requirements: submitted.requirements ?? "",
+      error: submitted.error ?? ""
+    }
+  }));
 }
 
 const copyBtn = document.querySelector(".apply-fix-actions .apply-fix-button:not(.download-fix-button)");
@@ -542,6 +565,8 @@ const viewButtons = codeWindow.querySelectorAll(".view-toggle-option");
 const previewButton = codeWindow.querySelector('[data-view="preview"]');
 const codePanel = codeWindow.querySelector(".code-fix");
 const previewFrame = codeWindow.querySelector(".code-preview");
+const diffPanel = codeWindow.querySelector(".code-diff");
+const diffButton = codeWindow.querySelector('[data-view="diff"]');
 
 // Requires a matching closing tag so plain JS comparisons (a < b) don't count as HTML.
 const HTML_PATTERN = /<!doctype html|<([a-z][\w-]*)\b[^>]*>[\s\S]*<\/\1>/i;
@@ -563,22 +588,35 @@ window.addEventListener("message", event => {
 
 function setView(view) {
   const showPreview = view === "preview";
+  const showDiff = view === "diff";
 
   viewButtons.forEach(button => {
     button.setAttribute("aria-pressed", String(button.dataset.view === view));
   });
 
-  codePanel.hidden = showPreview;
+  codePanel.hidden = showPreview || showDiff;
+  if (diffPanel) diffPanel.hidden = !showDiff;
   previewFrame.hidden = !showPreview;
   previewFrame.style.height = "";
   previewFrame.srcdoc = showPreview ? currentFixCode + PREVIEW_REPORTER : "";
+  if (showDiff) document.dispatchEvent(new CustomEvent("debugai:diff"));
 }
 
 function resetCodeWindow(code) {
   previewButton.disabled = !HTML_PATTERN.test(code.slice(0, 20000));
+  if (diffButton) diffButton.disabled = !code;
   setView("code");
 }
 
 viewButtons.forEach(button => {
   button.addEventListener("click", () => setView(button.dataset.view));
 });
+
+window.DebugAI = {
+  goToStep,
+  clearUpload,
+  restore({ data, code, filename, requirements, error }) {
+    submitted = { code, filename, requirements, error };
+    showResult(data, { restored: true });
+  }
+};
