@@ -42,3 +42,6 @@
 @import url("results/code-fix.css");
 @import url("results/code-window.css");
 @import url("results/apply-fix.css");
+
+/* Upgrade layer */
+@import url("upgrade.css");
