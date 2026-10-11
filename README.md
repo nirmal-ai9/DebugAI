@@ -4,7 +4,7 @@ Debugging used to eat up way too much of my dev time. Staring at stack traces fo
 
 Most debuggers only look at the code. DebugAI compares three things: what the code was **supposed to do**, the **code itself**, and what the **console** says. It finds where they disagree, explains why, and hands back a fix you can paste straight into your file.
 
-## What It Does
+## What It Does 
 
 - **Three-step input:** describe the intent, add the code (paste it or upload/drop a file), and optionally add the console error.
 - **Multiple bugs per run:** every distinct bug is reported with its type, line, cause, and explanation.
