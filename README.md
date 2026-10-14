@@ -27,16 +27,6 @@ I didn't want this to look like another generic admin dashboard. The UI is clean
 
 It stays lightweight: plain HTML, CSS, and vanilla JavaScript with no framework and no build step.
 
-| File | Job |
-| --- | --- |
-| `script.js` | Wizard form, file upload, API call, patch application, result rendering |
-| `upgrade.js` | Diff view, highlighting, history, command palette, report export |
-| `effects.js` | Theme switcher, matrix rain, scroll reveal |
-| `interactive.js` | Landing page demos (triangle, closure, challenge) |
-| `terminal.js` | Hidden terminal commands |
-| `bughunt.js` | Bug Hunt game |
-| `theme-init.js` | Applies the saved theme before first paint |
-
 ## Speed First: The Tech Stack
 
 The backend is a single Cloudflare Worker in plain JavaScript, using **Workers AI** (`@cf/meta/llama-3.3-70b-instruct-fp8-fast`) with structured JSON output.
