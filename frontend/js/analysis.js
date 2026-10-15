@@ -5,12 +5,14 @@ if (fileTrigger) fileTrigger.addEventListener("click", () => fileInput.click());
 const fileChip = form.querySelector(".file-chip");
 const fileChipName = form.querySelector(".file-chip-name");
 let uploadedName = "";
+let fileReadVersion = 0;
 
 function formatSize(bytes) {
   return bytes < 1024 ? `${bytes} B` : `${(bytes / 1024).toFixed(bytes < 10240 ? 1 : 0)} KB`;
 }
 
 function clearUpload() {
+  fileReadVersion++;
   uploadedName = "";
   fileInput.value = "";
   fileChip.hidden = true;
@@ -18,14 +20,15 @@ function clearUpload() {
 
 async function loadFile(file) {
   if (!file) return;
+  const readVersion = ++fileReadVersion;
 
   if (BLOCKED_EXTENSIONS.test(file.name)) {
-    fileInput.value = "";
+    clearUpload();
     stepError(1, "That file type isn't supported. Upload a text or source-code file.");
     return;
   }
   if (file.size > MAX_UPLOAD_BYTES) {
-    fileInput.value = "";
+    clearUpload();
     stepError(1, `File is too large (${formatSize(file.size)}). Max is ${formatSize(MAX_UPLOAD_BYTES)}.`);
     return;
   }
@@ -34,17 +37,19 @@ async function loadFile(file) {
   try {
     text = await file.text();
   } catch {
-    fileInput.value = "";
+    if (readVersion !== fileReadVersion) return;
+    clearUpload();
     stepError(1, "Couldn't read that file. Try again or paste the code instead.");
     return;
   }
+  if (readVersion !== fileReadVersion) return;
   if (text.includes("\u0000")) {
-    fileInput.value = "";
+    clearUpload();
     stepError(1, "That looks like a binary file. Upload a text or source-code file.");
     return;
   }
   if (text.length > FIELD_LIMITS.code) {
-    fileInput.value = "";
+    clearUpload();
     stepError(1, `File has ${text.length.toLocaleString()} characters (max ${FIELD_LIMITS.code.toLocaleString()}).`);
     return;
   }
@@ -74,6 +79,9 @@ form.querySelector(".file-chip-remove").addEventListener("click", () => {
 ["dragleave", "drop"].forEach(type =>
   codeField.addEventListener(type, () => codeField.classList.remove("is-dragging"))
 );
+codeField.addEventListener("input", () => {
+  fileReadVersion++;
+});
 codeField.addEventListener("drop", event => {
   event.preventDefault();
   loadFile(event.dataTransfer.files[0]);
@@ -152,4 +160,3 @@ form.addEventListener("submit", async event => {
     setLoading(false);
   }
 });
-
