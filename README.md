@@ -1,58 +1,139 @@
-## Why I Built DebugAI 
-  
-Debugging used to eat up way too much of my dev time. Staring at stack traces for hours just to find a missing bracket or a subtle logic bug was exhausting. I wanted a tool that felt fast, smart, and actually fun to use, so I built **DebugAI**.
+# DebugAI
+ 
+**Find the mismatch, not just the error.**
+ 
+DebugAI is an AI-powered code-diagnosis tool. It compares what your code is **supposed to do**, the **code itself**, and the **console output** to explain likely bugs and suggest targeted fixes. It does not execute submitted code.
+ 
+[Try DebugAI](https://nirmal-ai9.github.io/DebugAI/) · [Report a bug](https://github.com/nirmal-ai9/DebugAI/issues) · [About](https://nirmal-ai9.github.io/DebugAI/about.html)
+ 
+## Features
+ 
+- **Three-step diagnosis:** describe the intended behavior, paste or upload source code, and optionally include a console error.
+- **Multiple findings:** bugs include a type, line reference, explanation, severity, confidence, and additional checks where available.
+- **Targeted patches:** applies supported line-range patches to the original source rather than replacing the whole file. Ambiguous changes are kept as manual snippets.
+- **Review before using:** inspect the fixed code, compare a diff, or preview eligible HTML in a sandboxed frame.
+- **Export options:** copy the fix, download the complete fixed file, or export the diagnosis and diff as Markdown.
+- **Local history:** saves up to 12 recent diagnoses in browser storage so they can be restored later.
+- **Command palette:** press `Ctrl+K` / `Cmd+K` to access common actions.
+- **Sample diagnosis:** explore the workflow without preparing your own code.
+- **Theme and effects:** switch between light and dark themes and toggle the matrix-rain effect.
+- **Interactive landing page:** explore the intent/code/console triangle, JavaScript closure demo, and debugging challenge.
+- **Bug Hunt:** play the standalone 30-second mini-game.
+- **Informational pages:** About, Privacy, License, and custom 404 pages.
 
-Most debuggers only look at the code. DebugAI compares three things: what the code was **supposed to do**, the **code itself**, and what the **console** says. It finds where they disagree, explains why, and hands back a fix you can paste straight into your file.
+ 
+## Tech stack
+ 
+### Frontend
+ 
+- Semantic HTML and modular CSS
+- Vanilla JavaScript (no frontend framework or build step)
+- Browser APIs for local history, clipboard, file handling, downloads, and the HTML preview
+- GitHub Pages deployment through GitHub Actions
 
-## What It Does 
+ 
+### Backend
+ 
+- JavaScript running on Cloudflare Workers
+- [Hono](https://hono.dev/) for request routing
+- Cloudflare Workers AI using `@cf/meta/llama-3.3-70b-instruct-fp8-fast`
+- Zod dependency in the backend project
 
-- **Three-step input:** describe the intent, add the code (paste it or upload/drop a file), and optionally add the console error.
-- **Multiple bugs per run:** every distinct bug is reported with its type, line, cause, and explanation.
-- **Line-range patches:** the AI returns small edits instead of rewriting your file. The frontend applies them to your original source and highlights every changed range.
-- **Safe placement:** if an edit can't be placed with confidence, it is shown as a manual snippet instead of risking a corrupted file.
-- **Copy or download:** copy the fix, or download the complete fixed file.
-- **HTML preview:** fixed HTML can be previewed in a sandboxed frame.
-- **Severity and confidence:** every bug is ranked critical to low, with a confidence score and related things to check.
-- **Diff view:** see exactly what changed, with syntax-highlighted code.
-- **History:** your last 12 diagnoses are saved in your browser and can be restored in one click.
-- **Command palette:** press `Ctrl K` (or `Cmd K`) for quick actions.
-- **Markdown report:** export the full diagnosis and diff as a `.md` file.
-- **Sample bug:** try the tool instantly without writing any code.
-- **Dark / light theme** and an optional matrix-rain background.
-- **Bug Hunt:** a 30-second whack-a-bug mini-game, plus a hidden terminal on the landing page.
+ 
+The backend splits large inputs into overlapping line windows, analyses sections, and merges/de-duplicates findings. It returns structured bug data and line-range patches for the frontend to review and apply.
+ 
+## Repository structure
+ 
+```text
+.
+├── .github/
+│   └── workflows/
+│       ├── codeql.yml          # CodeQL security scanning
+│       └── deploy.yml          # Deploy frontend to GitHub Pages
+├── backend/
+│   ├── src/index.js            # Worker API and AI diagnosis logic
+│   ├── package.json
+│   ├── package-lock.json
+│   └── wrangler.jsonc          # Cloudflare Worker configuration
+├── frontend/
+│   ├── index.html              # Main debugging tool and landing page
+│   ├── about.html
+│   ├── bughunt.html
+│   ├── privacy.html
+│   ├── license.html
+│   ├── 404.html
+│   ├── css/                    # Base, layout, landing, form, and result styles
+│   ├── js/
+│   │   ├── wizard.js           # Multi-step form and API request flow
+│   │   ├── analysis.js         # Source-file selection and upload handling
+│   │   ├── results/            # Bug cards, patching, copy/download/preview actions
+│   │   ├── upgrade/            # Diff view, history, report export, command palette
+│   │   ├── interactive/        # Landing-page demos and challenge
+│   │   ├── bughunt/            # Bug Hunt game logic and configuration
+│   │   ├── effects.js          # Theme/effects and page enhancements
+│   │   ├── terminal.js         # Hidden landing-page terminal
+│   │   └── theme-init.js       # Prevents theme flash on page load
+│   ├── logo/
+│   ├── manifest.json
+│   ├── robots.txt
+│   └── sitemap.xml
+├── LICENSE
+└── README.md
+```
+ 
+## Run locally
+ 
+You need Node.js/npm and a Cloudflare account for the Workers AI backend.
+ 
+### 1. Start the backend
+ 
+```bash
+cd backend
+npm install
+npx wrangler login
+npx wrangler dev
+```
+ 
+The local Worker runs at `http://localhost:8787`. Workers AI access requires a suitably configured Cloudflare account.
+ 
+### 2. Serve the frontend
+ 
+In a second terminal:
+ 
+```bash
+cd frontend
+python -m http.server 8000
+```
+ 
+Open `http://localhost:8000`. The frontend selects the local Worker automatically when served from `localhost` or `127.0.0.1`; otherwise it uses the configured production Worker endpoint.
+ 
+## Input limits and safeguards
+ 
+Current backend limits are:
+ 
 
-## A Frontend with Personality
-
-I didn't want this to look like another generic admin dashboard. The UI is clean and retro-inspired, with a terminal feel, code windows, and subtle glitch effects. Result cards follow the same theme tokens as the rest of the site, so they work in both dark and light mode.
-
-It stays lightweight: plain HTML, CSS, and vanilla JavaScript with no framework and no build step.
-
-## Speed First: The Tech Stack
-
-The backend is a single Cloudflare Worker in plain JavaScript, using **Workers AI** (`@cf/meta/llama-3.3-70b-instruct-fp8-fast`) with structured JSON output.
-
-- Large files are split into overlapping line windows and analysed in parallel.
-- Results are merged, de-duplicated, and every patch is located against the original lines (exact match first, then a strict fuzzy match).
-- Requests are rate limited to 10 per minute per IP.
-- CORS only allows the production site and `localhost`.
-- Input limits: requirements 4,000 characters, code 20,000, console error 8,000. Uploads are capped at 600 KB.
-
+|Input|Limit|
+|---|---:|
+|Requirements / intended behavior|4,000 characters|
+|Source code|20,000 characters|
+|Console error|8,000 characters|
+|Uploaded file|600 KiB|
+ 
+The backend rate-limits requests and restricts cross-origin requests to the production site and local development origins. The frontend rejects unsupported file types and binary-looking uploads. HTML previews run in a sandboxed frame.
+ 
+**Important:** AI-generated diagnoses and patches can be wrong. Review every suggested change and test it in your own environment before relying on it. DebugAI reads submitted code; it does not execute it as part of diagnosis.
+ 
 ## Deployment
+ 
+- **Frontend:** pushes to `main` deploy the `frontend/` directory to GitHub Pages through `.github/workflows/deploy.yml`.
+- **Security scanning:** CodeQL is configured through `.github/workflows/codeql.yml`.
+- **Backend:** deploy from `backend/` with `npx wrangler deploy` after configuring Cloudflare credentials and Worker settings.
 
-- **Frontend:** every push to `main` deploys `frontend/` to GitHub Pages through GitHub Actions (`deploy.yml`). CodeQL scans run on pushes, pull requests, and weekly.
-- **Backend:** deployed manually from `backend/` with `npx wrangler deploy`.
-
-## Want to Run It Yourself?
-
-Getting DebugAI running locally takes a couple of minutes:
-
-- **Backend:** in `backend/`, run `npm install`, then `npx wrangler dev`. It serves on `http://localhost:8787`. Workers AI needs a Cloudflare account, so log in with `npx wrangler login` first.
-- **Frontend:** it is purely static. In `frontend/`, run any simple server, like `npx serve .` or `python -m http.server`. On `localhost` it automatically talks to the local worker.
-
-## Let's Build Together
-
-DebugAI is an evolving project. Whether you want to add new visual effects, improve the patching logic, or fix an edge-case bug, I'd love your help. Feel free to jump into the code and open a pull request.
-
+ 
+## Contributing
+ 
+Contributions and bug reports are welcome. Please open an issue to discuss substantial changes, or submit a pull request with a clear description of the problem and how you tested the fix.
+ 
 ## License
-
-DebugAI is open source under the [GNU v3.0 License](LICENSE). A plain-English summary lives on the site's [License page](https://nirmal-ai9.github.io/DebugAI/license.html).
+ 
+DebugAI is licensed under the GNU General Public License v3.0.
