@@ -1,58 +1,96 @@
-name: "Feature request"
-description: "Suggest an improvement or a new capability for DebugAI."
-title: "[Feature]: "
-labels: ["enhancement"]
+
+name: "Feature Request"
+description: "Suggest an improvement or new capability for DebugAI."
+title: "[FEATURE] "
+labels:
+  - enhancement
 body:
   - type: markdown
     attributes:
       value: |
-        Have an idea for DebugAI? Explain the problem it would solve and how you'd expect it to work.
-
-  - type: checkboxes
-    id: duplicate-check
-    attributes:
-      label: Before submitting
-      options:
-        - label: I searched existing issues and couldn't find the same suggestion.
-          required: true
+        Have an idea to make DebugAI better?
+        Tell us what problem it solves and how it would improve the experience.
 
   - type: dropdown
     id: area
     attributes:
-      label: Which area does this relate to?
+      label: Product area
+      description: Which part of DebugAI would this improve?
       options:
-        - AI diagnosis quality
-        - Fix suggestions / patch workflow
-        - User interface / experience
-        - Accessibility
-        - Developer experience / integrations
-        - Bug Hunt game
+        - AI Diagnosis
+        - Code Analysis
+        - Suggested Fixes
+        - Code Patching
+        - User Interface / UX
+        - Performance
+        - Developer Experience
         - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: Request type
+      options:
+        - New functionality
+        - Improvement to existing functionality
+        - Workflow improvement
+        - Accessibility improvement
+    validations:
+      required: true
+
+  - type: input
+    id: summary
+    attributes:
+      label: Feature summary
+      description: Describe your idea in one sentence.
+      placeholder: "Add..."
     validations:
       required: true
 
   - type: textarea
     id: problem
     attributes:
-      label: What problem would this solve?
-      description: Describe the pain point or use case.
-      placeholder: I often need to…
+      label: Problem or use case
+      description: What limitation or user problem would this address?
     validations:
       required: true
 
   - type: textarea
     id: solution
     attributes:
-      label: What would you like to happen?
-      description: Describe your proposed solution.
-      placeholder: It would help if DebugAI could…
+      label: Proposed solution
+      description: Describe how you imagine this feature working.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: benefit
+    attributes:
+      label: Expected impact
+      options:
+        - Major improvement to usability
+        - Better debugging accuracy
+        - Improved performance
+        - Better accessibility
+        - Developer productivity
+        - Other
     validations:
       required: true
 
   - type: textarea
     id: alternatives
     attributes:
-      label: Alternatives considered (optional)
-      placeholder: Describe any alternatives or workarounds you've tried…
-    validations:
-      required: false
+      label: Alternatives or references
+      description: Optional. Mention existing approaches or examples.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission checklist
+      options:
+        - label: I checked that this feature has not already been requested.
+          required: true
+        - label: This suggestion is related to DebugAI.
+          required: true
