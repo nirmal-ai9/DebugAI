@@ -1,1 +1,58 @@
+name: "✨ Feature request"
+description: "Suggest an improvement or a new capability for DebugAI."
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea for DebugAI? Explain the problem it would solve and how you'd expect it to work.
 
+  - type: checkboxes
+    id: duplicate-check
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and couldn't find the same suggestion.
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which area does this relate to?
+      options:
+        - AI diagnosis quality
+        - Fix suggestions / patch workflow
+        - User interface / experience
+        - Accessibility
+        - Developer experience / integrations
+        - Bug Hunt game
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would this solve?
+      description: Describe the pain point or use case.
+      placeholder: I often need to…
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: What would you like to happen?
+      description: Describe your proposed solution.
+      placeholder: It would help if DebugAI could…
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered (optional)
+      placeholder: Describe any alternatives or workarounds you've tried…
+    validations:
+      required: false
