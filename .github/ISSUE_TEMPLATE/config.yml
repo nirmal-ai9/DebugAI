@@ -1,8 +1,11 @@
+
 blank_issues_enabled: false
+
 contact_links:
-  - name: 🌐 DebugAI Website
+  - name: DebugAI Website
     url: https://nirmal-ai9.github.io/DebugAI/
-    about: Visit DebugAI before reporting a problem or suggesting an improvement.
-  - name: 🔒 Report a Security Vulnerability
+    about: Try DebugAI before reporting an issue.
+
+  - name: Security Vulnerability
     url: https://github.com/nirmal-ai9/DebugAI/security/advisories/new
-    about: Please report security vulnerabilities privately instead of creating a public issue.
+    about: Privately report security vulnerabilities.
