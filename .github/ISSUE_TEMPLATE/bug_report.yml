@@ -1,94 +1,121 @@
-name: "Bug report"
-description: "Report something broken in DebugAI."
-title: "[Bug]: "
-labels: ["bug"]
+
+name: "Bug Report"
+description: "Report a reproducible problem with DebugAI."
+title: "[BUG] "
+labels:
+  - bug
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping improve DebugAI! Please search existing issues first and never paste API keys, passwords, private data, or other secrets.
-
-  - type: checkboxes
-    id: duplicate-check
-    attributes:
-      label: Before submitting
-      options:
-        - label: I searched existing issues and couldn't find the same problem.
-          required: true
+        Thank you for helping improve DebugAI!
+        Please provide accurate information so we can investigate the issue.
 
   - type: dropdown
-    id: area
+    id: component
     attributes:
-      label: Which part of DebugAI is affected?
-      description: Choose the closest match.
+      label: Affected component
+      description: Where did you encounter the problem?
       options:
-        - Code analysis / diagnosis
-        - Suggested fix / patch application
-        - Frontend / user interface
-        - API / network request
-        - Theme / accessibility
-        - Bug Hunt game
-        - Other / not sure
+        - Code Analysis
+        - AI Diagnosis
+        - Suggested Fix
+        - Code Patching
+        - User Interface
+        - API / Backend
+        - Authentication / Access
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Impact
+      description: How much does this issue affect usage?
+      options:
+        - Critical - Core functionality unavailable
+        - High - Major functionality affected
+        - Medium - Functionality partially affected
+        - Low - Minor inconvenience
     validations:
       required: true
 
   - type: dropdown
     id: frequency
     attributes:
-      label: How often does it happen?
+      label: Reproducibility
       options:
-        - Every time
+        - Always
+        - Frequently
         - Sometimes
-        - Happened once
-        - Not sure
+        - Happened only once
     validations:
       required: true
 
   - type: textarea
     id: summary
     attributes:
-      label: What happened?
-      description: Describe the problem clearly.
-      placeholder: Tell us what went wrong…
+      label: Problem summary
+      description: Describe what went wrong.
+      placeholder: "When I..., DebugAI..."
     validations:
       required: true
 
   - type: textarea
-    id: reproduce
+    id: reproduction
     attributes:
       label: Steps to reproduce
-      description: List the steps so someone else can try to reproduce it.
+      description: Provide the minimum steps needed to reproduce the issue.
       placeholder: |
-        1. Open…
-        2. Enter…
-        3. Select…
-        4. See the error…
+        1. Open...
+        2. Enter...
+        3. Click...
+        4. Observe...
     validations:
       required: true
 
   - type: textarea
     id: expected
     attributes:
-      label: What did you expect to happen?
-      placeholder: Describe the expected result…
+      label: Expected vs actual behavior
+      description: What did you expect, and what happened instead?
     validations:
       required: true
 
-  - type: textarea
-    id: environment
+  - type: dropdown
+    id: browser
     attributes:
-      label: Environment (optional)
-      description: Browser, device, operating system, and approximate time of the problem.
-      placeholder: "Example: Chrome on Android 16"
+      label: Browser
+      options:
+        - Chrome
+        - Firefox
+        - Edge
+        - Safari
+        - Other
+        - Not applicable
     validations:
-      required: false
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device / OS
+      placeholder: "e.g. Windows 11, Android 16, macOS"
 
   - type: textarea
-    id: logs
+    id: evidence
     attributes:
-      label: Error message or screenshots (optional)
-      description: Remove secrets and personal information before sharing logs or screenshots.
-      placeholder: Paste a safe, relevant error message here…
-      render: text
-    validations:
-      required: false
+      label: Additional evidence
+      description: Optional screenshots, console errors, or relevant logs.
+      placeholder: "Remove API keys, tokens, passwords and private information before sharing."
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Submission checklist
+      options:
+        - label: I checked that a similar issue has not already been reported.
+          required: true
+        - label: I have removed sensitive information from the report.
+          required: true
