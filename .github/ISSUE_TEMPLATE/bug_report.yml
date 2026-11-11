@@ -1,1 +1,94 @@
+name: "🐛 Bug report"
+description: "Report something broken in DebugAI."
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve DebugAI! Please search existing issues first and never paste API keys, passwords, private data, or other secrets.
 
+  - type: checkboxes
+    id: duplicate-check
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and couldn't find the same problem.
+          required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part of DebugAI is affected?
+      description: Choose the closest match.
+      options:
+        - Code analysis / diagnosis
+        - Suggested fix / patch application
+        - Frontend / user interface
+        - API / network request
+        - Theme / accessibility
+        - Bug Hunt game
+        - Other / not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: How often does it happen?
+      options:
+        - Every time
+        - Sometimes
+        - Happened once
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: What happened?
+      description: Describe the problem clearly.
+      placeholder: Tell us what went wrong…
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: List the steps so someone else can try to reproduce it.
+      placeholder: |
+        1. Open…
+        2. Enter…
+        3. Select…
+        4. See the error…
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect to happen?
+      placeholder: Describe the expected result…
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment (optional)
+      description: Browser, device, operating system, and approximate time of the problem.
+      placeholder: "Example: Chrome on Android 16"
+    validations:
+      required: false
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error message or screenshots (optional)
+      description: Remove secrets and personal information before sharing logs or screenshots.
+      placeholder: Paste a safe, relevant error message here…
+      render: text
+    validations:
+      required: false
