@@ -1,51 +1,29 @@
 /* Landing sections — shared shell and heading */
-
-.steps,
-.log,
-.triangle,
-.closure,
-.examples,
-.challenge,
+.steps,.log,.triangle,.closure,.examples,.challenge,.links {
+    position: relative;
+    z-index: 2;
+    max-width: var(--container);
+    margin: 0 auto;
+    padding: var(--space-lg) var(--gutter);
+    border-top: 1px solid var(--border);
+}
 .links {
-  position: relative;
-  z-index: 2;
-  max-width: var(--container);
-  margin: 0 auto;
-  padding: var(--space-lg) var(--gutter);
-  border-top: 1px solid var(--border);
+    padding-bottom: 4rem;
 }
-
-.links {
-  padding-bottom: 4rem;
+.steps-title,.log-title,.examples-title,.triangle-title,.closure-title,.challenge-title,.links-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 var(--space-md);
+    color: var(--text);
+    font-size: clamp(1.55rem, 3vw, 2rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
 }
-
-.steps-title,
-.log-title,
-.examples-title,
-.triangle-title,
-.closure-title,
-.challenge-title,
-.links-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 var(--space-md);
-  color: var(--text);
-  font-size: clamp(1.55rem, 3vw, 2rem);
-  font-weight: 700;
-  letter-spacing: -0.045em;
-}
-
-.steps-title::before,
-.log-title::before,
-.examples-title::before,
-.triangle-title::before,
-.closure-title::before,
-.challenge-title::before,
-.links-title::before {
-  content: "";
-  width: 1.55rem;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--accent-green);
+.steps-title::before,.log-title::before,.examples-title::before,.triangle-title::before,.closure-title::before,.challenge-title::before,.links-title::before {
+    content: "";
+    width: 1.55rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-green);
 }
