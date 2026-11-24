@@ -1,52 +1,46 @@
 /* 404 page */
-
 .not-found {
-  position: relative;
-  z-index: 2;
-  width: min(100% - 2 * var(--gutter), 760px);
-  margin: 0 auto;
-  padding: clamp(4.5rem, 11vw, 8rem) var(--gutter);
-  text-align: left;
+    position: relative;
+    z-index: 2;
+    width: min(100% - 2 * var(--gutter), 760px);
+    margin: 0 auto;
+    padding: clamp(4.5rem, 11vw, 8rem) var(--gutter);
+    text-align: left;
 }
-
 @media (max-width: 700px) {
-  .not-found {
-    padding-block: 4.5rem;
-  }
+    .not-found {
+        padding-block: 4.5rem;
+    }
 }
-
 .not-found-eyebrow {
-  margin: 0 0 var(--space-sm);
-  color: var(--accent-red);
-  font-size: 0.8rem;
-  letter-spacing: 0.02em;
+    margin: 0 0 var(--space-sm);
+    color: var(--accent-red);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
 }
-
 .not-found-code {
-  margin: 0 0 var(--space-md);
-  color: var(--accent-green);
-  font-size: clamp(5rem, 18vw, 8rem);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.09em;
+    margin: 0 0 var(--space-md);
+    color: var(--accent-green);
+    font-size: clamp(5rem, 18vw, 8rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.09em;
 }
-
 .not-found-console {
-  margin: 0 0 var(--space-lg);
-  padding: var(--space-md);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-lg);
-  overflow-x: auto;
-  font-family: var(--font-code);
-  font-size: 0.85rem;
-  line-height: 1.7;
-  color: var(--accent-red);
+    margin: 0 0 var(--space-lg);
+    padding: var(--space-md);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    overflow-x: auto;
+    font-family: var(--font-code);
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--accent-red);
 }
-
 .not-found-console .not-found-hint {
-  display: inline-block;
-  margin-top: var(--space-xs);
-  color: var(--text-faint);
+    display: inline-block;
+    margin-top: var(--space-xs);
+    color: var(--text-faint);
 }
