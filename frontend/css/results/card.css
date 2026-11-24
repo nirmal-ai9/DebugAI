@@ -1,77 +1,78 @@
 .results {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
-  margin-top: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-top: var(--space-md);
 }
-
 /* Left rule defaults to the "why" accent; the variants below recolour it */
 .result-card {
-  position: relative;
-  overflow: hidden;
-  padding: var(--space-md);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent-cyan);
-  border-radius: var(--radius);
+    position: relative;
+    overflow: hidden;
+    padding: var(--space-md);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-cyan);
+    border-radius: var(--radius);
 }
-
 .result-card--bug {
-  border-left-color: var(--accent-red);
+    border-left-color: var(--accent-red);
 }
-
 .result-card--fix {
-  border-left-color: var(--accent-green);
+    border-left-color: var(--accent-green);
 }
-
 /* Full-width scanning beam */
 .fake::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  top: -4px;
-  background: var(--accent-cyan);
-  box-shadow: 0 0 10px var(--accent-cyan), 0 0 25px var(--accent-cyan), 0 0 50px var(--accent-cyan);
-  pointer-events: none;
-  animation: result-scan 2.2s linear infinite;
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    top: -4px;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 10px var(--accent-cyan), 0 0 25px var(--accent-cyan), 0 0 50px var(--accent-cyan);
+    pointer-events: none;
+    animation: result-scan 2.2s linear infinite;
 }
-
 @keyframes result-scan {
-  0% { top: -4px; opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+    0% {
+        top: -4px;
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
 }
-
 .result-head {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-sm);
 }
-
 .result-title {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.01em;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.01em;
 }
-
 .result-prose {
-  margin: 0;
-  color: var(--text-dim);
-  font-size: 0.9rem;
-  line-height: 1.7;
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.7;
 }
-
 .result-prose code {
-  font-family: var(--font-code);
-  font-size: 0.875em;
-  color: var(--accent-cyan);
-  background: var(--surface-raised);
-  padding: 0.1em 0.35em;
-  border-radius: 2px;
+    font-family: var(--font-code);
+    font-size: 0.875em;
+    color: var(--accent-cyan);
+    background: var(--surface-raised);
+    padding: 0.1em 0.35em;
+    border-radius: 2px;
 }
