@@ -1,5 +1,5 @@
 # DebugAI
- 
+  
 **Find the mismatch, not just the error.**
  
 DebugAI is an AI-powered code-diagnosis tool. It compares what your code is **supposed to do**, the **code itself**, and the **console output** to explain likely bugs and suggest targeted fixes. It does not execute submitted code.
