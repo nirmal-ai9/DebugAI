@@ -280,56 +280,9 @@
   <script src="js/chaos-invite.js"></script>
 
   <script>
-    // One orchestrated moment: type out a realistic debug session on load.
     (() => {
-      const demo = document.getElementById("demo");
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const typingSpeedMs = 18;
-      const linePauseMs = 250;
-
-      const demoLines = [
-        { cls: "prompt", text: "$ requirements: \"Log the clicked item's index.\"" },
-        { cls: "code", text: "for (var i = 0; i < items.length; i++) { ... }" },
-        { cls: "err", text: "> always logs the last index, never the clicked one" },
-        { cls: "out", text: "✓ bug: closure captures shared \"var i\" — use \"let\"" }
-      ];
-
-      const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-
-      function appendLine({ cls }) {
-        const paragraph = document.createElement("p");
-        paragraph.className = "terminal-line";
-        const span = document.createElement("span");
-        span.className = cls;
-        paragraph.append(span);
-        demo.append(paragraph);
-        return span;
-      }
-
-      async function typeInto(span, text) {
-        for (let i = 1; i <= text.length; i++) {
-          span.textContent = text.slice(0, i);
-          await wait(typingSpeedMs);
-        }
-      }
-
-      async function playDemo() {
-        for (const line of demoLines) {
-          await typeInto(appendLine(line), line.text);
-          await wait(linePauseMs);
-        }
-      }
-
-      async function boot() {
-        if (reduceMotion) {
-          demoLines.forEach(line => { appendLine(line).textContent = line.text; });
-        } else {
-          await playDemo();
-        }
-        if (window.initTerminalConsole) window.initTerminalConsole(demo);
-      }
-
-      boot();
+      const terminal = document.getElementById("demo");
+      if (window.initTerminalConsole) window.initTerminalConsole(terminal);
     })();
   </script>
 
