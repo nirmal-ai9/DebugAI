@@ -1,18 +1,23 @@
 /* Heading flicker — a brief chromatic-aberration burst every few seconds */
-
 .glitch {
-  animation: glitch-flicker 6s ease-in-out infinite;
+    animation: glitch-flicker 6s ease-in-out infinite;
 }
-
 @keyframes glitch-flicker {
-  0%, 92%, 100% { text-shadow: none; }
-  93% { text-shadow: -2px 0 var(--accent-red), 2px 0 var(--accent-cyan); }
-  94% { text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent-cyan); }
-  95% { text-shadow: none; }
+    0%, 92%, 100% {
+        text-shadow: none;
+    }
+    93% {
+        text-shadow: -2px 0 var(--accent-red), 2px 0 var(--accent-cyan);
+    }
+    94% {
+        text-shadow: 2px 0 var(--accent-red), -2px 0 var(--accent-cyan);
+    }
+    95% {
+        text-shadow: none;
+    }
 }
-
 @media (prefers-reduced-motion: reduce) {
-  .glitch {
-    animation: none !important;
-  }
+    .glitch {
+        animation: none !important;
+    }
 }
