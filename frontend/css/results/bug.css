@@ -1,8 +1,6 @@
 /* Bug Details Section */
-
 .bug-list {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
 }
-
