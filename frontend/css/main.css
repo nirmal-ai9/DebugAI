@@ -1,6 +1,5 @@
 /* Tokens */
 @import url("tokens.css");
-
 /* Base */
 @import url("base/reset.css");
 @import url("base/matrix.css");
@@ -10,7 +9,6 @@
 @import url("base/loader.css");
 @import url("base/buttons.css");
 @import url("base/reduce-motion.css");
-
 /* Landing */
 @import url("landing/nav.css");
 @import url("landing/hero.css");
@@ -20,15 +18,12 @@
 @import url("landing/showcase.css");
 @import url("landing/links.css");
 @import url("landing/card.css");
-
 /* Form */
 @import url("form/panel.css");
 @import url("form/fields.css");
 @import url("form/submit.css");
-
 /* Layout */
 @import url("layout.css");
-
 /* Results */
 @import url("results/card.css");
 @import url("results/card-enhanced.css");
@@ -36,6 +31,5 @@
 @import url("results/code-fix.css");
 @import url("results/code-window.css");
 @import url("results/apply-fix.css");
-
 /* Upgrade layer */
 @import url("upgrade.css");
