@@ -1,1 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17231d">
+  <meta name="description" content="A completely unnecessary DebugAI developer side quest.">
+  <title>Developer Trial — DebugAI</title>
+  <link rel="icon" href="logo/favicon-32x32.png" type="image/png">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base/reset.css">
+  <link rel="stylesheet" href="css/chaos.css">
+  <script src="js/theme-init.js"></script>
+</head>
+<body class="chaos-page">
+  <div class="chaos-noise" aria-hidden="true"></div>
+  <header class="chaos-nav">
+    <a class="chaos-brand" href="index.html"><span>&gt;_</span> DebugAI <i>/ side-quest</i></a>
+    <a class="chaos-exit" href="index.html">← Back to debugging</a>
+  </header>
 
+  <main class="chaos-wrap">
+    <div class="chaos-status"><span class="status-light"></span> CLASSIFIED INCIDENT #404 <span class="status-id">LAST_COMMIT.log</span></div>
+
+    <section class="chaos-screen active" id="screen-intro" aria-labelledby="intro-title">
+      <p class="chaos-eyebrow">debugai core · incident report 0001</p>
+      <h1 id="intro-title">THE LAST<br><span>COMMIT.</span></h1>
+      <p class="chaos-lead">At 03:14 AM, DebugAI did something it was never supposed to do. It stopped debugging code... and started debugging its creator.</p>
+      <div class="story-terminal" aria-live="polite">
+        <div class="story-terminal-top"><span><i></i><i></i><i></i> DEBUGAI_CORE</span><span>LIVE LOG</span></div>
+        <div class="story-log"><p><b>[03:14:01]</b> Connecting to DebugAI Core...</p><p><b>[03:14:02]</b> Connection established.</p><p class="log-error"><b>[03:14:03]</b> ERROR: Core has been hijacked.</p><p><b>[03:14:04]</b> Scanning source files...</p><p class="log-warn"><b>[03:14:05]</b> WAIT. THEY ARE ORGANIZED.</p></div>
+      </div>
+      <div class="story-message"><span class="story-message-icon">📩</span><div><small>INCOMING MESSAGE · UNKNOWN SENDER</small><strong>“Don't trust the terminal. Don't trust the debugger. Especially don't trust the semicolon.”</strong></div></div>
+      <button class="chaos-button" id="to-investigation">Investigate the incident <span>↗</span></button>
+      <p class="chaos-disclaimer">A fictional incident. Your actual files are perfectly safe.</p>
+    </section>
+
+    <section class="chaos-screen" id="screen-investigation" aria-labelledby="investigation-title" hidden>
+      <p class="chaos-eyebrow">act 02 · evidence recovered</p>
+      <h2 id="investigation-title">THEY'RE NOT<br><span>JUST BUGS.</span></h2>
+      <p class="chaos-lead">The source files have been renamed. The debugging queue is full. And someone left a note in the repository.</p>
+      <div class="file-evidence">
+        <div class="evidence-heading"><span>RECOVERED FILE SYSTEM</span><span class="evidence-tag">3 FILES ALTERED</span></div>
+        <div class="file-row"><span class="file-icon">📄</span><code>index.html</code><span class="file-arrow">→</span><code class="file-new">index_but_broken.html</code></div>
+        <div class="file-row"><span class="file-icon">🎨</span><code>style.css</code><span class="file-arrow">→</span><code class="file-new">crying.css</code></div>
+        <div class="file-row"><span class="file-icon">⚙️</span><code>app.js</code><span class="file-arrow">→</span><code class="file-new">why.js</code></div>
+      </div>
+      <div class="story-message union-message"><span class="story-message-icon">🐛</span><div><small>MESSAGE FROM THE SUSPECTS</small><strong>“WE ARE NOT BUGS. WE ARE UNPAID FEATURES.”</strong><p>They've formed a union. They demand better variable names, proper documentation, and an end to naming everything <code>temp2</code>.</p></div></div>
+      <button class="chaos-button" id="to-union">Meet the union representatives <span>→</span></button>
+    </section>
+
+    <section class="chaos-screen" id="screen-union" aria-labelledby="union-title" hidden>
+      <p class="chaos-eyebrow">act 03 · labor dispute escalated</p>
+      <h2 id="union-title">THE BUGS<br><span>HAVE UNIONIZED.</span></h2>
+      <p class="chaos-lead">They've stopped working, hired legal representation, and filed a formal complaint against their creator.</p>
+      <div class="union-board">
+        <div class="union-top"><span>BUG WORKERS UNITED</span><span>EST. 2 MINUTES AGO</span></div>
+        <div class="union-art" aria-hidden="true"><span class="bug bug-one">🐛</span><span class="bug bug-two">🪲</span><span class="bug bug-three">🐞</span><div class="union-sign">WE DEMAND<br><b>BETTER VARIABLE NAMES</b></div></div>
+        <div class="union-footer"><span>3,482 bugs on strike</span><span>Management: YOU</span></div>
+      </div>
+      <div class="demand-list"><p>THEIR OFFICIAL DEMANDS</p><ul><li>Stop naming variables <code>x</code>, <code>y</code>, and <code>temp2</code>.</li><li>Recognize <code>console.log()</code> as emotional support.</li><li>Pay overtime for bugs that survive production.</li><li>Stop saying “it works on my machine”.</li></ul></div>
+      <div class="chaos-callout"><span>⚠</span> One bug has betrayed the union. The suspect: <strong>THE SEMICOLON.</strong></div>
+      <button class="chaos-button" id="to-court">Take this to court <span>⚖</span></button>
+    </section>
+
+    <section class="chaos-screen" id="screen-court" aria-labelledby="court-title" hidden>
+      <p class="chaos-eyebrow">act 04 · session is now in progress</p>
+      <h2 id="court-title">THE PEOPLE VS.<br><span>THE DEVELOPER</span></h2>
+      <div class="courtroom"><div class="court-top"><span>DEBUGAI SUPERIOR COURT</span><span>CASE: 404-LIFE</span></div>
+        <div class="court-people">
+          <article class="court-person judge"><div class="person-icon">🧑‍⚖️</div><span class="person-role">THE JUDGE</span><strong>undefined</strong><small>Has no idea what's going on.</small></article>
+          <article class="court-person lawyer"><div class="person-icon">🧑‍💼</div><span class="person-role">YOUR LAWYER</span><strong>try...catch</strong><small>Will handle this exception.</small></article>
+          <article class="court-person witness"><div class="person-icon">🖥️</div><span class="person-role">KEY WITNESS</span><strong>console.log()</strong><small>“I saw everything.”</small></article>
+        </div>
+        <div class="court-transcript" id="court-transcript" aria-live="polite"><span class="transcript-label">$ COURT_CLERK</span>The defendant is accused of saying “it works on my machine” without providing evidence.</div>
+      </div>
+      <p class="court-question">How do you plead, developer?</p>
+      <div class="plea-actions"><button class="plea-button" data-plea="innocent">INNOCENT <small>My code is perfect.</small></button><button class="plea-button" data-plea="guilty">GUILTY <small>It was a missing semicolon.</small></button><button class="plea-button" data-plea="blame">BLAME CACHE <small>Classic move.</small></button></div>
+    </section>
+
+    <section class="chaos-screen" id="screen-verdict" aria-labelledby="verdict-title" hidden>
+      <p class="chaos-eyebrow">act 05 · the jury has reached a decision</p>
+      <div class="verdict-stamp">GUILTY<br><small>OF VIBES</small></div>
+      <h2 id="verdict-title">THE COURT HAS<br><span>DECIDED.</span></h2>
+      <p class="chaos-lead" id="verdict-copy">After reviewing 847 console.logs and one suspicious Stack Overflow tab...</p>
+      <div class="sentence-card"><span class="sentence-label">YOUR SENTENCE</span><strong>Explain your code to a rubber duck.</strong><p>The duck has already filed a complaint.</p><div class="sentence-duck">🦆 <span>“...I'm listening.”</span></div></div>
+      <button class="chaos-button" id="accept-verdict">Accept my fate <span>→</span></button>
+    </section>
+
+    <section class="chaos-screen final-screen" id="screen-final" aria-labelledby="final-title" hidden>
+      <p class="chaos-eyebrow">act 06 · final system analysis</p>
+      <div class="final-glitch" aria-hidden="true">404</div>
+      <h2 id="final-title">THE DEVELOPER<br><span>IS THE BUG.</span></h2>
+      <p class="chaos-lead">The courtroom freezes. The terminal opens by itself. The secret file has one entry: the person who created this entire mess... is YOU.</p>
+      <div class="final-console"><p><span>$</span> npm run developer-check</p><p class="console-ok">✓ Detecting bugs... found 9,001</p><p class="console-warn">! Detecting developer confidence... dangerously high</p><p class="console-error">✕ Fixing developer... permission denied</p><p class="console-done">→ Recommended action: close laptop. Touch grass. Retry tomorrow.</p></div>
+      <div class="final-twist"><span>🐛</span><div><strong>JUST KIDDING. YOU'RE THE BUG.</strong><p>The bugs won. They now own 51% of your codebase and renamed the project to BugAI.</p></div></div>
+      <div class="achievement"><span class="achievement-icon">🏆</span><div><small>SECRET ACHIEVEMENT UNLOCKED</small><strong>BUG WHISPERER</strong><span>You survived a meeting that could've been an email.</span></div><span class="achievement-xp">+404 XP</span></div>
+      <div class="ending-choices"><p>THE CASE IS CLOSED. YOUR NEXT MOVE?</p><button class="ending-choice" id="developer-ending"><strong>APPEAL THE VERDICT</strong><span>One last attempt to save your reputation.</span></button><button class="ending-choice" id="bug-ending"><strong>JOIN THE BUG UNION</strong><span>Honestly, the benefits look pretty good.</span></button></div>
+      <div class="final-actions"><button class="chaos-button" id="play-again">Run another incident ↻</button><a class="chaos-home" href="index.html">Return to being productive →</a></div>
+      <p class="secret-hint">There is still one suspicious character in this case. Find it.</p>
+    </section>
+
+    <section class="chaos-screen final-screen" id="screen-ending-developer" aria-labelledby="developer-ending-title" hidden>
+      <p class="chaos-eyebrow">ending 01 · developer redemption</p><div class="ending-symbol">🧑‍💻</div>
+      <h2 id="developer-ending-title">OBJECTION.<br><span>YOUR HONOUR.</span></h2>
+      <p class="chaos-lead">You appealed. The judge reviewed your commit history, saw 47 commits named “final”, and somehow decided you deserve a second chance.</p>
+      <div class="ending-result"><strong>YOU ESCAPED THE BUGS.</strong><p>Your developer license has been temporarily restored. The bugs are still watching.</p><span>ENDING UNLOCKED · DEVELOPER REDEMPTION</span></div>
+      <div class="final-actions"><button class="chaos-button" id="developer-restart">Run another incident ↻</button><a class="chaos-home" href="index.html">Back to DebugAI →</a></div>
+    </section>
+
+    <section class="chaos-screen final-screen" id="screen-ending-bug" aria-labelledby="bug-ending-title" hidden>
+      <p class="chaos-eyebrow">ending 02 · collective bargaining</p><div class="ending-symbol">🐛</div>
+      <h2 id="bug-ending-title">WELCOME TO<br><span>THE UNION.</span></h2>
+      <p class="chaos-lead">You switched sides. The bugs elected you as their new representative. Your first task: explain why the production build is red.</p>
+      <div class="ending-result"><strong>YOUR NEW TITLE: SENIOR BUG ADVOCATE.</strong><p>Benefits include unlimited snacks, flexible stack traces, and absolutely no code reviews.</p><span>ENDING UNLOCKED · BUG UNION MEMBER</span></div>
+      <div class="final-actions"><button class="chaos-button" id="bug-restart">Run another incident ↻</button><a class="chaos-home" href="index.html">Back to DebugAI →</a></div>
+    </section>
+
+    <section class="chaos-screen final-screen secret-screen" id="screen-secret" aria-labelledby="secret-title" hidden>
+      <p class="chaos-eyebrow">post-credits · unauthorized access</p><div class="secret-seal">; </div>
+      <h2 id="secret-title">THE REAL<br><span>MASTER BUG.</span></h2>
+      <p class="chaos-lead">You found it. The semicolon wasn't missing. It was the one pulling the strings all along.</p>
+      <div class="secret-reveal"><p class="secret-terminal-line">$ git log --all --author=";"</p><strong>Every bug. Every crash. Every “works on my machine”.</strong><p>All carefully orchestrated by one tiny punctuation mark with a massive ego.</p><div class="semicolon-villain">; <span>“I put the end in statement.”</span></div></div>
+      <div class="achievement secret-achievement"><span class="achievement-icon">🕵️</span><div><small>ULTRA-SECRET ACHIEVEMENT</small><strong>SEMICOLON DETECTIVE</strong><span>You trusted punctuation. Rookie mistake.</span></div><span class="achievement-xp">+999 XP</span></div>
+      <div class="final-actions"><button class="chaos-button" id="secret-restart">Start the chaos again ↻</button><a class="chaos-home" href="index.html">Back to DebugAI →</a></div>
+    </section>
+    <footer class="chaos-footer"><span>DebugAI <b>&gt;_</b> <button class="secret-semicolon" id="secret-semicolon" type="button" aria-label="A suspicious semicolon">;</button></span><span>built for debugging. occasionally for nonsense.</span></footer>
+  </main>
+  <script src="js/chaos.js"></script>
+</body>
+</html>
