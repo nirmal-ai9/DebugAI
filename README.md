@@ -5,7 +5,7 @@
 DebugAI is an AI-powered code-diagnosis tool. It compares what your code is **supposed to do**, the **code itself**, and the **console output** to explain likely bugs and suggest targeted fixes. It does not execute submitted code.
  
 [Try DebugAI](https://nirmal-ai9.github.io/DebugAI/) · [Report a bug](https://github.com/nirmal-ai9/DebugAI/issues) · [About](https://nirmal-ai9.github.io/DebugAI/about.html)
- 
+  
 ## Features
  
 - **Three-step diagnosis:** describe the intended behavior, paste or upload source code, and optionally include a console error.
