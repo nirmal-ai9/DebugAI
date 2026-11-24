@@ -1,1 +1,101 @@
-
+/* DebugAI secret side-quest — compact floating invitation */
+.chaos-invite {
+  position: fixed;
+  inset: auto 1rem 1rem auto;
+  z-index: 2147483000;
+  isolation: isolate;
+  width: min(276px, calc(100vw - 1.5rem));
+  max-width: 276px;
+  max-height: min(42vh, 300px);
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, .30), 0 0 0 1px var(--accent-green-soft);
+}
+/* Non-modal: the page remains usable while the invitation is visible. */
+.chaos-invite::backdrop { background: transparent; }
+.chaos-invite[open] { animation: chaos-invite-in .26s cubic-bezier(.2,.8,.2,1) both; }
+@keyframes chaos-invite-in {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.chaos-invite-top {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .48rem .65rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-raised);
+}
+.chaos-invite-mark { color: var(--accent-green); font: 700 .78rem var(--font-code); }
+.chaos-invite-label { color: var(--text-faint); font: 500 .51rem var(--font-code); letter-spacing: .07em; }
+.chaos-invite-close {
+  margin-left: auto;
+  border: 0;
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: .05rem .15rem;
+}
+.chaos-invite-close:hover { color: var(--text); }
+.chaos-invite-body { padding: .68rem .75rem .72rem; }
+.chaos-invite-kicker {
+  color: var(--accent-green);
+  font: 500 .49rem var(--font-code);
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+.chaos-invite h2 {
+  margin: .32rem 0 .38rem;
+  color: var(--text);
+  font-size: 1.02rem;
+  line-height: 1.16;
+  letter-spacing: -.035em;
+}
+.chaos-invite h2 em { color: var(--accent-green); font-style: normal; }
+.chaos-invite-body > p { margin: 0; color: var(--text-dim); font-size: .66rem; line-height: 1.42; }
+.chaos-invite-preview {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  margin: .55rem 0;
+  padding: .38rem .5rem;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg);
+  font-family: var(--font-code);
+}
+.invite-bug { font-size: 1.05rem; animation: invite-bug-wiggle 1.6s ease-in-out infinite; }
+.invite-file { color: var(--text-dim); font-size: .57rem; }
+.invite-status { margin-left: auto; color: var(--accent-red); font-size: .45rem; letter-spacing: .025em; text-align: right; }
+@keyframes invite-bug-wiggle { 0%,100% { transform: rotate(-9deg); } 50% { transform: rotate(10deg) translateY(-2px); } }
+.chaos-invite-go {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: .52rem .62rem;
+  border: 1px solid var(--accent-green);
+  border-radius: 7px;
+  color: #102218;
+  background: var(--accent-green);
+  font: 700 .67rem var(--font-ui);
+  cursor: pointer;
+  transition: transform .18s ease, filter .18s ease;
+}
+.chaos-invite-go:hover { transform: translateY(-1px); filter: brightness(1.08); }
+.chaos-invite-go span { font-size: .9rem; }
+.chaos-invite-foot { display: block; margin-top: .42rem; color: var(--text-faint); font: .47rem var(--font-code); text-align: center; }
+@media (max-width: 520px) {
+  .chaos-invite { inset: auto .75rem .75rem auto; width: min(270px, calc(100vw - 1.5rem)); max-width: 270px; max-height: min(38vh, 260px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chaos-invite[open], .invite-bug { animation: none; }
+  .chaos-invite-go { transition: none; }
+}
