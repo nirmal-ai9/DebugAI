@@ -1,19 +1,13 @@
 /* Card surface — shared by steps, feature-log entries and link cards.
    Imported after links.css so the hover state outranks the link card's focus state. */
-
-.step,
-.log-entry,
-.link-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+.step,.log-entry,.link-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
 }
-
-.step:hover,
-.log-entry:hover,
-.link-card:hover {
-  border-color: var(--border-strong);
-  box-shadow: var(--glow-green);
-  transform: translateY(-2px);
+.step:hover,.log-entry:hover,.link-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--glow-green);
+    transform: translateY(-2px);
 }
