@@ -53,7 +53,7 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=JetBrains+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/chaos-invite.css" />
-  <script src="js/theme-init.js"></script>
+  <script src="js/core/theme-init.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#debug-tool">Skip to main content</a>
@@ -199,7 +199,7 @@
     <section class="results" id="results" hidden aria-labelledby="results-heading">
       <h2 id="results-heading" class="visually-hidden" tabindex="-1">Diagnosis</h2>
 
-      <div class="bug-list" id="bug-list"></div>
+      <div class="bug-list" id="bug-list"></div> 
 
       <article class="result-card result-card--fix bracket reveal">
         <div class="result-head">
@@ -275,9 +275,9 @@
       <a href="https://github.com/nirmal-ai9/DebugAI" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
   </footer>
-  <script src="js/effects.js"></script>
-  <script src="js/terminal.js"></script>
-  <script src="js/chaos-invite.js"></script>
+  <script src="js/core/effects.js"></script>
+  <script src="js/pages/terminal.js"></script>
+  <script src="js/pages/chaos-invite.js"></script>
 
   <script>
     (() => {
@@ -286,13 +286,13 @@
     })();
   </script>
 
-  <script src="js/wizard.js"></script>
-  <script src="js/analysis.js"></script>
-  <script src="js/results/patches.js"></script>
-  <script src="js/results/cards.js"></script>
-  <script src="js/results/actions.js"></script>
-  <script src="js/upgrade/core.js"></script>
-  <script src="js/upgrade/history.js"></script>
-  <script src="js/upgrade/palette.js"></script>
+  <script src="js/debugger/wizard.js"></script>
+  <script src="js/debugger/analysis.js"></script>
+  <script src="js/debugger/results/patches.js"></script>
+  <script src="js/debugger/results/cards.js"></script>
+  <script src="js/debugger/results/actions.js"></script>
+  <script src="js/debugger/upgrade/core.js"></script>
+  <script src="js/debugger/upgrade/history.js"></script>
+  <script src="js/debugger/upgrade/palette.js"></script>
 </body>
 </html>
